@@ -1,112 +1,109 @@
-# set PowerShell to UTF-8
+Import-Module Terminal-Icons
+
+
+
 [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
-
-Import-Module posh-git
-Import-Module PowerShellGet
-Import-Module -Name Terminal-Icons
+ function touch { param([string]$file); "" | Out-File $file -Encoding ASCII }
 
 
-# Fzf
-Install-Module -Name PSFzf
-Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
+$modulesToLoad = @("posh-git", "PowerShellGet", "Terminal-Icons", "PSFzf")
+
+foreach ($module in $modulesToLoad) {
+    if (-not (Get-Module -Name $module -ListAvailable)) {
+        Import-Module -Name $module -ErrorAction SilentlyContinue
+    }
+}
+
+$env:FZF_DEFAULT_OPTS = " --height 100% --layout reverse --border"
+
+function ff {
+    $file = fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"
+    if ($file) {
+        code $file
+    }
+}
 
 
-# Env
+
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
 
+# Functions
 function atob {
     param([string]$userInput)
     try {
-        $decodedResult = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($userInput))
-        Write-Output $decodedResult
+        [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($userInput))
     } catch {
         Write-Error "Invalid Base64 string."
     }
 }
 
+# Alias: Use lightweight commands for faster startup
+Set-Alias -Name search -Value find-file
+Set-Alias -Name c -Value Clear-Host
+Set-Alias -Name ls -Value Get-ChildItem
 
-oh-my-posh init pwsh --config 'C:\Users\chris-desktop\AppData\Local\Programs\oh-my-posh\themes\blue-owl.omp.json' | Invoke-Expression
 
+# Fzf Options
+if (-not (Get-Module -Name PSFzf -ListAvailable)) {
+    Install-Module -Name PSFzf -Force -ErrorAction SilentlyContinue
+}
+Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
 
+# Customize Oh-My-Posh
+if (Test-Path 'C:\Users\chris-desktop\AppData\Local\Programs\oh-my-posh\themes\blue-owl.omp.json') {
+    oh-my-posh init pwsh --config 'C:\Users\chris-desktop\AppData\Local\Programs\oh-my-posh\themes\blue-owl.omp.json' | Invoke-Expression
+}
+
+function admin {
+    Start-Process wt.exe -Verb RunAs
+}
+
+# Git Helpers
 function lazyg {
     param([string]$commitMessage)
-    git pull
-    git add .
-    git commit -m $commitMessage
-    git push
-}
-
-
-
-function find-file($name) {
-    Get-ChildItem -recurse -filter "*${name}*" -ErrorAction SilentlyContinue | ForEach-Object {
-        Write-Output "$($_.Directory)\$($_.Name)"
-    }
-}
-
-
-function unzip ($file) {
-    Write-Output "Extracting $file to $pwd"
-    Expand-Archive -Path $file -DestinationPath $pwd -Force
-}
-
-
-function touch($file) {
-    "" | Out-File $file -Encoding ASCII
-}
-
-
-function pkill($name) {
-    Get-Process -Name $name -ErrorAction SilentlyContinue | Stop-Process
-}
-
-
-function lintts {
-    yarn format
-    yarn lint:tsc
-    yarn lint:tsc-strict
-    yarn lint:js
-    yarn fix:js
-    yarn lint:prettier
-    yarn fix:prettier
+    git pull; git add .; git commit -m $commitMessage; git push
 }
 
 function gsw {
     param(
-        [Parameter(Position = 0, Mandatory = $true)]
         [string]$branchName,
-
         [switch]$Create
     )
-
     try {
+        $localBranch = git branch --list $branchName | ForEach-Object { $_.Trim() }
+        $remoteBranch = git ls-remote --heads origin $branchName | ForEach-Object { $_.Trim() }
 
-        $branchExistsLocally = git branch --list "$branchName" | ForEach-Object { $_.Trim() }
-        $branchExistsRemotely = git ls-remote --heads origin "$branchName" | ForEach-Object { $_.Trim() }
-
-        if ($branchExistsLocally -or $branchExistsRemotely) {
+        if ($localBranch -or $remoteBranch) {
             if ($Create) {
-                Write-Error "Cannot create branch '$branchName'. It already exists."
+                Write-Error "Branch '$branchName' already exists."
                 return
             }
             git switch $branchName
-            Write-Output "Switched to branch '$branchName'."
         } else {
             if ($Create) {
                 git switch -c $branchName
-                Write-Output "Created and switched to branch '$branchName'."
             } else {
-
                 git switch --track origin/$branchName
-                Write-Output "Switched to remote tracking branch '$branchName'."
             }
         }
     } catch {
-        Write-Error "An error occurred: $_"
+        Write-Error "Error: $_"
     }
 }
 
+
+# PSReadLine Customizations
+Set-PSReadLineOption -EditMode Emacs
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -HistoryNoDuplicates:$true
+Set-PSReadLineOption -PredictionViewStyle ListView
+
+# Other Utility Functions (Deferred Load for Performance)
+function lazy-load-utilities {
+    function unzip { param([string]$file); Expand-Archive -Path $file -DestinationPath $pwd -Force }
+
+    function pkill { param([string]$name); Get-Process -Name $name -ErrorAction SilentlyContinue | Stop-Process }
 
 function rebase-f {
     param(
@@ -164,34 +161,16 @@ function rebase-i{
     }
 }
 
-
-Set-PSReadLineOption -EditMode Emacs
-Set-PSReadLineOption -BellStyle None
-Set-PSReadLineKeyHandler -Chord 'Ctrl+d' -Function DeleteChar
-Set-PSReadLineOption -PredictionSource History
-Set-PSReadLineOption -HistoryNoDuplicates:$true
-Set-PSReadLineOption -PredictionViewStyle ListView
-
-
-# Set aliases
-Set-Alias -Name search -Value find-file
 Set-Alias -Name touch -Value New-Item
 Set-Alias -Name ll -Value Get-ChildItem
 Set-Alias -Name folder -Value mkdir
 Set-Alias -Name g -Value git
 Set-Alias -Name gs -Value "git status"
 Set-Alias -Name ga -Value "git add"
-
-
-Set-Alias -Name cls -Value "Clear-Host"
 Set-Alias -Name h -Value "Get-History"
 Set-Alias -Name c -Value "Clear-Host"
-Set-Alias -Name ls -Value Get-ChildItem
 Set-Alias -Name be -Value "bundle exec"
 Set-Alias grep findstr
 
-
-function which ($command) {
-  Get-Command -Name $command -ErrorAction SilentlyContinue |
-    Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 }
+lazy-load-utilities
