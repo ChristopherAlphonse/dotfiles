@@ -213,12 +213,6 @@
   "sonarlint.focusOnNewCode": true,
   "sonarlint.disableTelemetry": true,
   "editor.largeFileOptimizations": false,
-
-  // macOS settings
-  "vscode_custom_css.imports": [
-    "file:///Users/chrisalphonse/vscode-settings-json-main/custom-vscode.css",
-    "file:///Users/chrisalphonse/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.4/dist/updateHandler.js"
-  ],
   "workbench.sideBar.location": "right",
   "extensions.autoCheckUpdates": false,
   "extensions.autoUpdate": false,
@@ -267,7 +261,7 @@
   "editor.fontLigatures": true,
   "breadcrumbs.enabled": false,
   "window.zoomLevel": 3,
-  "glassit.alpha": 241,
+  "glassit.alpha": 255,
   // Python
 
   "[python]": {
@@ -277,5 +271,7 @@
   "pylint.enabled": true,
   // Co-pilot
   "gitlens.ai.model": "anthropic:claude-3-5-sonnet-latest",
-  "github.copilot.editor.enableAutoCompletions": true
+  "explorer.confirmPasteNative": false,
+  "github.copilot.editor.enableAutoCompletions": false,
+  "find-it-faster.general.useTerminalInEditor ": true
 }
