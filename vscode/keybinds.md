@@ -19,3 +19,5 @@ Here is a list of most use VSCode:
 - **Ctrl + P**: File explorer
 - **Ctrl + Shift + P**: Command palette
 - **Ctrl + Shift + E**: Explorer
+- **CTRL + SHIFT + J** : finditfaster                                           
+- **ff** : fzf
