@@ -129,7 +129,6 @@
   "workbench.editor.showTabs": "multiple",
   "workbench.editor.enablePreview": true,
   "workbench.statusBar.visible": true,
-  "workbench.iconTheme": "material-icon-theme",
   "workbench.panel.defaultLocation": "bottom",
   // Prettier settings
   "prettier.tabWidth": 2,
@@ -204,7 +203,8 @@
     ".npm-only-allow": false,
     ".turbo": false,
     ".gitattributes": false,
-    ".eslintrc.cjs": false
+    ".eslintrc.cjs": false,
+    ".venv": true
   },
   // Jest settings
   "jest.runMode": "on-demand",
@@ -270,8 +270,53 @@
   },
   "pylint.enabled": true,
   // Co-pilot
-  "gitlens.ai.model": "anthropic:claude-3-5-sonnet-latest",
+
   "explorer.confirmPasteNative": false,
   "github.copilot.editor.enableAutoCompletions": false,
-  "find-it-faster.general.useTerminalInEditor ": true
+  "find-it-faster.general.useTerminalInEditor ": true,
+  "workbench.productIconTheme": "material-product-icons",
+  "workbench.iconTheme": "glyph.legacy",
+  "frosted-glass-theme.fakeMica.enabled": true,
+  "frosted-glass-theme.fakeMica.url": "C:/Windows/Web/Wallpaper/Windows/img19.jpg",
+  "workbench.colorCustomizations": {
+    "[Andromeda Bordered]": {
+      "activityBar.background": "#282c34cc",
+      "breadcrumb.background": "#00000000",
+      "button.background": "#40475499",
+      "dropdown.background": "#21252b4d",
+      "dropdown.border": "#21252b4d",
+      "editor.background": "#282c3499",
+      "editor.lineHighlightBackground": "#2c313c4d",
+      "editorGroupHeader.tabsBackground": "#282c34cc",
+      "editorGutter.background": "#00000000",
+      "editorPane.background": "#00000000",
+      "input.background": "#1d1f234d",
+      "list.activeSelectionBackground": "#2c313a99",
+      "list.hoverBackground": "#2c313a99",
+      "list.inactiveSelectionBackground": "#32384299",
+      "menu.background": "#21252b99",
+      "multiDiffEditor.background": "#00000000",
+      "multiDiffEditor.headerBackground": "#00000000",
+      "notebook.cellEditorBackground": "#00000000",
+      "panel.background": "#282c34cc",
+      "peekViewEditorGutter.background": "#00000000",
+      "peekViewResult.background": "#22262b4d",
+      "peekViewTitle.background": "#2525264d",
+      "settings.focusedRowBackground": "#00000000",
+      "sideBar.background": "#21252bcc",
+      "sideBarSectionHeader.background": "#282c344d",
+      "sideBarStickyScroll.background": "#21252b66",
+      "sideBarTitle.background": "#00000000",
+      "statusBar.background": "#21252bcc",
+      "statusBar.noFolderBackground": "#21252bcc",
+      "tab.activeBackground": "#282c3499",
+      "tab.activeBorder": "#b4b4b499",
+      "tab.border": "#00000000",
+      "tab.inactiveBackground": "#00000000",
+      "terminal.background": "#00000000",
+      "welcomePage.tileBackground": "#21252b4d",
+      "welcomePage.tileHoverBackground": "#282c3499"
+    }
+  },
+  "editor.tabCompletion": "on"
 }
