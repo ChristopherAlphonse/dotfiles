@@ -1,4 +1,4 @@
-`{
+{
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true
@@ -6,7 +6,6 @@
     // Python
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8",
-
         "editor.formatOnSave": true
     },
     "animations.Active": "Indent",
@@ -16,9 +15,12 @@
         "TrailLength": 10
     },
     "animations.Enabled": true,
+    "animations.Install-Method": "Apc Customize UI++",
     // Windows vscode settings -version 1.93.1 https://code.visualstudio.com/updates/v1_93
-    "animations.Install-Method": "Custom CSS and JS",
     "animations.Tabs": "Slide",
+    "apc.imports": [
+        "file:///c:/Users/chris-desktop/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
+    ],
     "apc.stylesheet": {
         ".codicon-arrow-right, .codicon-arrow-left": "display: none !important;",
         ".hover-row, .status-bar": "box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.3) !important; padding: 0.625em !important; background: rgba(40, 42, 54, 0.5) !important; backdrop-filter: blur(0.375em) !important;",
@@ -41,7 +43,7 @@
         ".titlebar-center": "display: none !important;",
         ".titlebar-right": "display: none !important;"
     },
-
+    "breadcrumbs.enabled": false,
     "debug.terminal.clearBeforeReusing": true,
     "diffEditor.ignoreTrimWhitespace": false,
     "diffEditor.renderSideBySide": true,
@@ -166,6 +168,8 @@
     },
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
+    "find-it-faster.general.killTerminalAfterUse": true,
+    "find-it-faster.general.useTerminalInEditor": true,
     "git.autofetch": true,
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
@@ -193,6 +197,7 @@
     "json.format.keepLines": false,
     // JSON settings
     "markdown.preview.lineHeight": 2,
+    "material-icon-theme.folders.theme": "specific",
     "material-icon-theme.hidesExplorerArrows": true,
     "notebook.defaultFormatter": "ms-python.vscode-pylance",
     "notebook.formatOnCellExecution": true,
@@ -257,35 +262,29 @@
     "update.mode": "none",
     "window.commandCenter": false,
     "window.confirmSaveUntitledWorkspace": false,
+    "window.menuBarVisibility": "toggle",
     "window.titleBarStyle": "custom",
     "workbench.activityBar.location": "bottom",
     "workbench.colorTheme": "Andromeda Italic Bordered",
+    "workbench.editofr.tabSizing": "shrink",
     "workbench.editor.decorations.badges": true,
     "workbench.editor.decorations.colors": true,
+    "workbench.editor.editorActionsLocation": "default",
     "workbench.editor.enablePreview": true,
     "workbench.editor.labelFormat": "short",
     "workbench.editor.showIcons": true,
-
-    "workbench.editor.tabSizing": "shrink",
+    "workbench.editor.showTabs": "multiple",
     // Workbench settings
     "workbench.editorAssociations": {
         "*.dll": "default",
         "*.vsix": "default"
     },
-    "workbench.iconTheme": "symbols",
+    "workbench.iconTheme": "material-icon-theme",
     "workbench.panel.defaultLocation": "bottom",
-    "workbench.productIconTheme": "material-product-icons",
+    "workbench.productIconTheme": "el-vsc-v1-icons",
     "workbench.settings.editor": "json",
     "workbench.sideBar.location": "right",
     "workbench.startupEditor": "none",
-    "workbench.tree.indent": 16,
-    "breadcrumbs.enabled": false,
-    "workbench.editor.showTabs": "multiple",
-    "vscode_custom_css.imports": [
-        "file:///c:/Users/chris-desktop/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
-    ],
-    "material-icon-theme.folders.theme": "specific",
-    "find-it-faster.general.useTerminalInEditor": true,
-    "find-it-faster.general.killTerminalAfterUse": true
+    "workbench.statusBar.visible": false,
+    "workbench.tree.indent": 16
 }
-
