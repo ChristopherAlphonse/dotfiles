@@ -1,51 +1,97 @@
-![psh screenshot](./pwsh/images/psh_ui.png)
+# Full Configuration Overview
 
-![fish screenshot](./pwsh/images/vs_code_ui.png)
+## Full Setup with All Features Enabled
 
-**Warning**: Don’t blindly use my settings unless you know what that entails. Use at your own risk! Although my settings cover for when I use Mac and Linux, this is focus on VScode and PWSH.
+![Full tabs open](./image/full_tabs_open.png)
 
-### Requirements
+## Minimalistic Work Mode
 
--[Powershell](https://apps.microsoft.com/detail/9MZ1SNWT0N5D?hl=en-us&gl=US&ocid=pdpshare)
+![Work mode](./image/work_mode.png)
 
-## PowerShell setup (Windows)
+> **Warning**: Do not blindly apply these settings unless you fully understand their implications. Use them at your own risk! While these configurations support both macOS and Linux, the primary focus is on **VS Code** and **PowerShell (PWSH)**.
 
-- [Scoop](https://scoop.sh/) - A command-line installer
-- [Git for Windows](https://gitforwindows.org/)
-- [Oh My Posh](https://ohmyposh.dev/) - Prompt theme engine
-- [Terminal Icons](https://github.com/devblackops/Terminal-Icons) - Folder and file icons
-- [PSReadLine](https://docs.microsoft.com/en-us/powershell/module/psreadline/) - Cmdlets for customizing the editing environment, used for autocompletion
-- [z](https://www.powershellgallery.com/packages/z) - Directory jumper
-- [PSFzf](https://github.com/kelleyma49/PSFzf) - Fuzzy finder
-- [PowershellGet](https://www.powershellgallery.com/packages/PowerShellGet/2.2.5) - Discovering, installing, updating and publishing the PowerShell artifacts
+---
 
-Install sudo to run admin command like in linux without launch terminal in admin mode.
+## Requirements
+
+-   [PowerShell](https://apps.microsoft.com/detail/9MZ1SNWT0N5D?hl=en-us&gl=US&ocid=pdpshare)
+-   [Bat](https://github.com/sharkdp/bat)
+-   [Ripgrep](https://github.com/BurntSushi/ripgrep)
+-   [Fzf](https://github.com/junegunn/fzf)
+-   [Vscode v1.93](https://code.visualstudio.com/updates/v1_93)
+
+---
+
+## PowerShell Setup (Windows)
+
+To get started with PowerShell customization, install the following tools:
+
+-   [Scoop](https://scoop.sh/) - A command-line package manager
+-   [Git for Windows](https://gitforwindows.org/)
+-   [Oh My Posh](https://ohmyposh.dev/) - A powerful prompt theme engine
+-   [Terminal Icons](https://github.com/devblackops/Terminal-Icons) - Adds file and folder icons
+-   [PSReadLine](https://docs.microsoft.com/en-us/powershell/module/psreadline/) - Enhances command-line editing and autocompletion
+-   [z](https://www.powershellgallery.com/packages/z) - A directory jumper for quick navigation
+-   [PSFzf](https://github.com/kelleyma49/PSFzf) - Fuzzy finder integration
+-   [PowerShellGet](https://www.powershellgallery.com/packages/PowerShellGet/2.2.5) - Manages PowerShell modules and scripts
+
+To enable **sudo** (for running admin commands without launching PowerShell as an administrator), install:
 
 ```sh
- scoop install curl sudo jq
+scoop install curl sudo jq
 ```
 
-# Terminal
+---
 
-Copy and pate [settings.json](./pwsh/Terminal/setting.json) into the terminal json.
-![](./pwsh//images/terminal_ui.png)
+## PowerShell Terminal Configuration
 
-## Text
+### Carapace - Tab Autocompletion & Aliases
 
-- Color scheme: Tango Dark
-  - Font face: FiraMono NF
-  - Font size: 18
-  - Padding: 8
+![Carapace Autocompletion](./image/carapace_2.png)
 
-## Powershell -> Appearance
+### Terminal Appearance
 
-- Transparency
-  - Background opacity: 51%
-  - Enable acrylic material: on
+-   **Color scheme**: `"Dark+"`
+-   **Cursor shape**: `"filledBox"`
+-   **Experimental retro terminal effect**: `false`
+-   **Font**: `"MesloLGLDZ Nerd Font"`
+-   **Font size**: `16`
+-   **History size**: `200`
+-   **Intense text style**: `"none"`
+-   **Opacity**: `23`
+-   **Padding**: `15`
+-   **Source**: `"Windows.Terminal.PowershellCore"`
+-   **Use acrylic**: `true`
+-   **Guid**: `"{574e775e-4f2a-5b96-ac1e-a2962a402336}"`
+-   **Hidden**: `false`
 
-## Visual Studio Code
+#### PowerShell -> Appearance Settings
 
-- [Custom CSS and JS Loader](https://marketplace.visualstudio.com/items?itemName=be5invis.vscode-custom-css) - Allow to load custom CSS and JS to override the Electron default.
-- [VSCode Animations](https://marketplace.visualstudio.com/items?itemName=BrandonKirbyson.vscode-animations) - Animated scroll, Smooth motions
-- [Apc Customize UI++](https://marketplace.visualstudio.com/items?itemName=drcika.apc-extension) - Override Electron browser settings
-- [Azalais Dark](https://marketplace.visualstudio.com/items?itemName=ChristopherAlphonse.azalais-dark-theme) - My theme
+-   **Transparency**:
+    -   **Background opacity**: 51%
+    -   **Enable acrylic material**: **ON**
+
+---
+
+#### PowerShell -> Appearance Settings
+
+-   **Transparency**
+    -   Background opacity: 51%
+    -   Enable acrylic material: **ON**
+
+---
+
+## Invoke fuzzy search with command _ff_
+
+![Terminal mode fzf](./image/fzf_terminal_mode.png)
+
+## Visual Studio Code Enhancements
+
+### Extensions
+
+-   [Custom CSS and JS Loader](https://marketplace.visualstudio.com/items?itemName=be5invis.vscode-custom-css) - Enables custom UI modifications
+-   [VSCode Animations](https://marketplace.visualstudio.com/items?itemName=BrandonKirbyson.vscode-animations) - Adds smooth UI animations
+-   [Apc Customize UI++](https://marketplace.visualstudio.com/items?itemName=drcika.apc-extension) - Fine-tune Electron settings
+-   [Azalais Dark](https://marketplace.visualstudio.com/items?itemName=ChristopherAlphonse.azalais-dark-theme) - My preferred theme
+
+---
