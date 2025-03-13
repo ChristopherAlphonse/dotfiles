@@ -26,11 +26,57 @@ function ff {
     }
 }
 
+function Update-Packages {
+    param (
+        [switch]$Winget,
+        [switch]$Chocolatey,
+        [switch]$Pip
+    )
+
+
+    function Test-Command {
+        param ($Command)
+        $null -ne (Get-Command $Command -ErrorAction SilentlyContinue)
+    }
+
+
+    if ($Winget -or (-not $Chocolatey -and -not $Pip)) {
+        if (Test-Command "winget") {
+            Write-Host "Updating packages with Winget..."
+            winget upgrade --all --silent
+        } else {
+            Write-Warning "Winget not found."
+        }
+    }
+
+
+    if ($Chocolatey -or (-not $Winget -and -not $Pip)) {
+        if (Test-Command "choco") {
+            Write-Host "Updating packages with Chocolatey..."
+            choco upgrade all -y
+        } else {
+            Write-Warning "Chocolatey not found."
+        }
+    }
+
+
+    if ($Pip -or (-not $Winget -and -not $Chocolatey)) {
+        if (Test-Command "pip") {
+            Write-Host "Updating packages with Pip..."
+            pip list --outdated --format=json | ConvertFrom-Json | ForEach-Object {
+                pip install --upgrade $_.name
+            }
+        } else {
+            Write-Warning "Pip not found."
+        }
+    }
+}
+
 
 
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
 
-# Functions
+
 function atob {
     param([string]$userInput)
     try {
@@ -40,13 +86,13 @@ function atob {
     }
 }
 
-# Alias: Use lightweight commands for faster startup
+
 Set-Alias -Name search -Value find-file
 Set-Alias -Name c -Value Clear-Host
 Set-Alias -Name ls -Value Get-ChildItem
 
 
-# Fzf Options
+
 if (-not (Get-Module -Name PSFzf -ListAvailable)) {
     Install-Module -Name PSFzf -Force -ErrorAction SilentlyContinue
 }
@@ -58,7 +104,7 @@ function admin {
     Start-Process wt.exe -Verb RunAs
 }
 
-# Git Helpers
+
 function lazyg {
     param([string]$commitMessage)
     git pull; git add .; git commit -m $commitMessage; git push
@@ -92,13 +138,13 @@ function gsw {
 }
 
 
-# PSReadLine Customizations
+
 Set-PSReadLineOption -EditMode Emacs
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -HistoryNoDuplicates:$true
 Set-PSReadLineOption -PredictionViewStyle ListView
 
-# Other Utility Functions (Deferred Load for Performance)
+
 function lazy-load-utilities {
     function unzip { param([string]$file); Expand-Archive -Path $file -DestinationPath $pwd -Force }
 
