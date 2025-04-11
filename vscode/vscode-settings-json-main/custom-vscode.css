@@ -1,47 +1,24 @@
+/* VSCode Custom Theme CSS */
 
-.codicon-arrow-right, .codicon-arrow-left {
+.codicon-arrow-right,
+.codicon-arrow-left {
     display: none !important;
 }
 
-.monaco-editor-hover, .monaco-hover {
-    box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.5) !important;
-    background: rgba(40, 42, 54, 0.5) !important;
-    backdrop-filter: blur(0.375em) !important;
-    border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;
-}
-
-.quick-input-widget {
-    transform: translateY(-50%) !important;
-    top: 50% !important;
-    box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.5) !important;
-    padding: 0.75em 0.75em 1.25em 0.75em !important;
-    background: rgba(40, 42, 54, 0.5) !important;
-    backdrop-filter: blur(0.375em) !important;
-    border-radius: 0.5em !important;
-    border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;
-}
-
-.sidebar > .composite {
-    height: 2.6em !important;
-}
-
-.title-label, .title-actions, .titlebar-center, .titlebar-right {
-    display: none !important;
-}
-
-.hover-row, .status-bar {
+.hover-row,
+.status-bar {
     box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.3) !important;
     padding: 0.625em !important;
     background: rgba(40, 42, 54, 0.5) !important;
     backdrop-filter: blur(0.375em) !important;
 }
 
-.line-numbers {
-    position: relative !important;
-    width: 1em !important;
-    font-size: 1.5em !important;
-    font-family: 'monospace' !important;
-    opacity: 0.3;
+ .line-numbers {
+    /* position: relative !important; */
+    width: .5em !important;
+    font-size: .9em ;
+    font-family: monospace !important;
+    opacity: 0.2;
 }
 
 .monaco-editor .scroll-decoration {
@@ -49,8 +26,25 @@
     top: -0.375em !important;
 }
 
-.part.sidebar {
-    box-shadow: 0em 0em 3.125em rgba(0, 0, 0, 0.25);
+.monaco-editor-hover,
+.monaco-hover {
+    box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.5) !important;
+    background: rgba(40, 42, 54, 0.5) !important;
+    backdrop-filter: blur(0.375em) !important;
+    border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.monaco-inputbox input::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.monaco-list-row:hover {
+    background: rgba(0, 0, 0, 0.2) !important;
+}
+
+.monaco-list-rows {
+    background: transparent !important;
+    font-size: .9em !important;
 }
 
 .monaco-list.list_id_1 .monaco-list-row.selected {
@@ -69,6 +63,10 @@
     background: none !important;
 }
 
+.part.sidebar {
+    box-shadow: 0em 0em 3.125em rgba(0, 0, 0, 0.25);
+}
+
 .quick-input-filter .monaco-inputbox {
     border-radius: 0.5em !important;
     padding: 0.5em !important;
@@ -78,17 +76,19 @@
     margin-bottom: 1em !important;
 }
 
-.monaco-list-rows {
-    background: transparent !important;
-    font-size: 1.2em !important;
+.quick-input-widget {
+    transform: translateY(-50%) !important;
+    top: 50% !important;
+    box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.5) !important;
+    padding: 0.75em 0.75em 1.25em 0.75em !important;
+    background: rgba(40, 42, 54, 0.5) !important;
+    backdrop-filter: blur(0.375em) !important;
+    border-radius: 0.5em !important;
+    border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;
 }
 
-.monaco-list-row:hover {
-    background: rgba(0, 0, 0, 0.2) !important;
-}
-
-.monaco-inputbox input::placeholder {
-    color: rgba(255, 255, 255, 0.5) !important;
+.sidebar > .composite {
+    height: 2.6em !important;
 }
 
 .slider {
@@ -97,4 +97,18 @@
     width: 1em !important;
     background: #2BA59D !important;
     left: auto !important;
+}
+
+.title-actions,
+.title-label,
+.titlebar-center,
+.titlebar-right {
+    display: none !important;
+}
+
+.status-bar {
+    background: rgba(40, 42, 54, 0.6) !important;
+    backdrop-filter: blur(0.375em) !important;
+    opacity: 0.4 !important;
+    box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.3) !important;
 }

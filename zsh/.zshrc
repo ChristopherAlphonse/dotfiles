@@ -78,8 +78,7 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
-alias eztilt="${EZCATER_REPOSITORY_PATH}/eztilt/eztilt"
-alias run="${EZCATER_REPOSITORY_PATH}/eztilt/run"
+
 plugins=(you-should-use)
 
 source $ZSH/oh-my-zsh.sh
@@ -88,8 +87,7 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 source "/Users/chrisalphonse/.asdf/asdf.sh"
 
-alias eztilt="/Users/chrisalphonse/code/ezcater/eztilt/eztilt"
-alias run="/Users/chrisalphonse/code/ezcater/eztilt/run"
+
 
 alias psg='ps aux | grep -v grep | grep -i -e VSZ -e'
 

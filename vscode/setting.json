@@ -15,34 +15,11 @@
         "TrailLength": 10
     },
     "animations.Enabled": true,
-    "animations.Install-Method": "Apc Customize UI++",
-    // Windows vscode settings -version 1.93.1 https://code.visualstudio.com/updates/v1_93
-    "animations.Tabs": "Slide",
-    "apc.imports": [
+    "vscode_custom_css.imports": [
+        "file:///c:/Users/chris-desktop/.vscode/tab.css",
         "file:///c:/Users/chris-desktop/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
     ],
-    "apc.stylesheet": {
-        ".codicon-arrow-right, .codicon-arrow-left": "display: none !important;",
-        ".hover-row, .status-bar": "box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.3) !important; padding: 0.625em !important; background: rgba(40, 42, 54, 0.5) !important; backdrop-filter: blur(0.375em) !important;",
-        ".line-numbers": "position: relative !important; width: 1em !important; font-size: 1.5em !important; font-family:'monospace' !important; opacity: .3;",
-        ".monaco-editor .scroll-decoration": "box-shadow: 0em 0em 1.25em rgba(0, 0, 0, .75) !important; top: -0.375em !important;",
-        ".monaco-editor-hover, .monaco-hover": "box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.5) !important; background: rgba(40, 42, 54, 0.5) !important; backdrop-filter: blur(0.375em) !important; border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;",
-        ".monaco-inputbox input::placeholder": "color: rgba(255, 255, 255, .5) !important;",
-        ".monaco-list-row:hover": "background: rgba(0, 0, 0, .2) !important;",
-        ".monaco-list-rows": "background: transparent !important; font-size: 1.2em !important;",
-        ".monaco-list.list_id_1 .monaco-list-row.selected": "background-color: #4f5971 !important; opacity: 1 !important; border-top: 0.0625em #727b90 solid; border-bottom: 0.0625em #727b90 solid;",
-        ".monaco-list.list_id_1 .monaco-list-row.selected .label-name": "color: #fff !important; opacity: 1 !important;",
-        ".notifications-toasts .monaco-list-row:hover": "background: none !important;",
-        ".part.sidebar": "box-shadow: 0em 0em 3.125em rgba(0, 0, 0, .25);",
-        ".quick-input-filter .monaco-inputbox": "border-radius: 0.5em !important; padding: 0.5em !important; border: 0.0625em solid rgba(255, 255, 255, 0.15) !important; background: rgba(40, 42, 54, 0.5) !important; backdrop-filter: blur(0.375em) !important;  margin-bottom: 1em !important;",
-        ".quick-input-widget": "transform: translateY(-50%) !important; top: 50% !important; box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.5) !important; padding: 0.75em 0.75em 1.25em 0.75em !important; background: rgba(40, 42, 54, 0.5) !important; backdrop-filter: blur(0.375em) !important; border-radius: 0.5em !important; border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;",
-        ".sidebar > .composite": "height: 2.6em !important;",
-        ".slider": "position: absolute !important; right: 0.0625em !important; width: 1em !important; background: #2BA59D !important; left: auto !important;",
-        ".title-actions": "display: none !important;",
-        ".title-label": "display: none !important;",
-        ".titlebar-center": "display: none !important;",
-        ".titlebar-right": "display: none !important;"
-    },
+    "animations.Tabs": "Slide",
     "breadcrumbs.enabled": false,
     "debug.terminal.clearBeforeReusing": true,
     "diffEditor.ignoreTrimWhitespace": false,
@@ -67,7 +44,7 @@
     "editor.foldingImportsByDefault": false,
     "editor.fontFamily": "FiraCode Nerd Font,FiraMono Nerd Font, MesloGLDZ Nerd Font, Monaco, 'Courier New', monospace",
     "editor.fontLigatures": false,
-    "editor.fontSize": 16,
+    "editor.fontSize": 14,
     "editor.fontWeight": "400",
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
@@ -80,7 +57,7 @@
     "editor.insertSpaces": true,
     "editor.largeFileOptimizations": false,
     "editor.letterSpacing": 1,
-    "editor.lineNumbers": "relative",
+    "editor.lineNumbers": "on",
     "editor.linkedEditing": true,
     "editor.matchBrackets": "always",
     "editor.minimap.enabled": false,
@@ -103,7 +80,12 @@
     // ESLint settings
     "eslint.enable": true,
     "eslint.format.enable": true,
-    "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+    ],
     "explorer.compactFolders": false,
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
@@ -119,54 +101,56 @@
         "*.md": "markdown",
         "*.ts": "typescript",
         "*.tsx": "typescriptreact",
-        "*.vim": "vimrc"
+        "*.vim": "vimrc",
+        "*.css": "tailwindcss",
+        ".env*": "dotenv"
     },
     "files.autoSave": "onFocusChange",
     "files.defaultLanguage": "${activeEditorLanguage}",
     "files.eol": "\n",
-    "files.exclude": {
-        "**/.DS_Store": true,
-        "**/.editorconfig": true,
-        "**/.hg": true,
-        "**/.husky": true,
-        "**/.lintstagedrc.mjs": true,
-        "**/.markdownlint.json": true,
-        "**/.markdownlintignore": true,
-        "**/.next": true,
-        "**/.prettierignore": true,
-        "**/.storybook**": true,
-        "**/.svn": true,
-        "**/.swc": true,
-        "**/.todo.md": true,
-        "**/.tool-versions": true,
-        "**/.yarn": true,
-        "**/CVS": true,
-        "**/Thumbs.db": true,
-        "**/bin": true,
-        "**/bun.lockb": true,
-        "**/cspell.json": true,
-        "**/dist": true,
-        "**/drizzle": true,
-        "**/drizzle.config.ts": true,
-        "**/migrate.ts": true,
-        "**/next-env.d.ts": true,
-        "**/next.config**": true,
-        "**/postcss.config.**": true,
-        "**/prettier**": true,
-        "**/tsconfig.buildinfo": true,
-        "**/types": true,
-        ".eslintrc.cjs": true,
-        ".gitattributes": true,
-        ".idea": true,
-        ".npm-only-allow": true,
-        ".prettiercache": true,
-        ".tool-version": true,
-        ".turbo": true,
-        ".venv": true,
-        "tsconfig.tsbuildinfo": true,
-        "yarn.lock": true
-    },
-    "files.insertFinalNewline": true,
+    // "files.exclude": {
+    //     "**/.DS_Store": true,
+    //     "**/.editorconfig": true,
+    //     "**/.hg": true,
+    //     "**/.husky": true,
+    //     "**/.lintstagedrc.mjs": true,
+    //     "**/.markdownlint.json": true,
+    //     "**/.markdownlintignore": true,
+    //     "**/.next": true,
+    //     "**/.prettierignore": true,
+    //     "**/.storybook**": true,
+    //     "**/.svn": true,
+    //     "**/.swc": true,
+    //     "**/.todo.md": true,
+    //     "**/.tool-versions": true,
+    //     "**/.yarn": true,
+    //     "**/CVS": true,
+    //     "**/Thumbs.db": true,
+    //     "**/bin": true,
+    //     "**/bun.lockb": true,
+    //     "**/cspell.json": true,
+    //     "**/dist": true,
+    //     "**/drizzle": true,
+    //     "**/drizzle.config.ts": true,
+    //     "**/migrate.ts": true,
+    //     "**/next-env.d.ts": true,
+    //     "**/next.config**": true,
+    //     "**/postcss.config.**": true,
+    //     "**/prettier**": true,
+    //     "**/tsconfig.buildinfo": true,
+    //     "**/types": true,
+    //     ".eslintrc.cjs": true,
+    //     ".gitattributes": true,
+    //     ".idea": true,
+    //     ".npm-only-allow": true,
+    //     ".prettiercache": true,
+    //     ".tool-version": true,
+    //     ".turbo": true,
+    //     ".venv": true,
+    //     "tsconfig.tsbuildinfo": true,
+    //     "yarn.lock": true
+    // },
+    // "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "find-it-faster.general.killTerminalAfterUse": true,
     "find-it-faster.general.useTerminalInEditor": true,
@@ -174,12 +158,11 @@
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
     "git.ignoreRebaseWarning": true,
-    "github.copilot.editor.enableAutoCompletions": false,
+    "gitlens.codeLens.enabled": true,
     "gitlens.rebaseEditor.ordering": "asc",
     "glassit.alpha": 255,
     "html.autoClosingTags": false,
     // JavaScript settings
-    "javascript.inlayHints.enumMemberValues.enabled": true,
     "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
     "javascript.inlayHints.parameterNames.enabled": "literals",
     "javascript.inlayHints.parameterTypes.enabled": true,
@@ -202,9 +185,9 @@
     "notebook.defaultFormatter": "ms-python.vscode-pylance",
     "notebook.formatOnCellExecution": true,
     "notebook.formatOnSave.enabled": true,
-    "prettier.printWidth": 100,
+    "prettier.printWidth": 120,
     "prettier.proseWrap": "preserve",
-    "prettier.requireConfig": false,
+    "prettier.requireConfig": true,
     "prettier.singleQuote": false,
     // Prettier settings
     "prettier.tabWidth": 4,
@@ -216,8 +199,15 @@
     "sonarlint.disableTelemetry": true,
     // Sonar
     "sonarlint.focusOnNewCode": true,
-    "sortJSON.orderOverride": ["name", "version", "description"],
-    "sortJSON.orderUnderride": ["dependencies", "devDependencies"],
+    "sortJSON.orderOverride": [
+        "name",
+        "version",
+        "description"
+    ],
+    "sortJSON.orderUnderride": [
+        "dependencies",
+        "devDependencies"
+    ],
     "terminal.integrated.cursorBlinking": true,
     "terminal.integrated.cursorStyle": "line",
     "terminal.integrated.cursorWidth": 0,
@@ -226,7 +216,6 @@
     "terminal.integrated.defaultProfile.windows": "PowerShell",
     "terminal.integrated.enableMultiLinePasteWarning": "never",
     // Terminal settings
-    "terminal.integrated.env.windows": {},
     "terminal.integrated.fontFamily": "FiraCode Nerd Font,FiraMono Nerd Font, MesloGLDZ Nerd Font, Monaco, 'Courier New', monospace",
     "terminal.integrated.fontSize": 12,
     "terminal.integrated.gpuAcceleration": "off",
@@ -235,7 +224,10 @@
         "Command Prompt": {
             "args": [],
             "icon": "terminal-cmd",
-            "path": ["${env:windir}\\Sysnative\\cmd. exe", "${env:windir}\\System32\\cmd.exe"]
+            "path": [
+                "${env:windir}\\Sysnative\\cmd. exe",
+                "${env:windir}\\System32\\cmd.exe"
+            ]
         },
         "Git Bash": {
             "source": "Git Bash"
@@ -265,27 +257,98 @@
     "window.titleBarStyle": "custom",
     "window.zoomLevel": 3,
     "workbench.activityBar.location": "bottom",
-    "workbench.colorTheme": "Andromeda Italic Bordered",
-    "workbench.editofr.tabSizing": "shrink",
-    "workbench.editor.decorations.badges": true,
-    "workbench.editor.decorations.colors": true,
+    "workbench.colorTheme": "Andromeda Bordered",
+    // "workbench.editofr.tabSizing": "shrink",
     "workbench.editor.enablePreview": true,
     "workbench.editor.labelFormat": "short",
     "workbench.editor.showIcons": true,
     "workbench.editor.showTabs": "multiple",
     // Workbench settings
     "workbench.editorAssociations": {
+        "*.copilotmd": "vscode.markdown.preview.editor",
         "*.dll": "default",
-        "*.vsix": "default"
+        "*.vsix": "default",
+        "*.docx": "default"
     },
-    "workbench.iconTheme": "material-icon-theme",
     "workbench.panel.defaultLocation": "bottom",
-    "workbench.productIconTheme": "material-product-icons",
     "workbench.settings.editor": "json",
     "workbench.sideBar.location": "right",
     "workbench.startupEditor": "none",
-    "workbench.statusBar.visible": false,
+    "workbench.statusBar.visible": true,
     "workbench.tree.indent": 16,
     "window.menuBarVisibility": "toggle",
-    "workbench.colorCustomizations": {}
+    "workbench.editor.decorations.colors": false,
+    "workbench.editor.decorations.badges": false,
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorCustomizations": {},
+    "obsidian-md-vsc.defaultVault": "re_learning_python",
+    "obsidian-md-vsc.defaultVaultPath": "C:\\Users\\chris-desktop\\Documents\\re_learning_python",
+    "obsidian-md-vsc.defaultNote": "README",
+    "python.createEnvironment.trigger": "off",
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "dotenv.enableAutocloaking": true,
+    "editor.tokenColorCustomizations": {
+        "[*Light*]": {
+            "textMateRules": [
+                {
+                    "scope": "ref.matchtext",
+                    "settings": {
+                        "foreground": "#000"
+                    }
+                }
+            ]
+        },
+        "[*Dark*]": {
+            "textMateRules": [
+                {
+                    "scope": "ref.matchtext",
+                    "settings": {
+                        "foreground": "#fff"
+                    }
+                }
+            ]
+        },
+        "textMateRules": [
+            {
+                "scope": "keyword.other.dotenv",
+                "settings": {
+                    "foreground": "#FF000000"
+                }
+            }
+        ]
+    },
+    "mcp": {
+        "servers": {
+            "playwright": {
+                "command": "npx",
+                "args": [
+                    "@playwright/mcp@latest"
+                ]
+            },
+            "neon": {
+                "command": "npx",
+                "args": [
+                    "-y",
+                    "mcp-remote",
+                    "https://mcp.neon.tech/sse"
+                ]
+            },
+            "vscode_github_access": {
+                "command": "npx",
+                "args": [
+                    "-y",
+                    "@modelcontextprotocol/server-github"
+                ],
+                "env": {
+                    "GITHUB_PERSONAL_ACCESS_TOKEN": ""
+                }
+            }
+        }
+    },
+    "remote.defaultExtensionsIfInstalledLocally": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "GitHub.vscode-pull-request-github"
+    ],
+    "animations.Install-Method": "Custom CSS and JS"
 }

@@ -32,12 +32,12 @@
     useHttpPath = true
 
 [init]
-    defaultBranch = main  
+    defaultBranch = main
 # Changed from master to main for consistency
 
 [user]
     name = Christopher Alphonse
-    email = 
+    email = christopheralphonse96@gmail.com
 
 [github]
     user = christopheralphonse
@@ -71,7 +71,9 @@
     push = push
     pull = pull
     branch = branch
-
+	tree = ! git ls-tree --full-name --name-only -t -r HEAD | sed -e \"s/[^-][^\\/]*\\//   |/g\" -e \"s/|\\([^ ]\\)/|-- \\1/\"
 [push]
     default = simple
     autoSetupRemote = true
+[safe]
+	directory = C:/Users/chris-desktop/Desktop/*
