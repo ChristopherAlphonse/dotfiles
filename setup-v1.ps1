@@ -167,6 +167,11 @@ function Install-PowerShellModules {
 function Setup-DotFiles {
     Write-Step "Setting up dotfiles..."
 
+     if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+        Write-Host "Git is not installed. Please install Git before proceeding."
+        return
+    }
+
     $tempDir = Join-Path $env:TEMP "dotfiles"
     if (Test-Path $tempDir) { Remove-Item -Recurse -Force $tempDir }
 
@@ -323,7 +328,11 @@ function Main {
     catch {
         Write-Error "An error occurred during setup: $_"
         Write-Host "Please check the error message above and try again." -ForegroundColor Yellow
-        exit 1
+        Write-Host "Press 'S' to skip this step and continue, or any other key to exit..." -ForegroundColor Yellow
+        $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").Character
+        if ($key -ne 'S' -and $key -ne 's') {
+            exit 1
+        }
     }
     finally {
 
