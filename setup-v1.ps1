@@ -125,13 +125,34 @@ function Install-NerdFonts {
     Write-Success "Nerd Fonts installed! You may need to restart to see them in terminals/editors."
 }
 
-function Install-DevTools {
-    Write-Step "Installing development tools..."
 
+function Install-DevTools {
+    Write-Step "Installing development tools in parallel..."
+
+    $jobs = @()
     foreach ($package in $CONFIG.WingetPackages) {
-        Write-Host "Installing $($package.Name)..." -ForegroundColor Yellow
-        winget install -e --id $package.Id --accept-package-agreements --accept-source-agreements
+        $jobs += Start-Job -ArgumentList $package -ScriptBlock {
+            param($pkg)
+            try {
+                winget install -e --id $pkg.Id --accept-package-agreements --accept-source-agreements --silent
+                Write-Output "[+] Installed $($pkg.Name)"
+            }
+            catch {
+                Write-Output "[x] Failed to install $($pkg.Name): $_"
+            }
+        }
     }
+
+    Write-Host "Waiting for parallel installations to complete..." -ForegroundColor Cyan
+    $jobs | Wait-Job
+
+    foreach ($job in $jobs) {
+        $output = Receive-Job -Job $job
+        Write-Host $output
+        Remove-Job -Job $job
+    }
+
+    Write-Success "All development tools have been installed!"
 }
 
 function Setup-DotFiles {
