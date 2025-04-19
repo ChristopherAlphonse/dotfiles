@@ -40,13 +40,13 @@ $CONFIG = @{
         @{Id = "JanDeDobbeleer.OhMyPosh"; Name = "Oh My Posh"},
         @{Id = "Microsoft.PowerToys"; Name = "PowerToys (Preview)"}
     )
-    ScoopPackages = @(
-       "curl", "sudo", "jq", "bat", "ripgrep",
-        "fzf", "zoxide", "carapace", "delta", "python",
-       "7zip", "mongodb-compass ","mongosh ",
-       "mongodb-database-tools","mongodb", "openssh", "curl"
+    # ScoopPackages = @(
+    #    "curl", "sudo", "jq", "bat", "ripgrep",
+    #     "fzf", "zoxide", "carapace", "delta", "python",
+    #    "7zip", "mongodb-compass ","mongosh ",
+    #    "mongodb-database-tools","mongodb", "openssh", "curl"
 
-    )
+    # )
     PowerShellModules = @(
         "PowerShellGet",
         "PSReadLine",
@@ -153,11 +153,11 @@ function Install-DevTools {
         winget install -e --id $package.Id --accept-package-agreements --accept-source-agreements
     }
 
-    scoop update
-    foreach ($package in $CONFIG.ScoopPackages) {
-        Write-Host "Installing $package via Scoop..." -ForegroundColor Yellow
-        scoop install $package
-    }
+    # scoop update
+    # foreach ($package in $CONFIG.ScoopPackages) {
+    #     Write-Host "Installing $package via Scoop..." -ForegroundColor Yellow
+    #     scoop install $package
+    # }
 }
 
 function Install-PowerShellModules {
