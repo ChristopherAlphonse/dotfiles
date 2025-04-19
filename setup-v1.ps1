@@ -5,12 +5,7 @@
     Development environment setup script for Windows
 
 .DESCRIPTION
-    Sets up a complete development environment on Windows including:
-    - Package managers (winget, scoop, chocolatey)
-    - Development tools (Git, Node.js, Python, Java, etc.)
-    - PowerShell modules and configuration
-    - Terminal customization
-    - VSCode with settings
+
 
 .NOTES
     Author: Christopher Alphonse
@@ -33,11 +28,8 @@ $CONFIG = @{
         @{ Id = "Git.Git"; Name = "Git" },
         @{ Id = "Microsoft.WindowsTerminal"; Name = "Windows Terminal" },
         @{ Id = "Microsoft.VisualStudioCode"; Name = "VS Code" },
-        @{ Id = "OpenJS.NodeJS.LTS"; Name = "Node.js LTS" },
-        @{ Id = "Oracle.JDK.24"; Name = "Java" },
         @{ Id = "Python.Python.3.11"; Name = "Python" },
         @{ Id = "Docker.DockerDesktop"; Name = "Docker Desktop" },
-        @{ Id = "Zoom.Zoom"; Name = "Zoom" },
         @{ Id = "SlackTechnologies.Slack"; Name = "Slack" },
         @{ Id = "JanDeDobbeleer.OhMyPosh"; Name = "Oh My Posh" },
         @{ Id = "Microsoft.PowerToys"; Name = "PowerToys (Preview)" }
@@ -96,34 +88,7 @@ function Install-PackageManager {
     }
 }
 
-function Install-NerdFonts {
-    Write-Step "Installing Nerd Fonts..."
 
-    $fontList = @("FiraCode", "FiraMono", "Meslo")
-    $tempDir = "$env:TEMP\nerd-fonts"
-    if (Test-Path $tempDir) { Remove-Item $tempDir -Recurse -Force }
-    New-Item -ItemType Directory -Path $tempDir | Out-Null
-
-    foreach ($font in $fontList) {
-        $url = "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${font}.zip"
-        $zipPath = "$tempDir\$font.zip"
-        $extractPath = "$tempDir\$font"
-
-        Write-Host "Downloading $font Nerd Font..." -ForegroundColor Yellow
-        Invoke-WebRequest -Uri $url -OutFile $zipPath -UseBasicParsing
-
-        Write-Host "Extracting $font..." -ForegroundColor Yellow
-        Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
-
-        Write-Host "Installing $font..." -ForegroundColor Yellow
-        $fontFiles = Get-ChildItem -Path $extractPath -Include *.ttf -Recurse
-        foreach ($file in $fontFiles) {
-            Copy-Item $file.FullName -Destination "$env:WINDIR\Fonts" -Force
-        }
-    }
-
-    Write-Success "Nerd Fonts installed! You may need to restart to see them in terminals/editors."
-}
 
 
 function Install-DevTools {
@@ -192,24 +157,7 @@ function Setup-DotFiles {
     Remove-Item -Recurse -Force $tempDir
 }
 
-function Install-NodeEnvironment {
-    Write-Step "Setting up Node.js development environment..."
 
-    $nodeInstaller = "$env:TEMP\node-lts.msi"
-    Invoke-WebRequest -Uri "https://nodejs.org/dist/v20.11.1/node-v20.11.1-x64.msi" -OutFile $nodeInstaller
-    Start-Process msiexec.exe -Wait -ArgumentList "/i `"$nodeInstaller`" /quiet /norestart"
-    Remove-Item $nodeInstaller
-    Write-Output "Node.js installed."
-
-    Update-Environment
-
-    $nodePackages = @("typescript", "ts-node", "prettier", "eslint", "npm-check-updates", "yarn", "nodemon")
-
-    foreach ($package in $nodePackages) {
-        Write-Host "Installing $package globally..." -ForegroundColor Yellow
-        npm install -g $package
-    }
-}
 
 function Main {
     function Log-Output {
@@ -254,7 +202,7 @@ function Main {
         Update-Environment
 
         Write-Host "Installing VS Code extensions..." -ForegroundColor Yellow
-        # Add code for extensions if needed
+
 
         $sw.Stop()
         Write-Success "Setup completed successfully in $([math]::Round($sw.Elapsed.TotalMinutes, 2)) minutes!"
