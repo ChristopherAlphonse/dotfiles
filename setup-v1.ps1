@@ -41,9 +41,9 @@ $CONFIG = @{
         @{Id = "Microsoft.PowerToys"; Name = "PowerToys (Preview)"}
     )
     ScoopPackages = @(
-        "curl", "sudo", "jq", "typescript", "bat", "ripgrep",
+        "git", "curl", "sudo", "jq", "typescript", "bat", "ripgrep",
         "fzf", "zoxide", "carapace", "delta", "python",
-        "black", "mypy", "pylint", "jupyter"
+        "black", "mypy", "pylint", "jupyter", "7zip"
     )
     PowerShellModules = @(
         "PowerShellGet",
