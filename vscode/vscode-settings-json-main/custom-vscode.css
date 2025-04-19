@@ -16,7 +16,7 @@
  .line-numbers {
     /* position: relative !important; */
     width: .5em !important;
-    font-size: .9em ;
+    font-size: 1.2em ;
     font-family: monospace !important;
     opacity: 0.2;
 }

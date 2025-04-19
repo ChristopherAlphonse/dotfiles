@@ -2,15 +2,15 @@
   "name": "powershell",
   "version": "1.0.0",
   "description": "",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ChristopherAlphonse/Powershell.git"
-  },
-  "keywords": [],
   "author": "Christopher Alphonse",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/ChristopherAlphonse/Powershell/issues"
   },
-  "homepage": "https://github.com/ChristopherAlphonse/Powershell#readme"
+  "homepage": "https://github.com/ChristopherAlphonse/Powershell#readme",
+  "keywords": [],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChristopherAlphonse/Powershell.git"
+  }
 }

@@ -1,77 +1,82 @@
 [
-  {
-    "key": "shift+alt+a",
-    "command": "copilot-labs.use-brush-picker",
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "ctrl+[",
-    "command": "workbench.action.navigateLeft"
-  },
-  {
-    "key": "ctrl+]",
-    "command": "workbench.action.navigateRight"
-  },
-  {
-    "key": "ctrl+\\",
-    "command": "workbench.action.terminal.split",
-    "when": "terminalFocus && terminalProcessSupported || terminalFocus && terminalWebExtensionContributedProfile"
-  },
-  {
-    "key": "ctrl+shift+5",
-    "command": "-workbench.action.terminal.split",
-    "when": "terminalFocus && terminalProcessSupported || terminalFocus && terminalWebExtensionContributedProfile"
-  },
-  {
-    "key": "ctrl+\\",
-    "command": "workbench.action.terminal.splitActiveTab",
-    "when": "terminalProcessSupported && terminalTabsFocus"
-  },
-  {
-    "key": "ctrl+shift+5",
-    "command": "-workbench.action.terminal.splitActiveTab",
-    "when": "terminalProcessSupported && terminalTabsFocus"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "workbench.action.files.newFile",
-    "args": {
-      "language": "${fileLanguageId}"
+    {
+        "command": "copilot-labs.use-brush-picker",
+        "key": "shift+alt+a",
+        "when": "editorTextFocus"
     },
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "a",
-    "command": "explorer.newFile",
-    "when": " fileExplorerFocus && !inpuFocus"
-  },
-  {
-    "key": "ctrl+d",
-    "command": "editor.action.addSelectionToNextFindMatch"
-  },
-  {
-    "key": "ctrl+d",
-    "command": "deleteLeft",
-    "when": "editorHasSelection"
-  },
-  {
-    "key": "ctrl+up",
-    "command": "cursorMove",
-    "args": {
-      "to": "up",
-      "by": "line",
-      "value": 10
+    {
+        "command": "workbench.action.navigateLeft",
+        "key": "ctrl+["
     },
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "ctrl+down",
-    "command": "cursorMove",
-    "args": {
-      "to": "down",
-      "by": "line",
-      "value": 10
+    {
+        "command": "workbench.action.navigateRight",
+        "key": "ctrl+]"
     },
-    "when": "editorTextFocus"
-  }
+    {
+        "command": "workbench.action.terminal.split",
+        "key": "ctrl+\\",
+        "when": "terminalFocus && terminalProcessSupported || terminalFocus && terminalWebExtensionContributedProfile"
+    },
+    {
+        "command": "-workbench.action.terminal.split",
+        "key": "ctrl+shift+5",
+        "when": "terminalFocus && terminalProcessSupported || terminalFocus && terminalWebExtensionContributedProfile"
+    },
+    {
+        "command": "workbench.action.terminal.splitActiveTab",
+        "key": "ctrl+\\",
+        "when": "terminalProcessSupported && terminalTabsFocus"
+    },
+    {
+        "command": "-workbench.action.terminal.splitActiveTab",
+        "key": "ctrl+shift+5",
+        "when": "terminalProcessSupported && terminalTabsFocus"
+    },
+    {
+        "command": "editor.action.addSelectionToNextFindMatch",
+        "key": "ctrl+d"
+    },
+    {
+        "command": "deleteLeft",
+        "key": "ctrl+d",
+        "when": "editorHasSelection"
+    },
+    {
+        "args": {
+            "by": "line",
+            "to": "up",
+            "value": 10
+        },
+        "command": "cursorMove",
+        "key": "ctrl+up",
+        "when": "editorTextFocus"
+    },
+    {
+        "args": {
+            "by": "line",
+            "to": "down",
+            "value": 5
+        },
+        "command": "cursorMove",
+        "key": "ctrl+down",
+        "when": "editorTextFocus"
+    },
+    {
+        "command": "explorer.newFile",
+        "key": "ctrl+n",
+        "when": "explorerViewletFocus && !inputFocus"
+    },
+    {
+        "command": "explorer.newFolder",
+        "key": "ctrl+f",
+        "when": "explorerViewletFocus && !inputFocus"
+    },
+    {
+        "command": "workbench.action.terminal.runActiveFile",
+        "key": "ctrl+shift+f5"
+    },
+    {
+        "command": "python.execInTerminal-icon",
+        "key": "ctrl+shift+f5"
+    }
 ]

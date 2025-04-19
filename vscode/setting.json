@@ -15,10 +15,7 @@
         "TrailLength": 10
     },
     "animations.Enabled": true,
-    "vscode_custom_css.imports": [
-        "file:///c:/Users/chris-desktop/.vscode/tab.css",
-        "file:///c:/Users/chris-desktop/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
-    ],
+    "animations.Install-Method": "Custom CSS and JS",
     "animations.Tabs": "Slide",
     "breadcrumbs.enabled": false,
     "debug.terminal.clearBeforeReusing": true,
@@ -26,6 +23,7 @@
     "diffEditor.renderSideBySide": true,
     // Git settings
     "diffEditor.wordWrap": "on",
+    "dotenv.enableAutocloaking": true,
     "editor.accessibilitySupport": "off",
     "editor.codeActionsOnSave": {
         "source.fixAll": "explicit"
@@ -72,6 +70,37 @@
     "editor.suggest.insertMode": "replace",
     "editor.tabCompletion": "on",
     "editor.tabSize": 4,
+    "editor.tokenColorCustomizations": {
+        "[*Dark*]": {
+            "textMateRules": [
+                {
+                    "scope": "ref.matchtext",
+                    "settings": {
+                        "foreground": "#fff"
+                    }
+                }
+            ]
+        },
+        "[*Light*]": {
+            "textMateRules": [
+                {
+                    "scope": "ref.matchtext",
+                    "settings": {
+                        "foreground": "#000"
+                    }
+                }
+            ]
+        },
+        "textMateRules": [
+            {
+                "scope": "keyword.other.dotenv",
+                "settings": {
+                    "foreground": "#FF000000"
+                }
+            }
+        ]
+    },
+    "editor.unicodeHighlight.invisibleCharacters": false,
     "editor.wordWrap": "on",
     "editor.wordWrapColumn": 100,
     "emmet.includeLanguages": {
@@ -95,6 +124,7 @@
     "extensions.autoUpdate": false,
     // Files settings
     "files.associations": {
+        "*.css": "tailwindcss",
         "*.js": "javascript",
         "*.json": "json",
         "*.jsx": "javascriptreact",
@@ -102,20 +132,11 @@
         "*.ts": "typescript",
         "*.tsx": "typescriptreact",
         "*.vim": "vimrc",
-        "*.css": "tailwindcss",
         ".env*": "dotenv"
     },
     "files.autoSave": "onFocusChange",
     "files.defaultLanguage": "${activeEditorLanguage}",
     "files.eol": "\n",
-    // powerShell settings
-    "powershell.scriptAnalysis.settingsPath": "PSScriptAnalyzerSettings.psd1",
-    "powershell.codeFormatting.preset": "OTBS",
-    "powershell.codeFormatting.alignPropertyValuePairs": true,
-    "powershell.codeFormatting.ignoreOneLineBlock": true,
-    "powershell.codeFormatting.useConstantStrings": true,
-    "powershell.codeFormatting.useCorrectCasing": true,
-    "powershell.codeFormatting.whitespaceBetweenParameters": true,
     "files.exclude": {
         "**/.DS_Store": true,
         "**/.editorconfig": true,
@@ -190,9 +211,48 @@
     "markdown.preview.lineHeight": 2,
     "material-icon-theme.folders.theme": "specific",
     "material-icon-theme.hidesExplorerArrows": true,
+    "mcp": {
+        "servers": {
+            "neon": {
+                "args": [
+                    "-y",
+                    "mcp-remote",
+                    "https://mcp.neon.tech/sse"
+                ],
+                "command": "npx"
+            },
+            "playwright": {
+                "args": [
+                    "@playwright/mcp@latest"
+                ],
+                "command": "npx"
+            },
+            "vscode_github_access": {
+                "args": [
+                    "-y",
+                    "@modelcontextprotocol/server-github"
+                ],
+                "command": "npx",
+                "env": {
+                    "GITHUB_PERSONAL_ACCESS_TOKEN": ""
+                }
+            }
+        }
+    },
     "notebook.defaultFormatter": "ms-python.vscode-pylance",
     "notebook.formatOnCellExecution": true,
     "notebook.formatOnSave.enabled": true,
+    "obsidian-md-vsc.defaultNote": "README",
+    "obsidian-md-vsc.defaultVault": "re_learning_python",
+    "obsidian-md-vsc.defaultVaultPath": "C:\\Users\\chris-desktop\\Documents\\re_learning_python",
+    "powershell.codeFormatting.alignPropertyValuePairs": true,
+    "powershell.codeFormatting.ignoreOneLineBlock": true,
+    "powershell.codeFormatting.preset": "OTBS",
+    "powershell.codeFormatting.useConstantStrings": true,
+    "powershell.codeFormatting.useCorrectCasing": true,
+    "powershell.codeFormatting.whitespaceBetweenParameters": true,
+    // powerShell settings
+    "powershell.scriptAnalysis.settingsPath": "PSScriptAnalyzerSettings.psd1",
     "prettier.printWidth": 120,
     "prettier.proseWrap": "preserve",
     "prettier.requireConfig": true,
@@ -200,6 +260,12 @@
     // Prettier settings
     "prettier.tabWidth": 4,
     "pylint.enabled": true,
+    "python.createEnvironment.trigger": "off",
+    "remote.defaultExtensionsIfInstalledLocally": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "GitHub.vscode-pull-request-github"
+    ],
     "search.useIgnoreFiles": false,
     "security.workspace.trust.banner": "always",
     "security.workspace.trust.enabled": false,
@@ -260,13 +326,20 @@
     "typescript.suggest.completeFunctionCalls": true,
     "typescript.updateImportsOnFileMove.enabled": "always",
     "update.mode": "none",
+    "vscode_custom_css.imports": [
+        "file:///c:/Users/chris-desktop/.vscode/tab.css",
+        "file:///c:/Users/chris-desktop/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
+    ],
     "window.commandCenter": false,
     "window.confirmSaveUntitledWorkspace": false,
+    "window.menuBarVisibility": "toggle",
     "window.titleBarStyle": "custom",
     "window.zoomLevel": 3,
     "workbench.activityBar.location": "bottom",
+    "workbench.colorCustomizations": {},
     "workbench.colorTheme": "Andromeda Bordered",
-    // "workbench.editofr.tabSizing": "shrink",
+    "workbench.editor.decorations.badges": false,
+    "workbench.editor.decorations.colors": false,
     "workbench.editor.enablePreview": true,
     "workbench.editor.labelFormat": "short",
     "workbench.editor.showIcons": true,
@@ -275,88 +348,14 @@
     "workbench.editorAssociations": {
         "*.copilotmd": "vscode.markdown.preview.editor",
         "*.dll": "default",
-        "*.vsix": "default",
-        "*.docx": "default"
+        "*.docx": "default",
+        "*.vsix": "default"
     },
+    "workbench.iconTheme": "material-icon-theme",
     "workbench.panel.defaultLocation": "bottom",
     "workbench.settings.editor": "json",
     "workbench.sideBar.location": "right",
     "workbench.startupEditor": "none",
     "workbench.statusBar.visible": true,
-    "workbench.tree.indent": 16,
-    "window.menuBarVisibility": "toggle",
-    "workbench.editor.decorations.colors": false,
-    "workbench.editor.decorations.badges": false,
-    "workbench.iconTheme": "material-icon-theme",
-    "workbench.colorCustomizations": {},
-    "obsidian-md-vsc.defaultVault": "re_learning_python",
-    "obsidian-md-vsc.defaultVaultPath": "C:\\Users\\chris-desktop\\Documents\\re_learning_python",
-    "obsidian-md-vsc.defaultNote": "README",
-    "python.createEnvironment.trigger": "off",
-    "editor.unicodeHighlight.invisibleCharacters": false,
-    "dotenv.enableAutocloaking": true,
-    "editor.tokenColorCustomizations": {
-        "[*Light*]": {
-            "textMateRules": [
-                {
-                    "scope": "ref.matchtext",
-                    "settings": {
-                        "foreground": "#000"
-                    }
-                }
-            ]
-        },
-        "[*Dark*]": {
-            "textMateRules": [
-                {
-                    "scope": "ref.matchtext",
-                    "settings": {
-                        "foreground": "#fff"
-                    }
-                }
-            ]
-        },
-        "textMateRules": [
-            {
-                "scope": "keyword.other.dotenv",
-                "settings": {
-                    "foreground": "#FF000000"
-                }
-            }
-        ]
-    },
-    "mcp": {
-        "servers": {
-            "playwright": {
-                "command": "npx",
-                "args": [
-                    "@playwright/mcp@latest"
-                ]
-            },
-            "neon": {
-                "command": "npx",
-                "args": [
-                    "-y",
-                    "mcp-remote",
-                    "https://mcp.neon.tech/sse"
-                ]
-            },
-            "vscode_github_access": {
-                "command": "npx",
-                "args": [
-                    "-y",
-                    "@modelcontextprotocol/server-github"
-                ],
-                "env": {
-                    "GITHUB_PERSONAL_ACCESS_TOKEN": ""
-                }
-            }
-        }
-    },
-    "remote.defaultExtensionsIfInstalledLocally": [
-        "GitHub.copilot",
-        "GitHub.copilot-chat",
-        "GitHub.vscode-pull-request-github"
-    ],
-    "animations.Install-Method": "Custom CSS and JS"
+    "workbench.tree.indent": 16
 }
