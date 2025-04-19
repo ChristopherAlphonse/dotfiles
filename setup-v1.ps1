@@ -44,7 +44,7 @@ $CONFIG = @{
        "curl", "sudo", "jq", "bat", "ripgrep",
         "fzf", "zoxide", "carapace", "delta", "python",
        "7zip", "mongodb-compass ","mongosh ",
-       "mongodb-database-tools","mongodb", "openssh", "curl "
+       "mongodb-database-tools","mongodb", "openssh", "curl"
 
     )
     PowerShellModules = @(
@@ -56,6 +56,7 @@ $CONFIG = @{
         "Terminal-Icons"
     )
 }
+
 
 
 
@@ -278,6 +279,11 @@ function Main {
         winget install -e --id Git.Git --accept-package-agreements --accept-source-agreements
         Update-Environment
 
+        # testing
+        $jobs += Start-Job -ScriptBlock {
+            . $using:PSCommandPath
+            scoop install curl
+        }
 
         $jobs += Start-Job -ScriptBlock {
             . $using:PSCommandPath
