@@ -41,9 +41,11 @@ $CONFIG = @{
         @{Id = "Microsoft.PowerToys"; Name = "PowerToys (Preview)"}
     )
     ScoopPackages = @(
-        "git", "curl", "sudo", "jq", "typescript", "bat", "ripgrep",
+       "curl", "sudo", "jq", "bat", "ripgrep",
         "fzf", "zoxide", "carapace", "delta", "python",
-        "black", "mypy", "pylint", "jupyter", "7zip"
+       "7zip", "mongodb-compass ","mongosh ",
+       "mongodb-database-tools","mongodb", "openssh", "curl "
+
     )
     PowerShellModules = @(
         "PowerShellGet",
@@ -54,6 +56,8 @@ $CONFIG = @{
         "Terminal-Icons"
     )
 }
+
+
 
 function Write-Step {
     param([string]$Message)
