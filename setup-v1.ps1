@@ -194,8 +194,7 @@ function Main {
         Update-Environment
 
         Setup-DotFiles
-        Install-NodeEnvironment
-        Install-NerdFonts
+
         Install-DevTools
 
         Write-Step "Applying final configurations..."
