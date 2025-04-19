@@ -47,14 +47,7 @@ $CONFIG = @{
     #    "mongodb-database-tools","mongodb", "openssh", "curl"
 
     # )
-    PowerShellModules = @(
-        "PowerShellGet",
-        "PSReadLine",
-        "z",
-        "PSFzf",
-        "oh-my-posh",
-        "Terminal-Icons"
-    )
+
 }
 
 
@@ -160,14 +153,7 @@ function Install-DevTools {
     # }
 }
 
-function Install-PowerShellModules {
-    Write-Step "Setting up PowerShell modules..."
 
-    foreach ($module in $CONFIG.PowerShellModules) {
-        Write-Host "Installing $module..." -ForegroundColor Yellow
-        Install-Module -Name $module -Force -AllowClobber -Scope CurrentUser
-    }
-}
 
 function Setup-DotFiles {
     Write-Step "Setting up dotfiles..."
@@ -301,7 +287,7 @@ function Main {
 
 
         Install-DevTools
-        Install-PowerShellModules
+
 
 
         Write-Host "Waiting for parallel installations to complete..." -ForegroundColor Yellow
