@@ -218,15 +218,6 @@ function Install-NodeEnvironment {
     }
 }
 
-function Install-JavaEnvironment {
-    Write-Step "Setting up Java development environment..."
-
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
-
-    Write-Host "Installing Maven..." -ForegroundColor Yellow
-    choco install maven -y
-}
-
 
 
 
@@ -272,10 +263,7 @@ function Main {
             Install-NodeEnvironment
         }
 
-        $jobs += Start-Job -ScriptBlock {
-            . $using:PSCommandPath
-            Install-JavaEnvironment
-        }
+
 
         $jobs += Start-Job -ScriptBlock {
             . $using:PSCommandPath
@@ -299,16 +287,7 @@ function Main {
         Update-Environment
 
         Write-Host "Installing VS Code extensions..." -ForegroundColor Yellow
-        $vsCodeJobs = @(
-            "ms-python.python",
-            "ms-python.vscode-pylance",
-            "vscjava.vscode-java-pack"
-        ) | ForEach-Object {
-            Start-Job -ScriptBlock {
-                code --install-extension $using:_
-            }
-        }
-        $vsCodeJobs | Wait-Job | Receive-Job
+
 
         $sw.Stop()
         Write-Success "Setup completed successfully in $([math]::Round($sw.Elapsed.TotalMinutes, 2)) minutes!"
@@ -320,11 +299,7 @@ function Main {
     catch {
         Write-Error "An error occurred during setup: $_"
         Write-Host "Please check the error message above and try again." -ForegroundColor Yellow
-        Write-Host "Press 'S' to skip this step and continue, or any other key to exit..." -ForegroundColor Yellow
-        $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").Character
-        if ($key -ne 'S' -and $key -ne 's') {
-            exit 1
-        }
+
     }
     finally {
 
