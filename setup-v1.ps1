@@ -262,7 +262,7 @@ function Main {
 
         $retryCount = 0
         while (-not (Test-Command "winget") -and $retryCount -lt 5) {
-            Start-Sleep -Seconds 2
+            Start-Sleep -Seconds 5
             Update-Environment
             $retryCount++
         }
