@@ -3,6 +3,7 @@
 <#
 .SYNOPSIS
     Development environment setup script for Windows
+
 .DESCRIPTION
     Sets up a complete development environment on Windows including:
     - Package managers (winget, scoop, chocolatey)
@@ -10,6 +11,7 @@
     - PowerShell modules and configuration
     - Terminal customization
     - VSCode with settings
+
 .NOTES
     Author: Christopher Alphonse
     Last Updated: 2025-04-19
@@ -28,30 +30,19 @@ $CONFIG = @{
         VSCodeSettings = "$env:APPDATA\Code\User"
     }
     WingetPackages = @(
-        @{Id = "Git.Git"; Name = "Git"},
-        @{Id = "Microsoft.WindowsTerminal"; Name = "Windows Terminal"},
-        @{Id = "Microsoft.VisualStudioCode"; Name = "VS Code"},
-        @{Id = "OpenJS.NodeJS.LTS"; Name = "Node.js LTS"},
-        @{Id = "Oracle.JDK.24"; Name = "Java"},
-        @{Id = "Python.Python.3.11"; Name = "Python"},
-        @{Id = "Docker.DockerDesktop"; Name = "Docker Desktop"},
-        @{Id = "Zoom.Zoom"; Name = "Zoom"},
-        @{Id = "SlackTechnologies.Slack"; Name = "Slack"},
-        @{Id = "JanDeDobbeleer.OhMyPosh"; Name = "Oh My Posh"},
-        @{Id = "Microsoft.PowerToys"; Name = "PowerToys (Preview)"}
+        @{ Id = "Git.Git"; Name = "Git" },
+        @{ Id = "Microsoft.WindowsTerminal"; Name = "Windows Terminal" },
+        @{ Id = "Microsoft.VisualStudioCode"; Name = "VS Code" },
+        @{ Id = "OpenJS.NodeJS.LTS"; Name = "Node.js LTS" },
+        @{ Id = "Oracle.JDK.24"; Name = "Java" },
+        @{ Id = "Python.Python.3.11"; Name = "Python" },
+        @{ Id = "Docker.DockerDesktop"; Name = "Docker Desktop" },
+        @{ Id = "Zoom.Zoom"; Name = "Zoom" },
+        @{ Id = "SlackTechnologies.Slack"; Name = "Slack" },
+        @{ Id = "JanDeDobbeleer.OhMyPosh"; Name = "Oh My Posh" },
+        @{ Id = "Microsoft.PowerToys"; Name = "PowerToys (Preview)" }
     )
-    # ScoopPackages = @(
-    #    "curl", "sudo", "jq", "bat", "ripgrep",
-    #     "fzf", "zoxide", "carapace", "delta", "python",
-    #    "7zip", "mongodb-compass ","mongosh ",
-    #    "mongodb-database-tools","mongodb", "openssh", "curl"
-
-    # )
-
 }
-
-
-
 
 function Write-Step {
     param([string]$Message)
@@ -82,12 +73,13 @@ function Update-Environment {
         }
     }
 }
+
 function Install-PackageManager {
     Write-Step "Setting up package managers..."
 
     if (-not (Test-Command "winget")) {
         Write-Host "Installing winget..." -ForegroundColor Yellow
-        Write-Host "Please install App Installer from the Microsoft Store to get winget"
+        Write-Host "Please install App Installer from the Microsoft Store to get winget."
     }
 
     if (-not (Test-Command "scoop")) {
@@ -107,12 +99,7 @@ function Install-PackageManager {
 function Install-NerdFonts {
     Write-Step "Installing Nerd Fonts..."
 
-    $fontList = @(
-        "FiraCode",
-        "FiraMono",
-        "Meslo"
-    )
-
+    $fontList = @("FiraCode", "FiraMono", "Meslo")
     $tempDir = "$env:TEMP\nerd-fonts"
     if (Test-Path $tempDir) { Remove-Item $tempDir -Recurse -Force }
     New-Item -ItemType Directory -Path $tempDir | Out-Null
@@ -145,21 +132,13 @@ function Install-DevTools {
         Write-Host "Installing $($package.Name)..." -ForegroundColor Yellow
         winget install -e --id $package.Id --accept-package-agreements --accept-source-agreements
     }
-
-    # scoop update
-    # foreach ($package in $CONFIG.ScoopPackages) {
-    #     Write-Host "Installing $package via Scoop..." -ForegroundColor Yellow
-    #     scoop install $package
-    # }
 }
-
-
 
 function Setup-DotFiles {
     Write-Step "Setting up dotfiles..."
 
-     if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-        Write-Host "Git is not installed. Please install Git before proceeding."
+    if (-not (Test-Command "git")) {
+        Write-Error "Git is not installed. Please install Git before proceeding."
         return
     }
 
@@ -172,6 +151,7 @@ function Setup-DotFiles {
     if (-not (Test-Path $profilePath)) {
         New-Item -ItemType Directory -Path $profilePath -Force
     }
+
     Copy-Item "$tempDir/pwsh/Microsoft.PowerShell_profile.ps1" "$profilePath/Microsoft.PowerShell_profile.ps1" -Force
     Copy-Item "$tempDir/pwsh/powershell.config.json" "$profilePath/powershell.config.json" -Force
 
@@ -200,17 +180,9 @@ function Install-NodeEnvironment {
     Remove-Item $nodeInstaller
     Write-Output "Node.js installed."
 
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+    Update-Environment
 
-    $nodePackages = @(
-        "typescript",
-        "ts-node",
-        "prettier",
-        "eslint",
-        "npm-check-updates",
-        "yarn",
-        "nodemon"
-    )
+    $nodePackages = @("typescript", "ts-node", "prettier", "eslint", "npm-check-updates", "yarn", "nodemon")
 
     foreach ($package in $nodePackages) {
         Write-Host "Installing $package globally..." -ForegroundColor Yellow
@@ -218,24 +190,24 @@ function Install-NodeEnvironment {
     }
 }
 
-
-
-
-
 function Main {
+    function Log-Output {
+        param([string]$Message)
+        Add-Content -Path "$env:TEMP\dev-setup.log" -Value "$(Get-Date) :: $Message"
+    }
+
+    $esc = [char]27
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
 
     Write-Host "Starting development environment setup..." -ForegroundColor Cyan
-      Write-Host "${esc}[44;37mThis script will set up your complete development environment.${esc}[0m"
+    Write-Host "${esc}[44;37mThis script will set up your complete development environment.${esc}[0m"
     Write-Host "Please ensure you have admin rights and an internet connection." -ForegroundColor Yellow
     Write-Host "Press any key to continue or Ctrl+C to cancel..."
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 
     try {
-
         Install-PackageManager
         Update-Environment
-
 
         $retryCount = 0
         while (-not (Test-Command "winget") -and $retryCount -lt 5) {
@@ -248,62 +220,31 @@ function Main {
             throw "Winget is not available after installation. Please restart PowerShell and try again."
         }
 
-
-        $jobs = @()
-
-
         Write-Step "Installing Git..."
         winget install -e --id Git.Git --accept-package-agreements --accept-source-agreements
         Update-Environment
 
-
-
-        $jobs += Start-Job -ScriptBlock {
-            . $using:PSCommandPath
-            Install-NodeEnvironment
-        }
-
-
-
-        $jobs += Start-Job -ScriptBlock {
-            . $using:PSCommandPath
-            Install-NerdFonts
-        }
-
-
         Setup-DotFiles
-
-
+        Install-NodeEnvironment
+        Install-NerdFonts
         Install-DevTools
 
-
-
-        Write-Host "Waiting for parallel installations to complete..." -ForegroundColor Yellow
-        $jobs | Wait-Job | Receive-Job
-
         Write-Step "Applying final configurations..."
-
-
         Update-Environment
 
         Write-Host "Installing VS Code extensions..." -ForegroundColor Yellow
-
+        # Add code for extensions if needed
 
         $sw.Stop()
         Write-Success "Setup completed successfully in $([math]::Round($sw.Elapsed.TotalMinutes, 2)) minutes!"
         Write-Host "`nNext steps:" -ForegroundColor Yellow
-        Write-Host "1. Restart your computer" -ForegroundColor Yellow
-        Write-Host "2. Open Windows Terminal to see the new PowerShell profile" -ForegroundColor Yellow
-        Write-Host "3. Open VS Code and let it sync settings" -ForegroundColor Yellow
+        Write-Host "1. Restart your computer"
+        Write-Host "2. Open Windows Terminal to see the new PowerShell profile"
+        Write-Host "3. Open VS Code and let it sync settings"
     }
     catch {
         Write-Error "An error occurred during setup: $_"
         Write-Host "Please check the error message above and try again." -ForegroundColor Yellow
-
-    }
-    finally {
-
-        Get-Job | Remove-Job -Force
     }
 }
 
