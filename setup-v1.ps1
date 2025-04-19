@@ -74,12 +74,7 @@ function Install-PackageManager {
         Write-Host "Please install App Installer from the Microsoft Store to get winget."
     }
 
-    if (-not (Test-Command "scoop")) {
-        Write-Host "Installing Scoop..." -ForegroundColor Yellow
-        Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-        Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-    }
-
+    
     if (-not (Test-Command "choco")) {
         Write-Host "Installing Chocolatey..." -ForegroundColor Yellow
         Set-ExecutionPolicy Bypass -Scope Process -Force
