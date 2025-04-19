@@ -279,11 +279,7 @@ function Main {
         winget install -e --id Git.Git --accept-package-agreements --accept-source-agreements
         Update-Environment
 
-        # testing
-        $jobs += Start-Job -ScriptBlock {
-            . $using:PSCommandPath
-            scoop install curl
-        }
+
 
         $jobs += Start-Job -ScriptBlock {
             . $using:PSCommandPath
