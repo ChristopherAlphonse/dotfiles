@@ -40,6 +40,9 @@ if (Test-Path($ChocolateyProfile)) {
     Import-Module "$ChocolateyProfile"
 }
 
+
+
+
 # Check for Profile Updates
 <#
 .SYNOPSIS
@@ -119,19 +122,17 @@ function Update-PowerShell {
 
 # skip in debug mode
 # Check if not in debug mode AND (updateInterval is -1 OR file doesn't exist OR time difference is greater than the update interval)
-if (-not $debug -and `
-    ($updateInterval -eq -1 -or `
-     -not (Test-Path $timeFilePath) -or `
-     ((Get-Date).Date - [datetime]::ParseExact((Get-Content -Path $timeFilePath), 'yyyy-MM-dd', $null).Date).TotalDays -gt $updateInterval)) {
+# if (-not $debug -and `
+#     ($updateInterval -eq -1 -or `
+#      -not (Test-Path $timeFilePath) -or `
+#      ((Get-Date).Date - [datetime]::ParseExact((Get-Content -Path $timeFilePath), 'yyyy-MM-dd', $null).Date).TotalDays -gt $updateInterval)) {
 
-    Update-PowerShell
-    $currentTime = Get-Date -Format 'yyyy-MM-dd'
-    $currentTime | Out-File -FilePath $timeFilePath
-} elseif (-not $debug) {
-    Write-Warning "PowerShell update skipped. Last update check was within the last $updateInterval day(s)."
-} else {
-    Write-Warning "Skipping PowerShell update in debug mode"
-}
+#     Update-PowerShell
+#     $currentTime = Get-Date -Format 'yyyy-MM-dd'
+#     $currentTime | Out-File -FilePath $timeFilePath
+#       } else {
+#     Write-Warning "Skipping PowerShell update in debug mode"
+# }
 
 <#
 .SYNOPSIS
@@ -305,32 +306,7 @@ function unzip ($file) {
     $fullFile = Get-ChildItem -Path $pwd -Filter $file | ForEach-Object { $_.FullName }
     Expand-Archive -Path $fullFile -DestinationPath $pwd
 }
-function hb {
-    if ($args.Length -eq 0) {
-        Write-Error "No file path specified."
-        return
-    }
 
-    $FilePath = $args[0]
-
-    if (Test-Path $FilePath) {
-        $Content = Get-Content $FilePath -Raw
-    } else {
-        Write-Error "File path does not exist."
-        return
-    }
-
-    $uri = "http://bin.christitus.com/documents"
-    try {
-        $response = Invoke-RestMethod -Uri $uri -Method Post -Body $Content -ErrorAction Stop
-        $hasteKey = $response.key
-        $url = "http://bin.christitus.com/$hasteKey"
-        Set-Clipboard $url
-        Write-Output $url
-    } catch {
-        Write-Error "Failed to upload the document. Error: $_"
-    }
-}
 function grep($regex, $dir) {
     if ( $dir ) {
         Get-ChildItem $dir | select-string $regex
@@ -343,17 +319,12 @@ function df {
     get-volume
 }
 
-function sed($file, $find, $replace) {
-    (Get-Content $file).replace("$find", $replace) | Set-Content $file
-}
+
 
 function which($name) {
     Get-Command $name | Select-Object -ExpandProperty Definition
 }
 
-function export($name, $value) {
-    set-item -force -path "env:$name" -value $value;
-}
 
 function pkill($name) {
     Get-Process $name -ErrorAction SilentlyContinue | Stop-Process
@@ -378,6 +349,9 @@ function nf { param($name) New-Item -ItemType "file" -Path . -Name $name }
 
 # Directory Management
 function mkcd { param($dir) mkdir $dir -Force; Set-Location $dir }
+
+
+function folder {param($name) mkdir  $name -Force; Set-Location $name }
 
 function trash($path) {
     $fullPath = (Resolve-Path -Path $path).Path
@@ -705,7 +679,7 @@ function rebase-f {
         git switch $f
         if ($LASTEXITCODE -ne 0) { throw "Could not switch to branch '$f'" }
 
-        Write-Host "📚 Rebasing '$f' onto '$t'..." -ForegroundColor Cyan
+        Write-Host "Rebasing '$f' onto '$t'..." -ForegroundColor Cyan
         git rebase $t
 
         while ($LASTEXITCODE -ne 0) {
@@ -743,6 +717,73 @@ function la { Get-ChildItem -Path . -Force | Format-Table -AutoSize }
 function ll { Get-ChildItem -Path . -Force -Hidden | Format-Table -AutoSize }
 
 function g { __zoxide_z github }
+
+function file-action {
+<#
+.SYNOPSIS
+    Copies or moves a file based on the selected method.
+
+.DESCRIPTION
+    This function lets you specify a source path, a destination path, and a method (copy or move).
+    It validates input and uses Copy-Item or Move-Item depending on the method.
+
+.PARAMETER From
+    The full path to the source file.
+
+.PARAMETER To
+    The destination path (directory or full filename).
+
+.PARAMETER Method
+    The action to perform: 'copy' or 'move'.
+
+.EXAMPLE
+    file-action -From "C:\Users\chris-desktop\.wezterm.lua" -To "." -Method copy
+
+.EXAMPLE
+    file-action -From "C:\Users\chris-desktop\.wezterm.lua" -To "." -Method move
+
+.NOTES
+    Git-style CLI helper. Shows destination using $PWD.
+#>
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$From,
+
+        [Parameter(Mandatory = $true)]
+        [string]$To,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("copy", "move")]
+        [string]$Method
+    )
+
+    try {
+        Write-Host "`nPerforming file action..." -ForegroundColor Cyan
+        Write-Host "From:    $From" -ForegroundColor Yellow
+        Write-Host "To:      $To" -ForegroundColor Yellow
+        Write-Host "Method:  $Method" -ForegroundColor Yellow
+
+        if (-not (Test-Path $From)) {
+            throw "Source file does not exist: $From"
+        }
+
+        switch ($Method) {
+            "copy" {
+                Copy-Item -Path $From -Destination $To -Force
+                Write-Host "`nFile successfully copied to: $($PWD.Path)\$To" -ForegroundColor Green
+            }
+            "move" {
+                Move-Item -Path $From -Destination $To -Force
+                Write-Host "`nFile successfully moved to: $($PWD.Path)\$To" -ForegroundColor Green
+            }
+        }
+    } catch {
+        Write-Error "`nError: $($_.Exception.Message)"
+    }
+}
+
+
+
 
 function Help-Command {
     param (
@@ -836,7 +877,7 @@ Set-PSReadLineOption -AddToHistoryHandler {
 }
 
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin
-Set-PSReadLineOption -MaximumHistoryCount 10000
+Set-PSReadLineOption -MaximumHistoryCount 1000
 
 $scriptblock = {
     param($wordToComplete, $commandAst, $cursorPosition)
@@ -905,11 +946,13 @@ reload-profile$($PSStyle.Reset) - Reloads the current PowerShell profile
 $($PSStyle.Foreground.Green)File Operations:$($PSStyle.Reset)
 touch <file>$($PSStyle.Reset) - Creates an empty file
 ff$($PSStyle.Reset) - Fuzzy finds files and opens in VS Code
+folder <name>$($PSStyle.Reset) - Creates a new directory with specified name and changes to it
 nf <name>$($PSStyle.Reset) - Creates a new file with specified name
 unzip <file>$($PSStyle.Reset) - Extracts zip file to current directory
 hb <file>$($PSStyle.Reset) - Uploads file content to hastebin and returns URL
 mkcd <dir>$($PSStyle.Reset) - Creates and changes to a new directory
 trash <path>$($PSStyle.Reset) - Moves file/folder to recycle bin
+file-action <from> <to> <method>$($PSStyle.Reset) - Copies or moves a file based on the selected method
 
 $($PSStyle.Foreground.Green)Git Operations:$($PSStyle.Reset)
 sync-git-branch (gsync)$($PSStyle.Reset) - Syncs current branch with main/master
@@ -958,6 +1001,10 @@ which <name>$($PSStyle.Reset) - Shows command path
 df$($PSStyle.Reset) - Shows volume information
 export <name> <value>$($PSStyle.Reset) - Sets environment variable
 
+
+
+
+
 Use '$($PSStyle.Foreground.Magenta)Show-Help$($PSStyle.Reset)' to display this help message again.
 "@
 Write-Host $helpText
@@ -966,6 +1013,11 @@ Write-Host $helpText
 if (Test-Path "$PSScriptRoot\custom.ps1") {
     Invoke-Expression -Command "& `"$PSScriptRoot\custom.ps1`""
 }
+Clear-Host
+
+
+Import-Module PSReadLine -ErrorAction SilentlyContinue
+
 
 Write-Host "$($PSStyle.Foreground.Yellow)Use 'Show-Help' to display help$($PSStyle.Reset)"
 
@@ -979,6 +1031,8 @@ Set-Alias -Name vim -Value $EDITOR
 Set-Alias -Name ep -Value Edit-Profile
 Set-Alias -Name fix-merge -Value resolve-git-conflict
 Set-Alias -Name rbfast -Value rebase-f
+Set-Alias -Name reload -Value reload-profile
+Set-Alias -Name help -Value Show-Help
 
 $env:FZF_DEFAULT_OPTS = " --height 100% --layout reverse --border"
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
