@@ -7,6 +7,8 @@
 A curated collection of dotfiles and scripts to automate the setup of a professional Windows development environment with PowerShell and VS Code optimizations.
 
 ![CSS](./image/css_overide.png)
+![Wezterm](./image/wezterm.png)
+![Powertoys](./image/power_toys.png)
 
 ## 🎯 Features
 
@@ -90,16 +92,6 @@ irm https://raw.githubusercontent.com/ChristopherAlphonse/dotfiles/refs/heads/ma
 
 ### Productivity Features
 
-## 🆕 Latest Updates
-
-### April 11, 2025
-
-- Added MCP servers support
-- Implemented agent mode testing
-- Enhanced UI customizations
-
-![Full Mode](./image/full_mode.png)
-
 ## Work Mode
 
 For a cleaner, distraction-free experience:
@@ -113,3 +105,7 @@ These configurations are provided as-is. Review and understand all settings befo
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Updates
+
+*find the lastest updates [here](./wezterm/.wezterm.lua)*
