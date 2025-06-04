@@ -29,10 +29,10 @@ $CONFIG = @{
         @{ Id = "Microsoft.WindowsTerminal"; Name = "Windows Terminal" },
         @{ Id = "Microsoft.VisualStudioCode"; Name = "VS Code" },
         @{ Id = "Python.Python.3.11"; Name = "Python" },
-        @{ Id = "Docker.DockerDesktop"; Name = "Docker Desktop" },
+        # @{ Id = "Docker.DockerDesktop"; Name = "Docker Desktop" },
         @{ Id = "SlackTechnologies.Slack"; Name = "Slack" },
         @{ Id = "JanDeDobbeleer.OhMyPosh"; Name = "Oh My Posh" },
-        @{ Id = "Microsoft.PowerToys"; Name = "PowerToys (Preview)" }
+        # @{ Id = "Microsoft.PowerToys"; Name = "PowerToys (Preview)" }
     )
 }
 
