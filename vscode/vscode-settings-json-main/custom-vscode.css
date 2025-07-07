@@ -1,4 +1,4 @@
-/* VSCode Custom Theme CSS */
+
 
 .codicon-arrow-right,
 .codicon-arrow-left {
@@ -14,9 +14,10 @@
 }
 
  .line-numbers {
-    /* position: relative !important; */
+
     width: .5em !important;
-    font-size: 1.2em ;
+    font-size: 1.5em ;
+  line-height: 1.5em;
     font-family: monospace !important;
     opacity: 0.2;
 }
@@ -32,6 +33,7 @@
     background: rgba(40, 42, 54, 0.5) !important;
     backdrop-filter: blur(0.375em) !important;
     border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;
+    font-size: 2em;
 }
 
 .monaco-inputbox input::placeholder {
@@ -44,7 +46,7 @@
 
 .monaco-list-rows {
     background: transparent !important;
-    font-size: .9em !important;
+    font-size: 1em !important;
 }
 
 .monaco-list.list_id_1 .monaco-list-row.selected {
@@ -99,9 +101,9 @@
     left: auto !important;
 }
 
-.title-actions,
-.title-label,
-.titlebar-center,
+.title-label,.titlebar-center , .titlebar-left,.title-actions  {
+    color: #2BA59D;
+}
 .titlebar-right {
     display: none !important;
 }
