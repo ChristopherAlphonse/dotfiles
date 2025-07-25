@@ -1,3 +1,5 @@
+
+
 $debug = $false
 
 # Define the path to the file that stores the last execution time
@@ -827,10 +829,61 @@ function Help-Command {
 
 function sysinfo { Get-ComputerInfo }
 
-function flushdns {
-    Clear-DnsClientCache
-    Write-Host "DNS has been flushed"
+function flushNetwork {
+    Write-Host "Starting full network reset...`n"
+
+    try {
+        # Flush DNS Cache
+        ipconfig /flushdns
+        Write-Host "ipconfig /flushdns completed."
+
+        # Release current IP configuration
+        ipconfig /release
+        Write-Host "ipconfig /release completed."
+
+        # Renew IP configuration
+        ipconfig /renew
+        Write-Host "ipconfig /renew completed."
+
+        # Reset IPv4 TCP/IP stack
+        netsh int ip reset
+        Write-Host "netsh int ip reset completed."
+
+        # Reset IPv6 TCP/IP stack (optional)
+        netsh int ipv6 reset
+        Write-Host "netsh int ipv6 reset completed."
+
+        # Reset Winsock (Windows Sockets)
+        netsh winsock reset
+        Write-Host "netsh winsock reset completed."
+
+        # Clear proxy settings (optional)
+        netsh winhttp reset proxy
+        Write-Host "netsh winhttp reset proxy completed."
+
+        # Restart all enabled network adapters
+        Get-NetAdapter | Where-Object { $_.Status -eq "Up" } | Restart-NetAdapter -Confirm:$false
+        Write-Host "Active network adapters restarted."
+
+        # Restart Network Location Awareness service
+        Restart-Service nlasvc -Force
+        Write-Host "Network Location Awareness (nlasvc) restarted."
+
+        # Flush DNS cache again using PowerShell native cmdlet
+        Clear-DnsClientCache
+        Write-Host "PowerShell DNS client cache cleared."
+
+        # Restart DNS Client service with Force
+        Restart-Service dnscache -Force
+        Write-Host "DNS Client (dnscache) service restarted."
+
+        Write-Host "`nFull network reset completed successfully."
+    }
+    catch {
+        Write-Error "An error occurred during network reset: $_"
+    }
 }
+
 
 function cpy { Set-Clipboard $args[0] }
 
@@ -877,7 +930,7 @@ Set-PSReadLineOption -AddToHistoryHandler {
 }
 
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin
-Set-PSReadLineOption -MaximumHistoryCount 1000
+# Set-PSReadLineOption -MaximumHistoryCount 10000
 
 $scriptblock = {
     param($wordToComplete, $commandAst, $cursorPosition)
@@ -973,7 +1026,7 @@ winutil$($PSStyle.Reset) - Launches Windows utility toolkit
 admin (su)$($PSStyle.Reset) - Runs command with admin privileges
 uptime$($PSStyle.Reset) - Shows system uptime
 sysinfo$($PSStyle.Reset) - Shows detailed system information
-flushdns$($PSStyle.Reset) - Clears DNS cache
+flushNetwork$($PSStyle.Reset) - Clears DNS cache, and network reset
 
 $($PSStyle.Foreground.Green)Directory Navigation:$($PSStyle.Reset)
 docs$($PSStyle.Reset) - Changes to Documents folder
