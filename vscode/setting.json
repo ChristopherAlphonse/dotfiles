@@ -3,20 +3,6 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true
     },
-    // Python
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.autopep8",
-        "editor.formatOnSave": true
-    },
-    "animations.Active": "Indent",
-    "animations.Command-Palette": "None",
-    "animations.CursorAnimation": true,
-    "animations.CursorAnimationOptions": {
-        "TrailLength": 10
-    },
-    "animations.Enabled": true,
-    "animations.Install-Method": "Custom CSS and JS",
-    "animations.Tabs": "Slide",
     "breadcrumbs.enabled": false,
     "debug.terminal.clearBeforeReusing": true,
     "diffEditor.ignoreTrimWhitespace": false,
@@ -31,12 +17,6 @@
     "editor.cursorBlinking": "solid",
     "editor.cursorSmoothCaretAnimation": "on",
     "editor.cursorStyle": "line",
-    //Editor settings
-    //   "editor.codeActionsOnSave": {
-    //     "source.fixAll.eslint": "never",
-    //     "source.organizeImports": "always",
-    //     "source.fixAll.sortJSON": "always"
-    //   },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.detectIndentation": false,
     "editor.foldingImportsByDefault": false,
@@ -60,46 +40,47 @@
     "editor.matchBrackets": "always",
     "editor.minimap.enabled": false,
     "editor.multiCursorModifier": "ctrlCmd",
-    //   "editor.rulers": [80, 100],
     "editor.quickSuggestions": {
         "strings": true
     },
     "editor.renderWhitespace": "none",
     "editor.scrollbar.horizontal": "hidden",
+    "editor.scrollbar.horizontalScrollbarSize": 6,
     "editor.scrollbar.vertical": "auto",
+    "editor.scrollbar.verticalScrollbarSize": 6,
     "editor.suggest.insertMode": "replace",
     "editor.tabCompletion": "on",
     "editor.tabSize": 4,
-    "editor.tokenColorCustomizations": {
-        "[*Dark*]": {
-            "textMateRules": [
-                {
-                    "scope": "ref.matchtext",
-                    "settings": {
-                        "foreground": "#fff"
-                    }
-                }
-            ]
-        },
-        "[*Light*]": {
-            "textMateRules": [
-                {
-                    "scope": "ref.matchtext",
-                    "settings": {
-                        "foreground": "#000"
-                    }
-                }
-            ]
-        },
-        "textMateRules": [
-            {
-                "scope": "keyword.other.dotenv",
-                "settings": {
-                    "foreground": "#FF000000"
-                }
-            }
-        ]
-    },
+    // "editor.tokenColorCustomizations": {
+    //     "[*Dark*]": {
+    //         "textMateRules": [
+    //             {
+    //                 "scope": "ref.matchtext",
+    //                 "settings": {
+    //                     "foreground": "#fff"
+    //                 }
+    //             }
+    //         ]
+    //     },
+    //     "[*Light*]": {
+    //         "textMateRules": [
+    //             {
+    //                 "scope": "ref.matchtext",
+    //                 "settings": {
+    //                     "foreground": "#000"
+    //                 }
+    //             }
+    //         ]
+    //     },
+    //     "textMateRules": [
+    //         {
+    //             "scope": "keyword.other.dotenv",
+    //             "settings": {
+    //                 "foreground": "#FF000000"
+    //             }
+    //         }
+    //     ]
+    // },
     "editor.unicodeHighlight.invisibleCharacters": false,
     "editor.wordWrap": "on",
     "editor.wordWrapColumn": 100,
@@ -181,15 +162,12 @@
     },
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
-    "find-it-faster.general.killTerminalAfterUse": true,
-    "find-it-faster.general.useTerminalInEditor": true,
     "git.autofetch": true,
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
     "git.ignoreRebaseWarning": true,
     "gitlens.codeLens.enabled": true,
     "gitlens.rebaseEditor.ordering": "asc",
-    "glassit.alpha": 255,
     "html.autoClosingTags": false,
     // JavaScript settings
     "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
@@ -207,60 +185,19 @@
     "js/ts.implicitProjectConfig.strictNullChecks": true,
     "json.format.enable": true,
     "json.format.keepLines": false,
+    "markdown.preview.autoShowPreviewToSide": true,
     // JSON settings
     "markdown.preview.lineHeight": 2,
     "material-icon-theme.folders.theme": "specific",
     "material-icon-theme.hidesExplorerArrows": true,
-    "mcp": {
-        "servers": {
-            "neon": {
-                "args": [
-                    "-y",
-                    "mcp-remote",
-                    "https://mcp.neon.tech/sse"
-                ],
-                "command": "npx"
-            },
-            "playwright": {
-                "args": [
-                    "@playwright/mcp@latest"
-                ],
-                "command": "npx"
-            },
-            "vscode_github_access": {
-                "args": [
-                    "-y",
-                    "@modelcontextprotocol/server-github"
-                ],
-                "command": "npx",
-                "env": {
-                    "GITHUB_PERSONAL_ACCESS_TOKEN": ""
-                }
-            }
-        }
-    },
-    "notebook.defaultFormatter": "ms-python.vscode-pylance",
     "notebook.formatOnCellExecution": true,
     "notebook.formatOnSave.enabled": true,
-    "obsidian-md-vsc.defaultNote": "README",
-    "obsidian-md-vsc.defaultVault": "re_learning_python",
-    "obsidian-md-vsc.defaultVaultPath": "C:\\Users\\chris-desktop\\Documents\\re_learning_python",
-    "powershell.codeFormatting.alignPropertyValuePairs": true,
-    "powershell.codeFormatting.ignoreOneLineBlock": true,
-    "powershell.codeFormatting.preset": "OTBS",
-    "powershell.codeFormatting.useConstantStrings": true,
-    "powershell.codeFormatting.useCorrectCasing": true,
-    "powershell.codeFormatting.whitespaceBetweenParameters": true,
-    // powerShell settings
-    "powershell.scriptAnalysis.settingsPath": "PSScriptAnalyzerSettings.psd1",
     "prettier.printWidth": 120,
     "prettier.proseWrap": "preserve",
     "prettier.requireConfig": true,
     "prettier.singleQuote": false,
     // Prettier settings
     "prettier.tabWidth": 4,
-    "pylint.enabled": true,
-    "python.createEnvironment.trigger": "off",
     "remote.defaultExtensionsIfInstalledLocally": [
         "GitHub.copilot",
         "GitHub.copilot-chat",
@@ -270,9 +207,6 @@
     "security.workspace.trust.banner": "always",
     "security.workspace.trust.enabled": false,
     "security.workspace.trust.untrustedFiles": "open",
-    "sonarlint.disableTelemetry": true,
-    // Sonar
-    "sonarlint.focusOnNewCode": true,
     "sortJSON.orderOverride": [
         "name",
         "version",
@@ -326,18 +260,15 @@
     "typescript.suggest.completeFunctionCalls": true,
     "typescript.updateImportsOnFileMove.enabled": "always",
     "update.mode": "none",
-    "vscode_custom_css.imports": [
-        "file:///c:/Users/chris-desktop/.vscode/tab.css",
-        "file:///c:/Users/chris-desktop/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
-    ],
     "window.commandCenter": false,
     "window.confirmSaveUntitledWorkspace": false,
     "window.menuBarVisibility": "toggle",
     "window.titleBarStyle": "custom",
     "window.zoomLevel": 3,
-    "workbench.activityBar.location": "bottom",
+    "workbench.activityBar.location": "top",
     "workbench.colorCustomizations": {},
-    "workbench.colorTheme": "Andromeda Bordered",
+    "workbench.colorTheme": "Andromeda Italic Bordered",
+    "workbench.editor.alwaysShowEditorActions": true,
     "workbench.editor.decorations.badges": false,
     "workbench.editor.decorations.colors": false,
     "workbench.editor.enablePreview": true,
