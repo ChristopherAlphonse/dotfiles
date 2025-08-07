@@ -283,7 +283,6 @@
     "window.confirmSaveUntitledWorkspace": false,
     "window.menuBarVisibility": "toggle",
     "window.titleBarStyle": "custom",
-    "window.zoomLevel": 3,
 
     "workbench.colorCustomizations": {},
     "workbench.editor.decorations.badges": false,
@@ -308,5 +307,84 @@
     "cSpell.userWords": [
         "calphonse"
     ],
-    "workbench.colorTheme": "Andromeda Italic"
+    "workbench.colorTheme": "Andromeda Italic",
+    "mcp": {
+        "servers": {
+            "context7": {
+                "gallery": true,
+                "command": "npx",
+                "args": [
+                    "-y",
+                    "@upstash/context7-mcp@latest"
+                ]
+            },
+            "github": {
+                "gallery": true,
+                "url": "https://api.githubcopilot.com/mcp/"
+            },
+            "playwright": {
+                "gallery": true,
+                "command": "npx",
+                "args": [
+                    "@playwright/mcp@latest"
+                ]
+            },
+            "figma": {
+                "gallery": true,
+                "url": "http://127.0.0.1:3845/sse"
+            },
+            "deepwiki": {
+                "gallery": true,
+                "url": "https://mcp.deepwiki.com/sse"
+            },
+            "linear": {
+                "gallery": true,
+                "url": "https://mcp.linear.app/sse"
+            },
+            "sequentialthinking": {
+                "gallery": true,
+                "command": "npx",
+                "args": [
+                    "-y",
+                    "@modelcontextprotocol/server-sequential-thinking"
+                ]
+            },
+            "memory": {
+                "gallery": true,
+                "command": "npx",
+                "args": [
+                    "-y",
+                    "@modelcontextprotocol/server-memory"
+                ],
+                "env": {
+                    "MEMORY_FILE_PATH": "${input:memory_file_path}"
+                }
+            },
+            "firecrawl": {
+                "gallery": true,
+                "command": "npx",
+                "args": [
+                    "-y",
+                    "firecrawl-mcp"
+                ],
+                "env": {
+                    "FIRECRAWL_API_KEY": "${input:firecrawl_api_key}"
+                }
+            }
+        },
+        "inputs": [
+            {
+                "id": "memory_file_path",
+                "type": "promptString",
+                "description": "Path to the memory storage file (optional)",
+                "password": false
+            },
+            {
+                "id": "firecrawl_api_key",
+                "type": "promptString",
+                "description": "Firecrawl API Key (get from https://www.firecrawl.dev/app/api-keys)",
+                "password": true
+            }
+        ]
+    }
 }
