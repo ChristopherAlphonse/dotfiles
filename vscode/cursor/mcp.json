@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "context7": {
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "grep": {
+      "url": "https://mcp.grep.app"
+    },
+    "sequential-thinking": {
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "command": "npx"
+    },
+    "playwright": {
+      "command": "npx @playwright/mcp@latest",
+      "env": {}
+    }
+  }
+}
