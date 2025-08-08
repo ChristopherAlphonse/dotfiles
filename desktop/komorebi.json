@@ -1,0 +1,72 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/v0.1.37/schema.json",
+  "animation": {
+    "duration": 400,
+    "enabled": true,
+    "fps": 120,
+    "style": {
+      "movement": "EaseOutBack",
+      "transparency": "Linear"
+    }
+  },
+  "app_specific_configuration_path": "$Env:USERPROFILE/applications.json",
+  "border": true,
+  "border_colours": {
+    "floating": "#2BA59D",
+    "monocle": "#2BA59D",
+    "single": "#2BA59D",
+    "stack": "#2BA59D",
+    "unfocused": "#303030"
+  },
+  "border_implementation": "Windows",
+  "border_offset": 0,
+  "border_style": "Rounded",
+  "border_width": 0,
+  "cross_monitor_move_behaviour": "Insert",
+  "default_container_padding": 3,
+  "default_workspace_padding": 3,
+  "monitors": [
+    {
+      "workspaces": [
+        {
+          "name": "I",
+          "layout": "Columns"
+        },
+        {
+          "name": "II",
+          "layout": "VerticalStack"
+        },
+        {
+          "name": "III",
+          "layout": "HorizontalStack"
+        },
+        {
+          "name": "IV",
+          "layout": "UltrawideVerticalStack"
+        },
+        {
+          "name": "V",
+          "layout": "Rows"
+        },
+        {
+          "name": "VI",
+          "layout": "Grid"
+        },
+        {
+          "name": "VII",
+          "layout": "RightMainVerticalStack"
+        }
+      ]
+    }
+  ],
+  "mouse_follows_focus": true,
+  "theme": {
+    "name": "Ashes",
+    "bar_accent": "Base0D",
+    "palette": "Base16",
+    "unfocused_border": "Base03"
+  },
+  "transparency": true,
+  "transparency_alpha": 240,
+  "window_hiding_behaviour": "Cloak"
+}
