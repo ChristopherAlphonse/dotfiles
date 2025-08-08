@@ -74,7 +74,7 @@ function Install-PackageManager {
         Write-Host "Please install App Installer from the Microsoft Store to get winget."
     }
 
-    
+
     if (-not (Test-Command "choco")) {
         Write-Host "Installing Chocolatey..." -ForegroundColor Yellow
         Set-ExecutionPolicy Bypass -Scope Process -Force
@@ -145,7 +145,7 @@ function Setup-DotFiles {
     if (-not (Test-Path $vscodeSettingsPath)) {
         New-Item -ItemType Directory -Path $vscodeSettingsPath -Force
     }
-    Copy-Item "$tempDir/vscode/vscode-settings-json-main/custom-vscode.css" "$vscodeSettingsPath/custom-vscode.css" -Force
+    Copy-Item "$tempDir/vscode/vscode-settings-json-main/transparency.css" "$vscodeSettingsPath/custom-vscode.css" -Force
 
     Copy-Item "$tempDir/git/.gitconfig" "$($CONFIG.Paths.Home)/.gitconfig" -Force
 
