@@ -1,0 +1,51 @@
+{
+  "inputs": [
+    {
+      "description": "Path to the memory storage file (optional)",
+      "id": "memory_file_path",
+      "password": false,
+      "type": "promptString"
+    }
+  ],
+  "mcpServers": {
+    "context7": {
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "deepwiki": {
+      "url": "https://mcp.deepwiki.com/sse"
+    },
+    "figma": {
+      "url": "http://127.0.0.1:3845/sse"
+    },
+    "github": {
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "grep": {
+      "url": "https://mcp.grep.app"
+    },
+    "linear": {
+      "url": "https://mcp.linear.app/sse"
+    },
+    "memory": {
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "command": "npx",
+      "env": {
+        "MEMORY_FILE_PATH": "${input:memory_file_path}"
+      }
+    },
+    "playwright": {
+      "command": "npx @playwright/mcp@latest",
+      "env": {}
+    },
+    "sequential-thinking": {
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "command": "npx"
+    }
+  }
+}
