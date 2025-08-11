@@ -1,0 +1,82 @@
+[
+    {
+        "command": "copilot-labs.use-brush-picker",
+        "key": "shift+alt+a",
+        "when": "editorTextFocus"
+    },
+    {
+        "command": "workbench.action.navigateLeft",
+        "key": "cmd+["
+    },
+    {
+        "command": "workbench.action.navigateRight",
+        "key": "cmd+]"
+    },
+    {
+        "command": "workbench.action.terminal.split",
+        "key": "cmd+\\",
+        "when": "terminalFocus && terminalProcessSupported || terminalFocus && terminalWebExtensionContributedProfile"
+    },
+    {
+        "command": "-workbench.action.terminal.split",
+        "key": "cmd+shift+5",
+        "when": "terminalFocus && terminalProcessSupported || terminalFocus && terminalWebExtensionContributedProfile"
+    },
+    {
+        "command": "workbench.action.terminal.splitActiveTab",
+        "key": "cmd+\\",
+        "when": "terminalProcessSupported && terminalTabsFocus"
+    },
+    {
+        "command": "-workbench.action.terminal.splitActiveTab",
+        "key": "cmd+shift+5",
+        "when": "terminalProcessSupported && terminalTabsFocus"
+    },
+    {
+        "command": "editor.action.addSelectionToNextFindMatch",
+        "key": "cmd+d"
+    },
+    {
+        "command": "deleteLeft",
+        "key": "cmd+d",
+        "when": "editorHasSelection"
+    },
+    {
+        "args": {
+            "by": "line",
+            "to": "up",
+            "value": 10
+        },
+        "command": "cursorMove",
+        "key": "cmd+up",
+        "when": "editorTextFocus"
+    },
+    {
+        "args": {
+            "by": "line",
+            "to": "down",
+            "value": 5
+        },
+        "command": "cursorMove",
+        "key": "cmd+down",
+        "when": "editorTextFocus"
+    },
+    {
+        "command": "explorer.newFile",
+        "key": "cmd+n",
+        "when": "explorerViewletFocus && !inputFocus"
+    },
+    {
+        "command": "explorer.newFolder",
+        "key": "cmd+f",
+        "when": "explorerViewletFocus && !inputFocus"
+    },
+    {
+        "command": "workbench.action.terminal.runActiveFile",
+        "key": "cmd+shift+f5"
+    },
+    {
+        "command": "python.execInTerminal-icon",
+        "key": "cmd+shift+f5"
+    }
+]
