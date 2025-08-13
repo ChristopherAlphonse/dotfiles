@@ -1,752 +1,190 @@
-
-/* -------------------------------------------------------------------------------------------------- */
-/* Variables                                                                                         */
-/* -------------------------------------------------------------------------------------------------- */
-
-:root {
-    --primary-accent:#2BA59D;
-	--peach: rgb(250, 179, 135);
-	--yellow: rgb(249, 226, 175);
-	--green: rgb(166, 227, 161);
-	--teal: rgb(148, 226, 213);
-	--sky: rgb(137, 220, 235);
-	--sapphire: rgb(116, 199, 236);
-	--blue: rgb(137, 180, 250);
-	--text: rgb(205, 214, 244);
-	--subtext1: rgb(186, 194, 222);
-	--subtext0: rgb(166, 173, 200);
-	--overlay2: rgb(147, 153, 178);
-	--overlay1: rgb(127, 132, 156);
-	--overlay0: rgb(108, 112, 134);
-	--surface2: rgb(88, 91, 112);
-	--surface1: rgb(69, 71, 90);
-	--surface0: rgb(40, 41, 54);
-	--base: rgb(30, 30, 46);
-}
-
-/* -------------------------------------------------------------------------------------------------- */
-/* 1. Layout and Containers                                                                           */
-/* -------------------------------------------------------------------------------------------------- */
-
 * {
-	font-size: 12px;
-	color: var(--primary-accent);
-	font-weight: 900;
-    font-family: "JetBrainsMono NFP", "FiraCode Nerd Font", "FiraMono Nerd Font", "MesloGLDZ Nerd Font", Monaco, "Courier New", monospace;
+	font-size: 13px;
+	color: #cdd6f4;
+	font-weight: 600;
+	/* font-family: "Segoe UI","JetBrainsMono NFP"; */
+        font-family: "JetBrainsMono NFP", "Segoe UI","FiraCode Nerd Font", "FiraMono Nerd Font", "MesloGLDZ Nerd Font", Monaco, "Courier New", monospace;
 	margin: 0;
 	padding: 0;
 }
 .yasb-bar {
-    padding: 0 8px;
-    margin: 0;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+	padding: 0 8px;
+	margin: 0;
+    background-color: rgba(30, 30, 46, 0.25);
 }
+
+
+
 
 .widget {
-	padding: 0 10px;
+	padding: 0 8px;
 	margin: 0;
 }
-
 .widget .label {
-	padding: 2px 2px 1px 2px;
-    color: var(--text);
-
+	padding: 0px 2px 2px 2px;
 }
-
 .widget .label.alt {
 	padding: 1px 8px 1px 8px;
 }
-
-/* -------------------------------------------------------------------------------------------------- */
-/* 2. Widget Containers                                                                               */
-/* -------------------------------------------------------------------------------------------------- */
-
-.glazewm-workspaces .widget-container {
-	background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-	margin: 3px 0px 3px 0px;
-	border-radius: 8px;
-}
-
-/* -------------------------------------------------------------------------------------------------- */
-/* 3. Widgets                                                                                         */
-/* -------------------------------------------------------------------------------------------------- */
-
-/***-------------------------------      • Windows Desktops •      --------------------------------***/
-
-.glazewm-workspaces {
-	margin: 0;
-}
-.glazewm-workspaces .offline-status {
-    color: rgb(205, 214, 244);
-    font-size: 12px;
-    padding: 0 4px;
-    font-weight: 900;
-}
-.glazewm-workspaces .ws-btn {
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background-color: rgba(255, 255, 255, 0.05);
-    margin: 0px 4px;
+.komorebi-workspaces,
+.komorebi-active-layout  {
+    margin: 0;
     padding: 0;
-    color: rgba(0, 0, 0, 0);
-    border-radius: 5px;
-    height: 10px;
-    width: 10px;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
 }
-.glazewm-workspaces .ws-btn.populated {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-.glazewm-workspaces .ws-btn.active_populated,
-.glazewm-workspaces .ws-btn.active_empty {
-    color: rgba(0, 68, 255, 0);
-    background-color: rgba(43, 165, 157, 0.3);
-    width: 28px;
-    height: 10px;
-    border-radius: 5px;
-}
-
-/***---------------------------------      • Audio Widget •      ----------------------------------***/
-
-.audio-menu {
-   background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-}
-.audio-container .device {
-	background-color: rgba(255, 255, 255, 0.05);
-	border: none;
-	padding: 6px 8px 6px 4px;
-	margin: 2px 0;
-	font-size: 12px;
-	border-radius: 4px;
-}
-.audio-container .device.selected {
-	background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-}
-.audio-container .device:hover {
-	background-color: rgba(255, 255, 255, 0.1);
-}
-
-.volume-slider::groove {
-	color: transparent;
-}
-.volume-slider::handle {
-	background-color: transparent;
-}
-.audio-menu {
-	background-color: rgba(17, 17, 27, 0.4);
-}
-
-/***-------------------------------      • Power Menu Widget •      --------------------------------***/
-
-.power-menu-popup {
-	background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.power-menu-widget .label {
-	color: var(--text);
+.komorebi-workspaces .ws-btn {
 	font-size: 16px;
-        padding: 0
+    background-color: transparent;
+	margin: 0 4px 0 4px;
+	color: #95a0ad;
+}
+.komorebi-workspaces .ws-btn.populated {
+	color: #a0c3ee;
+}
+.komorebi-workspaces .ws-btn:hover,
+.komorebi-workspaces .ws-btn.populated:hover,
+.komorebi-workspaces .ws-btn.active {
+	color: #c2daf7;
+}
+.apps-widget {
+    padding: 0 4px;
+}
+.apps-widget .widget-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 5px 0 4px 0;
+    border-radius: 13px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.apps-widget .label {
+	font-size: 14px;
+	padding:0px 2px 1px 2px;
+}
+.apps-widget .label:hover {
+	color: #fff;
+}
+.active-window-widget .icon {
+    padding: 0 0 0 0;
+}
+/*POWER MENU WIDGET*/
+.uptime {
+	font-size: 14px;
+	margin-bottom: 10px;
+	color: #ffffff;
+	font-weight: 600;
+	font-family: "Segoe UI";
+}
+.power-menu-widget .label {
+	color: #f38ba8;
+	font-size: 13px;
+}
+.power-menu-popup {
+	background-color: rgba(24, 24, 37, 0.9);
+	border-radius: 12px;
+	border: 4px solid rgb(41, 42, 58);
 }
 .power-menu-popup .button {
-	padding: 0px;
-	margin: 5px;
-	width: 250px;
-	height: 175px;
+	padding: 0;
+	width: 240px;
+	height: 120px;
 	border-radius: 8px;
-	background-color: rgba(255, 255, 255, 0.05);
+	background-color: rgb(41, 42, 58);
+	font-family: "Segoe UI";
 	color: white;
-	backdrop-filter: blur(8px) saturate(150%);
-	-webkit-backdrop-filter: blur(8px) saturate(150%);
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	margin: 8px;
 }
 .power-menu-popup .button.hover {
-	background-color: rgba(255, 255, 255, 0.1);
+	background-color: rgb(55, 56, 75);
+	border: 1px solid rgb(55, 56, 75);
 }
 .power-menu-popup .button .label {
-	margin-bottom: 0px;
+	margin-bottom: 8px;
 	font-size: 16px;
 	font-weight: 600;
-	color: var(--text);
+	color: rgba(255, 255, 255, 0.95);
+	font-family: "Segoe UI";
 }
 .power-menu-popup .button .icon {
-	font-size: 55px;
-	padding-top: 25px;
-	padding-right: 10px;color: var(--primary-accent);
-
+	font-size: 48px;
+	padding-top: 8px;
+	color: rgba(255, 255, 255, 0.25);
+}
+.power-menu-popup .button.cancel .icon {
+	color: rgba(243, 139, 168, 0.55);
+}
+.power-menu-popup .button.cancel .label {
+	color: rgba(243, 139, 168, 0.95);
+}
+.power-menu-popup .button.shutdown .icon {
+	color: rgba(137, 180, 250, 0.55);
+}
+.power-menu-popup .button.shutdown .label {
+	color: rgba(137, 180, 250, 0.95);
 }
 
-
-/* --------------------------------------------------------------------------------------------------- */
-/* 6. Icons & Typography                                                                               */
-/* --------------------------------------------------------------------------------------------------- */
-
+/* ICONS */
 .icon {
-	font-size: 16px;color: var(--primary-accent);
+	font-size: 16px;
 }
 .volume-widget .icon {
-	color: var(--primary-accent);
+	color: #89b4fa;
 	margin: 1px 2px 0 0;
 }
-.start-menu .icon {
-	font-size: 18px;
-	color: var(--primary-accent);
-}
-.clock-widget .icon {
-	color: var(--primary-accent);
-	font-size: 14px;
-	margin-right: 7px;
-}
 
-/***---------------------------------      • Weather Icons •      ----------------------------------***/
-
+/* WEATHER WIDGET */
 .weather-widget .icon {
-    color: var(--primary-accent);
+	font-size: 16px;
+	margin: 0 2px 1px 0;
+}
+.weather-widget .icon.sunnyDay {
+	color: rgb(221, 210, 107);
+}
+.weather-widget .icon.clearNight {
+	color: rgb(107, 189, 221);
+	font-size: 22px;
+	margin: 1px 2px 0px 0;
 }
 
-/***----------------------------------      • Weather Card •      -----------------------------------***/
-
-.weather-card {
-	background-color: rgba(255, 255, 255, 0.05);
-	border-radius: 15px;
-	backdrop-filter: blur(16px) saturate(180%);
-	-webkit-backdrop-filter: blur(16px) saturate(180%);
-	border: 1px solid rgba(255, 255, 255, 0.12);
-}
-.weather-card-today {
-	border-radius: 8px;
-	background-color: rgba(255, 255, 255, 0.05);
-	backdrop-filter: blur(16px) saturate(180%);
-	-webkit-backdrop-filter: blur(16px) saturate(180%);
-	border: 1px solid rgba(255, 255, 255, 0.12);
-	color: var(--text);
-}
-.weather-card-today .label {
-	font-size: 12px;
-    color: var(--text);
-}
-.weather-card-today .label.location {
-	font-size: 24px;
-	font-weight: 800;
-}
-.weather-card-today .label.alert {
-	font-size: 12px;
-	font-weight: 700;
-	background-color: rgba(247, 199, 42, 0.05);
-	border: 1px solid rgba(247, 209, 42, 0.1);
-	color: rgba(196, 181, 162, 0.85);
-	border-radius: 6px;
-	padding: 5px 0;
-}
-.weather-card-day {
-	border-radius: 8px;
-	background-color: rgba(255, 255, 255, 0.05);
-	backdrop-filter: blur(16px) saturate(180%);
-	-webkit-backdrop-filter: blur(16px) saturate(180%);
-	border: 1px solid rgba(255, 255, 255, 0.12);
-}
-.weather-card-day .label {
-	font-size: 12px;
-}
-
-/* Media Widget */
-
+/* MEDIA WIDGET */
 .media-widget {
 	padding: 0;
-	margin-left: 0;
+	padding-left: 2px;
+	margin: 0;
+	border-radius: 16px;
+	margin-right: 8px;
 }
 .media-widget .label {
-	color: var(--text);
-    padding-left: 5px;
+	background-color: rgba(0, 0, 0, 0.0);
 }
-
-/* Hide media widget buttons */
-
 .media-widget .btn {
-	max-width: 0;
+	color: #acb2c9;
+	padding: 0 3px;
+	margin: 4px 0;
+    font-weight: 500;
+	font-family: Segoe Fluent Icons;
 }
-
-.calendar {
-	background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+.media-widget .btn:hover {
+	color: #ffffff;
 }
-.calendar .calendar-table,
-.calendar .calendar-table::item {
-	background-color: transparent;
-	color: var(--overlay1);
-	margin: 0;
-	padding: 0;
-	border: none;
-	outline: none;
-}
-
-.calendar .calendar-table::item:selected {
-	color: #4c4f69;
-	background: rgba(43, 165, 157, 0.3);
-	border-radius: 8px;
-}
-.calendar .day-label {
-	margin-top: 20px;
-}
-.calendar .day-label,
-.calendar .month-label,
-.calendar .date-label {
-	font-size: 16px;
-	color: var(--text);
-	font-weight: 700;
-	min-width: 180px;
-	max-width: 180px;
-}
-.calendar .month-label {
-	font-weight: normal;
-	padding-bottom: 12px;
-}
-.calendar .date-label {
-	font-size: 88px;
-	font-weight: 900;
-	color: var(--text);
-	margin-top: -20px;
-}
-
-.home-menu {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-	padding: 0;
-	margin-left: 0px;
-}
-.home-menu .menu-item {
-	padding: 8px 48px 8px 12px;
-	font-size: 13px;
-	font-weight: 600;
-    color:var(--primary-accent);
-
-}
-.home-menu .menu-item:hover {
+.media-widget .btn.play {
 	background-color: rgba(255, 255, 255, 0.1);
-	margin: 4px 6px;
-	border-radius: 4px;
-}
-.home-menu .separator {
-	max-height: 1px;
-	background-color: #45475a;
-	margin: 0 8px;
-}
-
-.wallpapers-gallery-window {
-   background-color: rgba(255, 255, 255, 0.01);
-    border-radius: 15px;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-	margin: 0;
-    color: var(--primary-accent);
-}
-
-.volume-slider {
-	border: none;
-}
-.audio-menu {
-		background-color: var(--primary-accent);
-}
-.audio-container .device {
-	background-color: var(--primary-accent);
-	border: none;
-	padding: 6px 8px 6px 4px;
-	margin: 2px 0;
-	font-size: 12px;
-	border-radius: 4px;
-}
-.audio-container .device.selected {
-	background-color: var(--primary-accent);
-}
-.audio-container .device:hover {
-	background-color: var(--primary-accent);
-}
-
-.wallpapers-gallery-buttons {
-	background-color: rgba(255, 255, 255, 0.05);
-	color: var(--text);
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 14px;
 	font-size: 16px;
-	padding: 8px 0px;
-	border-radius: 8px;
-	margin: 8px 8px 8px 8px;
-	width: 600px;
-	backdrop-filter: blur(8px) saturate(150%);
-	-webkit-backdrop-filter: blur(8px) saturate(150%);
+}
+.media-widget .btn.disabled:hover,
+.media-widget .btn.disabled {
+	color: #7d8297;
+	font-size: 12px;
+	background-color: rgba(0, 0, 0, 0);
 }
 
-.wallpapers-widget {
-    padding: 0 6px 0 6px;
-}
-
-.wallpapers-widget .icon {
-	color: var(--primary-accent);
-}
-
-/***----------------------------------      • Disk •      -----------------------------------***/
-
-.disk-widget {
-    padding: 0 6px 0 6px;
-}
-.disk-group {
-    background-color: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(8px) saturate(150%);
-    -webkit-backdrop-filter: blur(8px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-}
-.disk-group-row {
-    min-width: 220px;
-    max-width: 220px;
-    max-height: 40px;
-    margin: 0;
-    padding: 0;
-    border-radius: 6px;
-    border: 1px solid rgba(128, 128, 128, 0);
-}
-.disk-group-row:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-.disk-group-label-bar{
-    max-height:8px;
-    border:0px solid rgba(128, 128, 128, 0);
-    background-color: rgba(137, 180, 250, 0.1);
-    border-radius: 4px;
-}
-.disk-group-label-bar::chunk{
-    background-color: var(--primary-accent);
-    border-radius: 4px;
-}
-.disk-group-label {
-    font-size: 10px;
-}
-.disk-group-label-size {
-    font-size: 10px;
-    color: var(--primary-accent);
-}
-.disk-widget .icon {
-  color: var(--primary-accent);
-}
-
-.cava-widget {
+/* TASBAR WIDGET */
+.taskbar-widget {
     padding: 0;
     margin: 0;
 }
-
-/* CPU MEMORY Setting */
-.cpu-widget {
-    padding-right: 0;
+.taskbar-widget .app-icon {
+    padding:0 6px;
 }
-.memory-widget {
-    padding-left: 0;
-}
-.cpu-widget .widget-container {
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-}
-.memory-widget .widget-container {
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-}
-.memory-widget .label {
-    min-width: 34px;
-    max-width: 34px;
-}
-.cpu-widget .label {
-    min-width: 34px;
-    max-width: 34px;
-    color: var(--text);
-}
-.cpu-widget .icon {
-    color: var(--primary-accent);
-    margin-right: 4px;
-}
-.memory-widget .icon {
-    color: var(--primary-accent);
-    margin-right: 4px;
-}
-
-
-/* WIFI Setting */
-.wifi-widget .icon{
-    color: var(--primary-accent) !important;
-}
-
-
-.update-check-widget {
-    padding: 0 0px 0 0px;
-}
-.update-check-widget .icon {
-    font-size: 16px;
-    color: var(--primary-accent);
-}
-.update-check-widget .widget-container.winget,
-.update-check-widget .widget-container.windows {
-    background: rgba(255, 255, 255, 0.05);
-    margin: 0px 0px 0px 0px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(8px) saturate(150%);
-    -webkit-backdrop-filter: blur(8px) saturate(150%);
-}
-.update-check-widget .widget-container.winget .icon,
-.update-check-widget .widget-container.windows .icon {
-    color: var(--primary-accent);
-    margin: 0 2px 0 6px;
-}
-.update-check-widget .widget-container.winget .label,
-.update-check-widget .widget-container.windows .label {
-    margin: 0 6px 0 1px;
-  color: var(--text);
-    font-weight: 900;
-    font-size: 14px;
-}
-
-.traffic-widget .icon {
-    color:  var(--primary-accent);
-    padding-right: 6px;
-    padding-left: 6px;
-}
-.traffic-widget .label {
- color: var(--text);
-}
-
- .widget {
-   border-radius: 8px;
-    margin: 8px 0px;
-    background-color: rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.notes-widget {
-    padding: 4;
-}
-.notes-widget .label {
-   font-size: 14px;
-    color: var(--text);
-}
-.notes-widget .icon {
-    font-size: 16px;
-    color: var(--primary-accent);
-
-}
-/* Notes Widget Menu */
-.notes-menu {
-    min-width: 400px;
-    max-width: 400px;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-}
-.notes-menu .note-item {
-    background-color:transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-.notes-menu .note-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-.notes-menu .note-item .icon {
-    font-size: 16px;
-    padding: 0 4px;
-    background-color: var(--primary-accent);
-
-}
-.notes-menu .delete-button {
-    color: var(--primary-accent);
-    background: transparent;
-    border: none;
-    font-size: 8px;
-    padding: 7px 8px;
-    border-radius: 3px;
-}
-.notes-menu .delete-button:hover {
-    background-color: rgba(128, 128, 128, 0.5);
-}
-.notes-menu .note-item .title {
-    font-size: 13px;
-
-}
-.notes-menu .note-item .date {
-    font-size: 12px;
-
-    color: rgba(255, 255, 255, 0.4);
-}
-.notes-menu .empty-list {
-
-    color: var(--primary-accent);
-    font-size: 24px;
-    font-weight: 600;
-    padding: 10px 0 20px 0;
-}
-.notes-menu .add-button,
-.notes-menu .cancel-button {
-    padding: 8px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 4px;
-    color: white;
-}
-.notes-menu .cancel-button {
-    margin-left: 4px;
-}
-.notes-menu .add-button:hover,
-.notes-menu .cancel-button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-.notes-menu .scroll-area {
-    background: transparent;
-    border: none;
-    border-radius:0;
-}
-.notes-menu .note-input {
-    background-color:rgba(17, 17, 27, 0.2);
-    border: 1px solid var(--primary-accent);
-
-    font-size: 14px;
-    max-height: 30px;
-    padding: 4px;
-    border-radius: 6px;
-}
-.note-input:focus {
-    border: 1px solid var(--primary-accent);
-}
-
-.media-menu {
-    min-width: 420px;
-    max-width: 420px;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-}
-.media-menu .title,
-.media-menu .artist,
-.media-menu .source {
-    font-size: 14px;
-    font-weight: 600;
-    margin-left: 10px;
-
-}
-.media-menu .artist {
-    font-size: 13px;
-    color: var(--primary-accent);
-    margin-top: 0px;
-    margin-bottom: 8px;
-}
-.media-menu .source {
-    font-size: 11px;
-    color: #000;
-    font-weight: normal;
-    border-radius: 3px;
-    background-color: rgba(255, 255, 255, 0.05);
-    padding: 2px 4px;
-
-}
-/* The source class name is the same as what you see in the media widget; just replace spaces with dashes and convert it to lowercase.
-Example: "Windows Media" becomes "windows-media" */
-.media-menu .source.firefox {
-    background-color: #ff583b;
-    color: #ffffff;
-}
-.media-menu .source.spotify {
-    background-color: #199143;
-    color: #ffffff;
-}
-.media-menu .source.edge {
-    background-color: #0078d4;
-    color: #ffffff;
-}
-.media-menu .source.windows-media {
-    background-color: #0078d4;
-    color: #ffffff;
-}
-
-.media-menu .btn {
-    font-family: "Segoe Fluent Icons";
+.win-button-widget .label {
     font-size: 18px;
-    font-weight: 400;
-    margin: 10px 2px 0px 2px;
-    min-width: 40px;
-    max-width: 40px;
-    min-height: 40px;
-    max-height: 40px;
-    border-radius: 20px;
-	color: var(--overlay0) ;
-}
-.media-menu .btn.prev {
-    margin-left: 10px;
-}
-.media-menu .btn:hover {
-    color: var(--overlay2);
-}
-.media-menu .btn.play {
-    font-size: 24px
-}
-.media-menu .btn.disabled:hover,
-.media-menu .btn.disabled {
-    color: #4e525c;
-    background-color: rgba(0, 0, 0, 0);
-}
-
-.media-menu .playback-time {
-    font-size: 13px;
-
-    color: var(--primary-accent);
-    margin-top: 20px;
-    min-width: 100px;
-}
-.media-menu .progress-slider {
-    height: 10px;
-    margin: 5px 4px;
-    border-radius: 3px;
-}
-.media-menu .progress-slider::groove {
-    background: transparent;
-    height: 2px;
-    border-radius: 3px;
-    background: rgba(255, 255, 255, 0.1);
-
-}
-.media-menu .progress-slider::groove:hover {
-    background: transparent;
-    height: 6px;
-    border-radius: 3px;
-    background: rgba(255, 255, 255, 0.2);
-}
-.media-menu .progress-slider::sub-page {
-    background: var(--primary-accent);
-    border-radius: 3px;
-    height: 4px;
 }
