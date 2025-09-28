@@ -1,17 +1,29 @@
-
+$komorebicProcess = Get-Process -Name "komorebi" -ErrorAction SilentlyContinue
+if (-not $komorebicProcess) {
+    try {
+        Write-Host "Starting komorebi..." -ForegroundColor Green
+        komorebic start
+    }
+    catch {
+        Write-Warning "Failed to start komorebi: $($_.Exception.Message)"
+    }
+}
+else {
+    Write-Host "Komorebi is already running" -ForegroundColor Yellow
+}
 
 $debug = $false
 
-# Define the path to the file that stores the last execution time
+
 $timeFilePath = "$env:USERPROFILE\Documents\PowerShell\LastExecutionTime.txt"
 
-# Define the update interval in days, set to -1 to always check
+
 $updateInterval = [math]::truncate(365 /  2)
 
 if ($debug) {
     Write-Host "#######################################" -ForegroundColor Red
     Write-Host "#           Debug mode enabled        #" -ForegroundColor Red
-    Write-Host "#          ONLY FOR DEVELOPMENT       #" -ForegroundColor Red
+    Write-Host "#          ONLY FOR DEVELOPMENT       #" -ForegroundColor Redx
     Write-Host "#                                     #" -ForegroundColor Red
     Write-Host "#       IF YOU ARE NOT DEVELOPING     #" -ForegroundColor Red
     Write-Host "#       JUST RUN \`Update-Profile\`     #" -ForegroundColor Red
@@ -23,16 +35,15 @@ if ($debug) {
 
 
 
-#opt-out of telemetry before doing anything, only if PowerShell is run as admin
+
 if ([bool]([System.Security.Principal.WindowsIdentity]::GetCurrent()).IsSystem) {
     [System.Environment]::SetEnvironmentVariable('POWERSHELL_TELEMETRY_OPTOUT', 'true', [System.EnvironmentVariableTarget]::Machine)
 }
 
-# Initial GitHub.com connectivity check with 1 second timeout
+
 $global:canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 
-# Import Modules and External Profiles
-# Ensure Terminal-Icons module is installed before importing
+
 if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
     Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
 }
@@ -43,9 +54,43 @@ if (Test-Path($ChocolateyProfile)) {
 }
 
 
+$env:FZF_DEFAULT_OPTS = '--height 40% --layout=reverse --border --info=inline'
+$env:FZF_DEFAULT_COMMAND = 'Get-ChildItem -Recurse -Force -ErrorAction SilentlyContinue | Where-Object { !$_.PSIsContainer } | Select-Object -ExpandProperty FullName'
 
 
-# Check for Profile Updates
+function Invoke-FuzzyEdit {
+    param([string]$Filter = "")
+    $file = if ($Filter) { fzf --query $Filter } else { fzf }
+    if ($file) {
+        code $file
+    }
+}
+
+function Invoke-FuzzyCd {
+    param([string]$Filter = "")
+    $dir = if ($Filter) { Get-ChildItem -Directory | Select-Object -ExpandProperty Name | fzf --query $Filter } else { Get-ChildItem -Directory | Select-Object -ExpandProperty Name | fzf }
+    if ($dir) {
+        Set-Location $dir
+    }
+}
+
+function Invoke-FuzzyHistory {
+    $command = Get-History | Select-Object -ExpandProperty CommandLine | fzf
+    if ($command) {
+        $command | Set-Clipboard
+        Write-Host "Command copied to clipboard: $command" -ForegroundColor Green
+    }
+}
+
+
+Set-Alias -Name fe -Value Invoke-FuzzyEdit
+Set-Alias -Name fcd -Value Invoke-FuzzyCd
+Set-Alias -Name fh -Value Invoke-FuzzyHistory
+
+
+
+
+
 <#
 .SYNOPSIS
 Updates the PowerShell profile from the remote repository.
@@ -74,7 +119,6 @@ function Update-Profile {
     }
 }
 
-# Check if not in debug mode AND (updateInterval is -1 OR file doesn't exist OR time difference is greater than the update interval)
 if (-not $debug -and `
     ($updateInterval -eq -1 -or `
       -not (Test-Path $timeFilePath) -or `
@@ -122,19 +166,7 @@ function Update-PowerShell {
     }
 }
 
-# skip in debug mode
-# Check if not in debug mode AND (updateInterval is -1 OR file doesn't exist OR time difference is greater than the update interval)
-# if (-not $debug -and `
-#     ($updateInterval -eq -1 -or `
-#      -not (Test-Path $timeFilePath) -or `
-#      ((Get-Date).Date - [datetime]::ParseExact((Get-Content -Path $timeFilePath), 'yyyy-MM-dd', $null).Date).TotalDays -gt $updateInterval)) {
 
-#     Update-PowerShell
-#     $currentTime = Get-Date -Format 'yyyy-MM-dd'
-#     $currentTime | Out-File -FilePath $timeFilePath
-#       } else {
-#     Write-Warning "Skipping PowerShell update in debug mode"
-# }
 
 <#
 .SYNOPSIS
@@ -495,7 +527,6 @@ function sync-git-branch {
     Write-Host "Stashing any uncommitted changes..." -ForegroundColor Yellow
     git stash push -m "sync-git-branch automatic stash"
 
-    # Switch to main and pull
     Write-Host "Switching to main branch and pulling latest changes..." -ForegroundColor Yellow
 
     $mainExists = git branch --list main
@@ -525,19 +556,16 @@ function sync-git-branch {
         git checkout $currentBranch
         return
     }
-
-    # Switch back to original branch
     Write-Host "Switching back to $currentBranch..." -ForegroundColor Yellow
     git checkout $currentBranch
 
-    # Pop stashed changes if any
+
     $stashList = git stash list | Select-String "sync-git-branch automatic stash"
     if ($stashList) {
         Write-Host "Reapplying stashed changes..." -ForegroundColor Yellow
         git stash pop
     }
 
-    # Push changes
     Write-Host "Pushing changes to $currentBranch..." -ForegroundColor Yellow
     git push
 
@@ -1086,6 +1114,7 @@ Set-Alias -Name fix-merge -Value resolve-git-conflict
 Set-Alias -Name rbfast -Value rebase-f
 Set-Alias -Name reload -Value reload-profile
 Set-Alias -Name help -Value Show-Help
+Set-Alias -Name details -Value fastfetch
 
 $env:FZF_DEFAULT_OPTS = " --height 100% --layout reverse --border"
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
