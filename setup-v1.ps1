@@ -51,25 +51,319 @@
 #>
 
 param(
-    [ValidateSet('Full', 'Minimal', 'Custom')]
+    [ValidateSet('Full', 'Minimal', 'Custom', 'UpdateOnly')]
     [string]$Mode = 'Full',
-    
+
     [string]$SkipPackages = '',
-    
+
     [string]$SkipExtensions = '',
-    
+
     [switch]$Silent = $false,
-    
+
     [switch]$Force = $false,
-    
+
     [string]$ConfigFile = '',
-    
+
     [ValidateSet('DEBUG', 'INFO', 'WARNING', 'ERROR')]
-    [string]$LogLevel = 'INFO'
+    [string]$LogLevel = 'INFO',
+
+    [switch]$CheckUpdates = $true
 )
 
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "Continue"
+
+# ===============================
+# Version Information
+# ===============================
+
+$ScriptVersion = "2.0.0"
+$ScriptName = "Development Environment Setup"
+$GitHubRepo = "ChristopherAlphonse/dotfiles"
+$GitHubRawBase = "https://raw.githubusercontent.com/$GitHubRepo/main"
+
+# ===============================
+# Update Management
+# ===============================
+
+function Test-ScriptUpdate {
+    Write-Host "`n🔍 Checking for script updates..." -ForegroundColor Cyan
+    Write-Log "INFO" "Checking for script updates from GitHub"
+
+    try {
+        $updateUrl = "$GitHubRawBase/setup-v1.ps1"
+        $response = Invoke-WebRequest -Uri $updateUrl -UseBasicParsing -TimeoutSec 10
+        $remoteContent = $response.Content
+
+        # Extract version from remote script
+        $versionMatch = [regex]::Match($remoteContent, '\$ScriptVersion = "([^"]+)"')
+        if ($versionMatch.Success) {
+            $remoteVersion = $versionMatch.Groups[1].Value
+            Write-Log "INFO" "Current version: $ScriptVersion, Remote version: $remoteVersion"
+
+            if ($remoteVersion -ne $ScriptVersion) {
+                Write-Host "📦 Update available!" -ForegroundColor Yellow
+                Write-Host "  Current version: $ScriptVersion" -ForegroundColor White
+                Write-Host "  Latest version:  $remoteVersion" -ForegroundColor Green
+                Write-Log "INFO" "Update available: $ScriptVersion -> $remoteVersion"
+                return @{
+                    Available = $true
+                    CurrentVersion = $ScriptVersion
+                    LatestVersion = $remoteVersion
+                    UpdateUrl = $updateUrl
+                }
+            } else {
+                Write-Host "✅ Script is up to date (v$ScriptVersion)" -ForegroundColor Green
+                Write-Log "INFO" "Script is up to date"
+                return @{
+                    Available = $false
+                    CurrentVersion = $ScriptVersion
+                    LatestVersion = $remoteVersion
+                }
+            }
+        } else {
+            Write-Host "⚠️ Could not determine remote version" -ForegroundColor Yellow
+            Write-Log "WARNING" "Could not extract version from remote script"
+            return @{
+                Available = $false
+                Error = "Could not determine remote version"
+            }
+        }
+    }
+    catch {
+        Write-Host "⚠️ Failed to check for updates: $_" -ForegroundColor Yellow
+        Write-Log "WARNING" "Failed to check for updates: $_"
+        return @{
+            Available = $false
+            Error = $_.Exception.Message
+        }
+    }
+}
+
+function Update-Script {
+    param(
+        [string]$UpdateUrl,
+        [string]$BackupPath = "$env:TEMP\setup-v1-backup.ps1"
+    )
+
+    Write-Host "`n🔄 Updating script..." -ForegroundColor Cyan
+    Write-Log "INFO" "Starting script update process"
+
+    try {
+        # Create backup of current script
+        $currentScriptPath = $MyInvocation.PSCommandPath
+        Copy-Item -Path $currentScriptPath -Destination $BackupPath -Force
+        Write-Host "📁 Backup created: $BackupPath" -ForegroundColor Green
+        Write-Log "INFO" "Backup created at: $BackupPath"
+
+        # Download updated script
+        Write-Host "📥 Downloading updated script..." -ForegroundColor Yellow
+        $updatedContent = Invoke-WebRequest -Uri $UpdateUrl -UseBasicParsing -TimeoutSec 30
+        $updatedContent.Content | Out-File -FilePath $currentScriptPath -Encoding UTF8 -Force
+
+        Write-Host "✅ Script updated successfully!" -ForegroundColor Green
+        Write-Log "INFO" "Script updated successfully"
+
+        return @{
+            Success = $true
+            BackupPath = $BackupPath
+            Message = "Script updated successfully. Backup saved to: $BackupPath"
+        }
+    }
+    catch {
+        Write-Host "❌ Failed to update script: $_" -ForegroundColor Red
+        Write-Log "ERROR" "Failed to update script: $_"
+
+        # Restore from backup if it exists
+        if (Test-Path $BackupPath) {
+            try {
+                Copy-Item -Path $BackupPath -Destination $currentScriptPath -Force
+                Write-Host "🔄 Restored from backup due to update failure" -ForegroundColor Yellow
+                Write-Log "INFO" "Restored script from backup due to update failure"
+            }
+            catch {
+                Write-Host "❌ Failed to restore from backup: $_" -ForegroundColor Red
+                Write-Log "ERROR" "Failed to restore from backup: $_"
+            }
+        }
+
+        return @{
+            Success = $false
+            Error = $_.Exception.Message
+        }
+    }
+}
+
+function Show-UpdatePrompt {
+    param(
+        [hashtable]$UpdateInfo
+    )
+
+    if (-not $UpdateInfo.Available) {
+        return $false
+    }
+
+    Write-Host "`n" -NoNewline
+    Write-Host "═" * 70 -ForegroundColor Yellow
+    Write-Host " Script Update Available" -ForegroundColor Yellow
+    Write-Host "═" * 70 -ForegroundColor Yellow
+
+    Write-Host "`nA newer version of the script is available:" -ForegroundColor White
+    Write-Host "  Current: $($UpdateInfo.CurrentVersion)" -ForegroundColor Red
+    Write-Host "  Latest:  $($UpdateInfo.LatestVersion)" -ForegroundColor Green
+
+    Write-Host "`nWould you like to update now? (Y/N): " -NoNewline -ForegroundColor Yellow
+    $response = Read-Host
+
+    if ($response -eq 'Y' -or $response -eq 'y') {
+        $updateResult = Update-Script -UpdateUrl $UpdateInfo.UpdateUrl
+        if ($updateResult.Success) {
+            Write-Host "`n✅ $($updateResult.Message)" -ForegroundColor Green
+            Write-Host "Please restart the script to use the updated version." -ForegroundColor Cyan
+            Write-Log "INFO" "User chose to update script"
+            return $true
+        } else {
+            Write-Host "`n❌ Update failed: $($updateResult.Error)" -ForegroundColor Red
+            Write-Log "ERROR" "Script update failed: $($updateResult.Error)"
+            return $false
+        }
+    } else {
+        Write-Host "`n⏭️ Continuing with current version..." -ForegroundColor Yellow
+        Write-Log "INFO" "User chose not to update script"
+        return $false
+    }
+}
+
+function Update-Configurations {
+    Write-Host "`n🔄 Updating configurations..." -ForegroundColor Cyan
+    Write-Log "INFO" "Starting configuration update process"
+
+    try {
+        # Update dotfiles
+        Write-Host "📁 Updating dotfiles..." -ForegroundColor Yellow
+        $tempDir = Join-Path $env:TEMP "dotfiles-update-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+
+        if (Test-Path $tempDir) {
+            Remove-Item -Path $tempDir -Recurse -Force
+        }
+
+        git clone $CONFIG.DotfilesRepo $tempDir
+        if ($LASTEXITCODE -eq 0) {
+            # Copy updated configurations
+            $sourcePath = Join-Path $tempDir "pwsh"
+            $destPath = $CONFIG.Paths.PowerShellConfig
+
+            if (Test-Path $sourcePath) {
+                Copy-Item -Path "$sourcePath\*" -Destination $destPath -Recurse -Force
+                Write-Host "  ✅ PowerShell configurations updated" -ForegroundColor Green
+            }
+
+            # Update version information
+            Update-VersionInfo
+
+            # Clean up
+            Remove-Item -Path $tempDir -Recurse -Force
+            Write-Host "✅ Configurations updated successfully!" -ForegroundColor Green
+            Write-Log "INFO" "Configurations updated successfully"
+            return $true
+        } else {
+            Write-Host "❌ Failed to clone dotfiles repository" -ForegroundColor Red
+            Write-Log "ERROR" "Failed to clone dotfiles repository"
+            return $false
+        }
+    }
+    catch {
+        Write-Host "❌ Failed to update configurations: $_" -ForegroundColor Red
+        Write-Log "ERROR" "Failed to update configurations: $_"
+        return $false
+    }
+}
+
+function Update-VersionInfo {
+    $versionFile = Join-Path $CONFIG.Paths.PowerShellConfig "version.json"
+    $versionInfo = @{
+        scriptVersion = $ScriptVersion
+        lastUpdated = Get-Date -Format "yyyy-MM-dd"
+        configurationVersion = "1.0.0"
+        packagesVersion = "1.0.0"
+        extensionsVersion = "1.0.0"
+        dotfilesVersion = "1.0.0"
+        changelog = @(
+            @{
+                version = $ScriptVersion
+                date = Get-Date -Format "yyyy-MM-dd"
+                changes = @(
+                    "Configuration updated via script",
+                    "Last update: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+                )
+            }
+        )
+    }
+
+    try {
+        $versionInfo | ConvertTo-Json -Depth 3 | Out-File -FilePath $versionFile -Encoding UTF8 -Force
+        Write-Host "  ✅ Version information updated" -ForegroundColor Green
+        Write-Log "INFO" "Version information updated at: $versionFile"
+    }
+    catch {
+        Write-Host "  ⚠️ Failed to update version information: $_" -ForegroundColor Yellow
+        Write-Log "WARNING" "Failed to update version information: $_"
+    }
+}
+
+function Get-VersionInfo {
+    $versionFile = Join-Path $CONFIG.Paths.PowerShellConfig "version.json"
+
+    if (Test-Path $versionFile) {
+        try {
+            $versionInfo = Get-Content $versionFile -Raw | ConvertFrom-Json
+            return $versionInfo
+        }
+        catch {
+            Write-Log "WARNING" "Failed to read version file: $_"
+        }
+    }
+
+    return $null
+}
+
+function Test-SetupAlreadyCompleted {
+    $stateFile = Join-Path $CONFIG.BackupDirectory "installation-state.json"
+
+    if (-not (Test-Path $stateFile)) {
+        return $false
+    }
+
+    try {
+        $state = Get-Content $stateFile -Raw | ConvertFrom-Json
+        return $state.Status -eq "Complete"
+    }
+    catch {
+        Write-Log "DEBUG" "Failed to read state file: $_"
+        return $false
+    }
+}
+
+function Show-IdempotencySummary {
+    param(
+        [array]$Results
+    )
+
+    $total = $Results.Count
+    $skipped = ($Results | Where-Object { $_.Skipped -eq $true }).Count
+    $updated = ($Results | Where-Object { $_.Success -eq $true -and $_.Skipped -ne $true }).Count
+    $failed = ($Results | Where-Object { $_.Success -eq $false }).Count
+
+    Write-Host "`n📊 Idempotency Summary:" -ForegroundColor Cyan
+    Write-Host "  Total items processed: $total" -ForegroundColor White
+    Write-Host "  Skipped (already up to date): $skipped" -ForegroundColor Yellow
+    Write-Host "  Updated/Installed: $updated" -ForegroundColor Green
+    Write-Host "  Failed: $failed" -ForegroundColor Red
+
+    if ($skipped -gt 0) {
+        Write-Host "`n✅ Script is idempotent - skipped $skipped items that were already up to date" -ForegroundColor Green
+    }
+}
 
 # ===============================
 # Configuration Management
@@ -86,7 +380,7 @@ function Initialize-Configuration {
         ConfigFile = $ConfigFile
         LogLevel = $LogLevel
     }
-    
+
     # Load custom configuration if provided
     if ($script:ScriptParams.ConfigFile -and (Test-Path $script:ScriptParams.ConfigFile)) {
         try {
@@ -99,13 +393,13 @@ function Initialize-Configuration {
             Write-Host "Using default configuration instead." -ForegroundColor Yellow
         }
     }
-    
+
     return $null
 }
 
 function Get-InstallationMode {
     param([string]$Mode)
-    
+
     switch ($Mode) {
         'Minimal' {
             return @{
@@ -121,6 +415,15 @@ function Get-InstallationMode {
                 Extensions = $CONFIG.VSCodeExtensions | Where-Object { $_.Name -notin $script:ScriptParams.SkipExtensions }
                 SkipDotfiles = $false
                 SkipVSCodeExtensions = $false
+            }
+        }
+        'UpdateOnly' {
+            return @{
+                Packages = @()
+                Extensions = @()
+                SkipDotfiles = $false
+                SkipVSCodeExtensions = $false
+                UpdateOnly = $true
             }
         }
         default { # 'Full'
@@ -631,12 +934,16 @@ function Install-VSCodeExtensions {
         return $false
     }
 
+    # Get extensions based on installation mode
+    $extensionsToInstall = Get-InstallationMode -Mode $script:ScriptParams.Mode
+    $extensions = $extensionsToInstall.Extensions
+
     $installedExtensions = @()
     $failedExtensions = @()
 
-    Write-Host "Installing $($CONFIG.VSCodeExtensions.Count) extensions..." -ForegroundColor White
+    Write-Host "Installing $($extensions.Count) extensions..." -ForegroundColor White
 
-    foreach ($extension in $CONFIG.VSCodeExtensions) {
+    foreach ($extension in $extensions) {
         try {
             Write-Host "  Installing $($extension.Name)..." -ForegroundColor Yellow
             Write-Log "DEBUG" "Installing VS Code extension: $($extension.Name) ($($extension.Id))"
@@ -691,11 +998,15 @@ function Test-VSCodeExtensions {
         return $false
     }
 
+    # Get extensions based on installation mode
+    $extensionsToInstall = Get-InstallationMode -Mode $script:ScriptParams.Mode
+    $extensions = $extensionsToInstall.Extensions
+
     try {
         $installedExtensions = & code --list-extensions 2>$null
         $verifiedCount = 0
 
-        foreach ($extension in $CONFIG.VSCodeExtensions) {
+        foreach ($extension in $extensions) {
             if ($installedExtensions -contains $extension.Id) {
                 Write-Host "  ✅ $($extension.Name)" -ForegroundColor Green
                 $verifiedCount++
@@ -736,6 +1047,39 @@ function Test-PackageInstalled {
         Write-Log "DEBUG" "Error checking if package is installed: $($Package.Name)"
     }
     return $false
+}
+
+function Test-PackageNeedsUpdate {
+    param(
+        [hashtable]$Package
+    )
+
+    if (-not (Test-PackageInstalled -Package $Package)) {
+        return $true  # Package not installed, needs installation
+    }
+
+    # If force reinstall is enabled, always update
+    if ($CONFIG.PackageManagement.ForceReinstall) {
+        Write-Log "DEBUG" "Force reinstall enabled for: $($Package.Name)"
+        return $true
+    }
+
+    # Check if specific version is requested
+    if ($Package.Version -and $Package.Version -ne "latest") {
+        $currentVersion = Get-PackageVersion -Package $Package
+        if ($currentVersion -and $currentVersion -ne $Package.Version) {
+            Write-Log "DEBUG" "Package $($Package.Name) version mismatch: current=$currentVersion, requested=$($Package.Version)"
+            return $true
+        }
+    }
+
+    # Check for updates if update check is enabled
+    if ($CONFIG.PackageManagement.UpdateCheck) {
+        return Test-PackageUpdateAvailable -Package $Package
+    }
+
+    Write-Log "DEBUG" "Package $($Package.Name) is up to date, skipping"
+    return $false  # Package is up to date
 }
 
 function Get-PackageVersion {
@@ -812,19 +1156,13 @@ function Install-SinglePackage {
         [hashtable]$Package
     )
 
-    Write-Log "DEBUG" "Installing package: $($Package.Name) ($($Package.Id))"
+    Write-Log "DEBUG" "Processing package: $($Package.Name) ($($Package.Id))"
 
-    # Check if package is already installed
-    if ($CONFIG.PackageManagement.SkipIfInstalled -and (Test-PackageInstalled -Package $Package)) {
+    # Check if package needs update using idempotency logic
+    if (-not (Test-PackageNeedsUpdate -Package $Package)) {
         $currentVersion = Get-PackageVersion -Package $Package
-        Write-Host "  ⏭️ Skipping $($Package.Name) (already installed: v$currentVersion)" -ForegroundColor Yellow
-        Write-Log "INFO" "Skipped installation: $($Package.Name) (already installed: v$currentVersion)"
-
-        # Check for updates
-        if (Test-PackageUpdateAvailable -Package $Package) {
-            Write-Host "  🔄 Update available for $($Package.Name)" -ForegroundColor Cyan
-            Write-Log "INFO" "Update available for: $($Package.Name)"
-        }
+        Write-Host "  ⏭️ Skipping $($Package.Name) (already up to date: v$currentVersion)" -ForegroundColor Yellow
+        Write-Log "INFO" "Skipped installation: $($Package.Name) (already up to date: v$currentVersion)"
 
         return @{ Success = $true; Package = $Package; Skipped = $true; Version = $currentVersion }
     }
@@ -1220,13 +1558,21 @@ function Show-PreflightSummary {
 
     if ($warnCount -gt 0) {
         Write-Host "`n⚠️ Warnings detected. You can continue, but some features may not work optimally." -ForegroundColor Yellow
-        Write-Host "Do you want to continue? (Y/N): " -NoNewline -ForegroundColor Yellow
-        $response = Read-Host
 
-        if ($response -ne 'Y' -and $response -ne 'y') {
-            Write-Host "Setup cancelled by user." -ForegroundColor Yellow
-            Write-Log "INFO" "Setup cancelled by user after warnings"
-            return $false
+        # In silent mode, auto-continue on warnings
+        if ($CONFIG.ScriptParameters.Silent) {
+            Write-Host "🔇 Silent mode: Continuing despite warnings..." -ForegroundColor Cyan
+            Write-Log "WARNING" "Pre-flight warnings ignored in silent mode"
+        }
+        else {
+            Write-Host "Do you want to continue? (Y/N): " -NoNewline -ForegroundColor Yellow
+            $response = Read-Host
+
+            if ($response -ne 'Y' -and $response -ne 'y') {
+                Write-Host "Setup cancelled by user." -ForegroundColor Yellow
+                Write-Log "INFO" "Setup cancelled by user after warnings"
+                return $false
+            }
         }
     }
 
@@ -1251,7 +1597,7 @@ function Update-Environment {
             $envVars = [Environment]::GetEnvironmentVariables($level)
             $envVars.GetEnumerator() | ForEach-Object {
             [Environment]::SetEnvironmentVariable($_.Name, $_.Value, "Process")
-            }
+        }
             Write-Log "DEBUG" "Updated $($envVars.Count) environment variables from $level level"
         }
 
@@ -1374,7 +1720,12 @@ function Install-PackageManager {
 
 function Install-DevTools {
     Write-Step "Installing development tools..."
-    Write-Log "INFO" "Starting installation of $($CONFIG.WingetPackages.Count) development tools"
+
+    # Get packages based on installation mode
+    $packagesToInstall = Get-InstallationMode -Mode $script:ScriptParams.Mode
+    $packages = $packagesToInstall.Packages
+
+    Write-Log "INFO" "Starting installation of $($packages.Count) development tools"
 
     $installationResults = @()
 
@@ -1388,7 +1739,7 @@ function Install-DevTools {
     Write-Log "INFO" "Package management config: UseLatest=$($CONFIG.PackageManagement.UseLatestVersions), UpdateCheck=$($CONFIG.PackageManagement.UpdateCheck), SkipIfInstalled=$($CONFIG.PackageManagement.SkipIfInstalled)"
 
     # Install packages sequentially for better control and logging
-    foreach ($package in $CONFIG.WingetPackages) {
+    foreach ($package in $packages) {
         Write-Host "`n📦 Processing $($package.Name)..." -ForegroundColor Cyan
         Write-Log "INFO" "Processing package: $($package.Name) ($($package.Id))"
 
@@ -1415,6 +1766,9 @@ function Install-DevTools {
 
     # Display comprehensive summary
     Show-PackageSummary -Results $installationResults
+
+    # Show idempotency summary
+    Show-IdempotencySummary -Results $installationResults
 
     # Show restart requirements
     if ($CONFIG.RestartRequiredApps.Count -gt 0) {
@@ -1463,11 +1817,33 @@ function Test-DotfilesStructure {
     return $true
 }
 
+function Test-FileIdentical {
+    param(
+        [string]$Source,
+        [string]$Destination
+    )
+
+    if (-not (Test-Path $Source) -or -not (Test-Path $Destination)) {
+        return $false
+    }
+
+    try {
+        $sourceHash = Get-FileHash -Path $Source -Algorithm SHA256
+        $destHash = Get-FileHash -Path $Destination -Algorithm SHA256
+        return $sourceHash.Hash -eq $destHash.Hash
+    }
+    catch {
+        Write-Log "DEBUG" "Error comparing file hashes: $_"
+        return $false
+    }
+}
+
 function Copy-FileWithValidation {
     param(
         [string]$Source,
         [string]$Destination,
-        [string]$Description
+        [string]$Description,
+        [switch]$SkipIfIdentical = $true
     )
 
     try {
@@ -1476,10 +1852,18 @@ function Copy-FileWithValidation {
             return $false
         }
 
+        # Check if files are identical and skip if requested
+        if ($SkipIfIdentical -and (Test-Path $Destination) -and (Test-FileIdentical -Source $Source -Destination $Destination)) {
+            Write-Host "  ⏭️ $Description (already up to date)" -ForegroundColor Yellow
+            Write-Log "DEBUG" "Skipped $Description - files are identical"
+            return $true
+        }
+
         # Create destination directory if needed
         $destDir = Split-Path -Parent $Destination
         if (-not (Test-Path $destDir)) {
             New-Item -ItemType Directory -Path $destDir -Force | Out-Null
+            Write-Log "DEBUG" "Created directory: $destDir"
         }
 
         # Backup existing file
@@ -1487,6 +1871,7 @@ function Copy-FileWithValidation {
             $backupPath = "$Destination.backup.$(Get-Date -Format 'yyyyMMdd-HHmmss')"
             Copy-Item $Destination $backupPath -Force
             Write-Host "  📦 Backed up existing file to: $(Split-Path -Leaf $backupPath)" -ForegroundColor Cyan
+            Write-Log "DEBUG" "Created backup: $backupPath"
         }
 
         Copy-Item $Source $Destination -Force
@@ -1494,22 +1879,26 @@ function Copy-FileWithValidation {
         # Verify copy
         if (Test-Path $Destination) {
             Write-Host "  ✅ Copied $Description" -ForegroundColor Green
+            Write-Log "INFO" "Copied $Description from $Source to $Destination"
             # Update installation state
             Update-InstallationState -Operation "FileCopied" -Data @{
                 Source = $Source
                 Destination = $Destination
                 Description = $Description
                 CopyTime = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+                Skipped = $false
             }
             return $true
         }
         else {
             Write-Host "  ❌ Failed to verify $Description" -ForegroundColor Red
+            Write-Log "ERROR" "Failed to verify copy of $Description"
             return $false
         }
     }
     catch {
         Write-Host "  ❌ Error copying $Description : $_" -ForegroundColor Red
+        Write-Log "ERROR" "Error copying $Description : $_"
         return $false
     }
 }
@@ -1798,6 +2187,71 @@ function Main {
     Write-Host "═" * 70 -ForegroundColor Cyan
     Write-Host " Development Environment Setup v2.0" -ForegroundColor Green
     Write-Host "═" * 70 -ForegroundColor Cyan
+
+    # Initialize configuration
+    $customConfig = Initialize-Configuration
+    if ($customConfig) {
+        Write-Host "`nUsing custom configuration from: $($script:ScriptParams.ConfigFile)" -ForegroundColor Cyan
+    } else {
+        Write-Host "`nUsing default configuration" -ForegroundColor Cyan
+    }
+
+    # Check for script updates if enabled
+    if ($CheckUpdates -and -not $script:ScriptParams.Silent) {
+        $updateInfo = Test-ScriptUpdate
+        if ($updateInfo.Available) {
+            $updated = Show-UpdatePrompt -UpdateInfo $updateInfo
+            if ($updated) {
+                Write-Host "`nPlease restart the script to use the updated version." -ForegroundColor Cyan
+                return
+            }
+        }
+    }
+
+    # Display installation mode
+    $installationMode = Get-InstallationMode -Mode $script:ScriptParams.Mode
+    Write-Host "Installation Mode: $($script:ScriptParams.Mode)" -ForegroundColor White
+    Write-Host "Silent Mode: $($script:ScriptParams.Silent)" -ForegroundColor White
+    Write-Host "Force Reinstall: $($script:ScriptParams.Force)" -ForegroundColor White
+
+    if ($script:ScriptParams.SkipPackages.Count -gt 0) {
+        Write-Host "Skipping Packages: $($script:ScriptParams.SkipPackages -join ', ')" -ForegroundColor Yellow
+    }
+    if ($script:ScriptParams.SkipExtensions.Count -gt 0) {
+        Write-Host "Skipping Extensions: $($script:ScriptParams.SkipExtensions -join ', ')" -ForegroundColor Yellow
+    }
+
+    # Handle UpdateOnly mode
+    if ($script:ScriptParams.Mode -eq 'UpdateOnly') {
+        Write-Host "`n🔄 Update Only Mode - Updating configurations only" -ForegroundColor Cyan
+        Write-Host "This will update your dotfiles and configurations without installing packages.`n" -ForegroundColor White
+
+        try {
+            Initialize-Logging
+            Write-Success "Logging initialized: $($CONFIG.LogFile)"
+
+            if (Update-Configurations) {
+                Write-Host "`n✅ Configuration update completed successfully!" -ForegroundColor Green
+                Write-Log "INFO" "Configuration update completed successfully"
+            } else {
+                Write-Host "`n❌ Configuration update failed!" -ForegroundColor Red
+                Write-Log "ERROR" "Configuration update failed"
+            }
+        }
+        catch {
+            Write-Host "`n❌ Update failed: $_" -ForegroundColor Red
+            Write-Log "ERROR" "Update failed: $_"
+        }
+        return
+    }
+
+    # Check if setup was already completed (idempotency check)
+    if (-not $script:ScriptParams.Force -and (Test-SetupAlreadyCompleted)) {
+        Write-Host "`n✅ Setup already completed successfully!" -ForegroundColor Green
+        Write-Host "Use -Force to reinstall packages or -Mode UpdateOnly to update configurations only." -ForegroundColor Cyan
+        Write-Log "INFO" "Setup already completed, skipping installation"
+        return
+    }
 
     Write-Host "`nThis script will set up your complete development environment." -ForegroundColor White
     Write-Host "Please ensure you have admin rights and an internet connection.`n" -ForegroundColor Yellow

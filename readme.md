@@ -48,6 +48,57 @@ irm https://raw.githubusercontent.com/ChristopherAlphonse/dotfiles/refs/heads/ma
    winget install --id AmN.yasb
    ```
 
+### Advanced Installation Options
+
+The setup script supports various command-line parameters for customization:
+
+#### Minimal Installation
+Install only essential tools (Git, VS Code, Windows Terminal):
+```powershell
+.\setup-v1.ps1 -MinimalInstall
+```
+
+#### Silent/Unattended Installation
+Run without user prompts (auto-accepts defaults):
+```powershell
+.\setup-v1.ps1 -Silent
+```
+
+#### Skip Specific Packages
+Exclude packages by ID (comma-separated):
+```powershell
+.\setup-v1.ps1 -SkipPackages "Docker.DockerDesktop,Microsoft.AzureCLI"
+```
+
+#### Skip Optional Components
+Skip VS Code extensions or dotfiles setup:
+```powershell
+.\setup-v1.ps1 -SkipVSCodeExtensions
+.\setup-v1.ps1 -SkipDotfiles
+```
+
+#### Skip Pre-flight Checks
+Bypass system validation (not recommended):
+```powershell
+.\setup-v1.ps1 -SkipPreFlightChecks
+```
+
+#### Custom Configuration File
+Use a custom config file for full control:
+```powershell
+# Copy and customize the example
+Copy-Item config-example.json config.json
+# Edit config.json with your preferences
+.\setup-v1.ps1 -ConfigFile .\config.json
+```
+
+#### Combined Parameters
+Mix and match parameters for flexibility:
+```powershell
+# Silent minimal install without Docker
+.\setup-v1.ps1 -Silent -MinimalInstall -SkipPackages "Docker.DockerDesktop"
+```
+
 ##  Prerequisites
 
 - Windows 10/11 (Build 19041+)
