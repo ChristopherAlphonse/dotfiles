@@ -1,3 +1,4 @@
+
 $komorebicProcess = Get-Process -Name "komorebi" -ErrorAction SilentlyContinue
 if (-not $komorebicProcess) {
     try {
@@ -14,10 +15,10 @@ else {
 
 $debug = $false
 
-
+# Define the path to the file that stores the last execution time
 $timeFilePath = "$env:USERPROFILE\Documents\PowerShell\LastExecutionTime.txt"
 
-
+# Define the update interval in days, set to -1 to always check
 $updateInterval = [math]::truncate(365 /  2)
 
 if ($debug) {
@@ -35,15 +36,16 @@ if ($debug) {
 
 
 
-
+#opt-out of telemetry before doing anything, only if PowerShell is run as admin
 if ([bool]([System.Security.Principal.WindowsIdentity]::GetCurrent()).IsSystem) {
     [System.Environment]::SetEnvironmentVariable('POWERSHELL_TELEMETRY_OPTOUT', 'true', [System.EnvironmentVariableTarget]::Machine)
 }
 
-
+# Initial GitHub.com connectivity check with 1 second timeout
 $global:canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 
-
+# Import Modules and External Profiles
+# Ensure Terminal-Icons module is installed before importing
 if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
     Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
 }
@@ -53,11 +55,12 @@ if (Test-Path($ChocolateyProfile)) {
     Import-Module "$ChocolateyProfile"
 }
 
-
+# fzf (Fuzzy Finder) Configuration
+# Set fzf default options for better PowerShell integration
 $env:FZF_DEFAULT_OPTS = '--height 40% --layout=reverse --border --info=inline'
 $env:FZF_DEFAULT_COMMAND = 'Get-ChildItem -Recurse -Force -ErrorAction SilentlyContinue | Where-Object { !$_.PSIsContainer } | Select-Object -ExpandProperty FullName'
 
-
+# fzf functions for PowerShell
 function Invoke-FuzzyEdit {
     param([string]$Filter = "")
     $file = if ($Filter) { fzf --query $Filter } else { fzf }
@@ -82,7 +85,7 @@ function Invoke-FuzzyHistory {
     }
 }
 
-
+# Set aliases for fzf functions
 Set-Alias -Name fe -Value Invoke-FuzzyEdit
 Set-Alias -Name fcd -Value Invoke-FuzzyCd
 Set-Alias -Name fh -Value Invoke-FuzzyHistory
@@ -91,6 +94,7 @@ Set-Alias -Name fh -Value Invoke-FuzzyHistory
 
 
 
+# Check for Profile Updates
 <#
 .SYNOPSIS
 Updates the PowerShell profile from the remote repository.
@@ -119,6 +123,7 @@ function Update-Profile {
     }
 }
 
+# Check if not in debug mode AND (updateInterval is -1 OR file doesn't exist OR time difference is greater than the update interval)
 if (-not $debug -and `
     ($updateInterval -eq -1 -or `
       -not (Test-Path $timeFilePath) -or `
@@ -166,7 +171,19 @@ function Update-PowerShell {
     }
 }
 
+# skip in debug mode
+# Check if not in debug mode AND (updateInterval is -1 OR file doesn't exist OR time difference is greater than the update interval)
+# if (-not $debug -and `
+#     ($updateInterval -eq -1 -or `
+#      -not (Test-Path $timeFilePath) -or `
+#      ((Get-Date).Date - [datetime]::ParseExact((Get-Content -Path $timeFilePath), 'yyyy-MM-dd', $null).Date).TotalDays -gt $updateInterval)) {
 
+#     Update-PowerShell
+#     $currentTime = Get-Date -Format 'yyyy-MM-dd'
+#     $currentTime | Out-File -FilePath $timeFilePath
+#       } else {
+#     Write-Warning "Skipping PowerShell update in debug mode"
+# }
 
 <#
 .SYNOPSIS
@@ -334,6 +351,9 @@ function uptime {
 function reload-profile {
     & $profile
 }
+
+# Test (safe, commented): run this manually to verify the profile loads in a fresh pwsh process
+# pwsh -NoProfile -Command ". $PROFILE; Write-Host 'Profile loaded OK'"
 
 function unzip ($file) {
     Write-Output("Extracting", $file, "to", $pwd)
@@ -527,6 +547,7 @@ function sync-git-branch {
     Write-Host "Stashing any uncommitted changes..." -ForegroundColor Yellow
     git stash push -m "sync-git-branch automatic stash"
 
+    # Switch to main and pull
     Write-Host "Switching to main branch and pulling latest changes..." -ForegroundColor Yellow
 
     $mainExists = git branch --list main
@@ -556,16 +577,19 @@ function sync-git-branch {
         git checkout $currentBranch
         return
     }
+
+    # Switch back to original branch
     Write-Host "Switching back to $currentBranch..." -ForegroundColor Yellow
     git checkout $currentBranch
 
-
+    # Pop stashed changes if any
     $stashList = git stash list | Select-String "sync-git-branch automatic stash"
     if ($stashList) {
         Write-Host "Reapplying stashed changes..." -ForegroundColor Yellow
         git stash pop
     }
 
+    # Push changes
     Write-Host "Pushing changes to $currentBranch..." -ForegroundColor Yellow
     git push
 
@@ -1083,9 +1107,6 @@ df$($PSStyle.Reset) - Shows volume information
 export <name> <value>$($PSStyle.Reset) - Sets environment variable
 
 
-
-
-
 Use '$($PSStyle.Foreground.Magenta)Show-Help$($PSStyle.Reset)' to display this help message again.
 "@
 Write-Host $helpText
@@ -1099,13 +1120,14 @@ Clear-Host
 
 Import-Module PSReadLine -ErrorAction SilentlyContinue
 
-
 Write-Host "$($PSStyle.Foreground.Yellow)Use 'Show-Help' to display help$($PSStyle.Reset)"
 
 Set-Alias -Name z -Value __zoxide_z -Option AllScope -Scope Global -Force
 Set-Alias -Name zi -Value __zoxide_zi -Option AllScope -Scope Global -Force
 Set-Alias -Name help -Value Help-Command
 Set-Alias -Name gsync -Value sync-git-branch
+Set-Alias -Name g -Value git -Option AllScope -Scope Global -Force
+function gsw { git switch @args }
 Set-Alias -Name rebase -Value rebase-interactive
 Set-Alias -Name su -Value admin
 Set-Alias -Name vim -Value $EDITOR
