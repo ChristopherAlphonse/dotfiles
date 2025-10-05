@@ -121,7 +121,10 @@ $CONFIG = @{
 
 function Write-Step {
     param([string]$Message)
-    Write-Host "`n$Message" -ForegroundColor Cyan
+    Write-Host "`n" -NoNewline
+    Write-Host "🔧 " -NoNewline -ForegroundColor Cyan
+    Write-Host "$Message" -ForegroundColor White
+    Write-Host "─" * 50 -ForegroundColor DarkCyan
 }
 
 function Write-Success {
