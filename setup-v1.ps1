@@ -2,18 +2,137 @@
 
 <#
 .SYNOPSIS
-    Development environment setup script for Windows
+    Development Environment Setup Script v2.0
 
 .DESCRIPTION
+    This script sets up a complete development environment on Windows 10/11.
+    It installs essential development tools, configures PowerShell, VS Code, Git, and more.
 
+.PARAMETER Mode
+    Installation mode: 'Full', 'Minimal', or 'Custom'. Default is 'Full'.
+
+.PARAMETER SkipPackages
+    Comma-separated list of package names to skip during installation.
+
+.PARAMETER SkipExtensions
+    Comma-separated list of VS Code extension names to skip during installation.
+
+.PARAMETER Silent
+    Run in silent mode with minimal user interaction. Default is $false.
+
+.PARAMETER Force
+    Force reinstall packages even if they're already installed. Default is $false.
+
+.PARAMETER ConfigFile
+    Path to custom configuration JSON file. Default uses built-in configuration.
+
+.PARAMETER LogLevel
+    Logging level: 'DEBUG', 'INFO', 'WARNING', 'ERROR'. Default is 'INFO'.
+
+.EXAMPLE
+    .\setup-v1.ps1
+    Runs the complete development environment setup in full mode.
+
+.EXAMPLE
+    .\setup-v1.ps1 -Mode Minimal -Silent
+    Runs minimal installation in silent mode.
+
+.EXAMPLE
+    .\setup-v1.ps1 -SkipPackages "Docker Desktop,Node.js" -SkipExtensions "GitLens,Prettier"
+    Skips specific packages and extensions.
+
+.EXAMPLE
+    .\setup-v1.ps1 -ConfigFile "C:\MyConfig\custom-config.json" -LogLevel DEBUG
+    Uses custom configuration file with debug logging.
 
 .NOTES
     Author: Christopher Alphonse
     Last Updated: 2025-10-04
 #>
 
+param(
+    [ValidateSet('Full', 'Minimal', 'Custom')]
+    [string]$Mode = 'Full',
+    
+    [string]$SkipPackages = '',
+    
+    [string]$SkipExtensions = '',
+    
+    [switch]$Silent = $false,
+    
+    [switch]$Force = $false,
+    
+    [string]$ConfigFile = '',
+    
+    [ValidateSet('DEBUG', 'INFO', 'WARNING', 'ERROR')]
+    [string]$LogLevel = 'INFO'
+)
+
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "Continue"
+
+# ===============================
+# Configuration Management
+# ===============================
+
+function Initialize-Configuration {
+    # Parse command-line parameters
+    $script:ScriptParams = @{
+        Mode = $Mode
+        SkipPackages = if ($SkipPackages) { $SkipPackages -split ',' | ForEach-Object { $_.Trim() } } else { @() }
+        SkipExtensions = if ($SkipExtensions) { $SkipExtensions -split ',' | ForEach-Object { $_.Trim() } } else { @() }
+        Silent = $Silent
+        Force = $Force
+        ConfigFile = $ConfigFile
+        LogLevel = $LogLevel
+    }
+    
+    # Load custom configuration if provided
+    if ($script:ScriptParams.ConfigFile -and (Test-Path $script:ScriptParams.ConfigFile)) {
+        try {
+            $customConfig = Get-Content $script:ScriptParams.ConfigFile -Raw | ConvertFrom-Json
+            Write-Host "✅ Loaded custom configuration from: $($script:ScriptParams.ConfigFile)" -ForegroundColor Green
+            return $customConfig
+        }
+        catch {
+            Write-Host "⚠️ Failed to load custom configuration: $_" -ForegroundColor Yellow
+            Write-Host "Using default configuration instead." -ForegroundColor Yellow
+        }
+    }
+    
+    return $null
+}
+
+function Get-InstallationMode {
+    param([string]$Mode)
+    
+    switch ($Mode) {
+        'Minimal' {
+            return @{
+                Packages = @('Git', 'Visual Studio Code', 'PowerShell')
+                Extensions = @('ms-vscode.powershell', 'ms-vscode.vscode-json')
+                SkipDotfiles = $false
+                SkipVSCodeExtensions = $false
+            }
+        }
+        'Custom' {
+            return @{
+                Packages = $CONFIG.WingetPackages | Where-Object { $_.Name -notin $script:ScriptParams.SkipPackages }
+                Extensions = $CONFIG.VSCodeExtensions | Where-Object { $_.Name -notin $script:ScriptParams.SkipExtensions }
+                SkipDotfiles = $false
+                SkipVSCodeExtensions = $false
+            }
+        }
+        default { # 'Full'
+            return @{
+                Packages = $CONFIG.WingetPackages
+                Extensions = $CONFIG.VSCodeExtensions
+                SkipDotfiles = $false
+                SkipVSCodeExtensions = $false
+            }
+        }
+    }
+}
 
 $CONFIG = @{
     DotfilesRepo = "https://github.com/ChristopherAlphonse/dotfiles"
@@ -29,8 +148,8 @@ $CONFIG = @{
     PackageManagement = @{
         UseLatestVersions = $true
         UpdateCheck = $true
-        ForceReinstall = $false
-        SkipIfInstalled = $true
+        ForceReinstall = $Force
+        SkipIfInstalled = -not $Force
     }
 
     WingetPackages = @(
