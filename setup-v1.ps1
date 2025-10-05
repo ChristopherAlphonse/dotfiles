@@ -1136,6 +1136,11 @@ function Main {
         Write-Log "ERROR" "Setup process terminated"
         exit 1
     }
+    finally {
+        # Test log size and archive if needed
+        Test-LogSize
+        Write-Log "INFO" "Script execution completed"
+    }
 }
 
 Main
