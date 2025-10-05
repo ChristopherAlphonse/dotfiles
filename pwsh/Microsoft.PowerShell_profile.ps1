@@ -24,7 +24,7 @@ $updateInterval = [math]::truncate(365 /  2)
 if ($debug) {
     Write-Host "#######################################" -ForegroundColor Red
     Write-Host "#           Debug mode enabled        #" -ForegroundColor Red
-    Write-Host "#          ONLY FOR DEVELOPMENT       #" -ForegroundColor Redx
+    Write-Host "#          ONLY FOR DEVELOPMENT       #" -ForegroundColor Red
     Write-Host "#                                     #" -ForegroundColor Red
     Write-Host "#       IF YOU ARE NOT DEVELOPING     #" -ForegroundColor Red
     Write-Host "#       JUST RUN \`Update-Profile\`     #" -ForegroundColor Red
@@ -85,10 +85,7 @@ function Invoke-FuzzyHistory {
     }
 }
 
-# Set aliases for fzf functions
-Set-Alias -Name fe -Value Invoke-FuzzyEdit
-Set-Alias -Name fcd -Value Invoke-FuzzyCd
-Set-Alias -Name fh -Value Invoke-FuzzyHistory
+# fzf aliases moved to profile.d/aliases.ps1
 
 
 
@@ -435,253 +432,14 @@ function trash($path) {
     }
 }
 
+# Git helper functions moved to profile.d/git.ps1
 <#
-.SYNOPSIS
-Performs an interactive rebase for the specified number of commits.
-.DESCRIPTION
-Initiates an interactive Git rebase session for the last N commits.
-.PARAMETER count
-The number of commits to include in the interactive rebase.
-.EXAMPLE
-rebase-interactive 3
+Note: all git helper functions (rebase-interactive, resolve-git-conflict, sync-git-branch,
+gs, ga, gc, gp, gcl, gcom, lazyg, rebase-f, etc.) have been moved to:
+	%c\Users\%USERNAME%\Documents\PowerShell\profile.d\git.ps1
+
+Remove this comment and edit profile.d/git.ps1 to update the git helpers.
 #>
-function rebase-interactive {
-    param(
-        [Parameter(Mandatory = $true)]
-        [int]$count
-    )
-
-    try {
-        git rebase -i HEAD~$count
-        Write-Output "Interactive rebase started for the last $count commits."
-    } catch {
-        Write-Error "An error occurred while attempting the interactive rebase: $_"
-    }
-}
-
-<#
-.SYNOPSIS
-Interactively resolves Git merge conflicts.
-.DESCRIPTION
-Provides an interactive interface to resolve Git merge conflicts one file at a time.
-Opens each conflicted file in the configured editor and marks it as resolved after fixing.
-.NOTES
-Requires git and a configured editor ($EDITOR).
-#>
-function resolve-git-conflict {
-    # Check if we're in a git repository
-    if (-not (Test-Path .git)) {
-        Write-Host "Error: Not a git repository" -ForegroundColor Red
-        return
-    }
-
-    # Get list of files with merge conflicts
-    $conflictedFiles = git diff --name-only --diff-filter=U
-
-    if (-not $conflictedFiles) {
-        Write-Host "No merge conflicts found." -ForegroundColor Green
-        return
-    }
-
-    Write-Host "Files with merge conflicts:" -ForegroundColor Yellow
-    $index = 1
-    $fileList = @()
-
-    foreach ($file in $conflictedFiles) {
-        Write-Host "$index`: $file" -ForegroundColor Cyan
-        $fileList += $file
-        $index++
-    }
-
-    do {
-        $choice = Read-Host "`nEnter the number of the file to resolve (or 'q' to quit)"
-
-        if ($choice -eq 'q') {
-            return
-        }
-
-        if ($choice -match '^\d+$' -and [int]$choice -ge 1 -and [int]$choice -le $fileList.Count) {
-            $selectedFile = $fileList[$choice - 1]
-
-            # Open the file in the default editor
-            Write-Host "Opening $selectedFile in $EDITOR..." -ForegroundColor Yellow
-            & $EDITOR $selectedFile
-
-            $resolveChoice = Read-Host "Has the conflict been resolved? (y/n)"
-            if ($resolveChoice -eq 'y') {
-                git add $selectedFile
-                Write-Host "File marked as resolved: $selectedFile" -ForegroundColor Green
-            }
-        } else {
-            Write-Host "Invalid selection. Please try again." -ForegroundColor Red
-        }
-
-        # Check if there are still conflicts
-        $conflictedFiles = git diff --name-only --diff-filter=U
-    } while ($conflictedFiles)
-
-    Write-Host "`nAll conflicts have been resolved!" -ForegroundColor Green
-    Write-Host "You can now continue with your merge by running 'git commit'" -ForegroundColor Yellow
-}
-
-<#
-.SYNOPSIS
-Synchronizes the current branch with main/master.
-.DESCRIPTION
-Stashes changes, switches to main/master, pulls latest changes, switches back to original branch,
-reapplies stashed changes, and pushes to remote.
-.NOTES
-Automatically detects whether the repository uses main or master as the default branch.
-#>
-function sync-git-branch {
-    # Store the current branch name
-    $currentBranch = git rev-parse --abbrev-ref HEAD
-
-    if ($currentBranch -eq "main" -or $currentBranch -eq "master") {
-        Write-Host "Already on main/master branch. Just pulling latest changes..." -ForegroundColor Yellow
-        git pull
-        return
-    }
-
-    Write-Host "Current branch: $currentBranch" -ForegroundColor Cyan
-    Write-Host "Stashing any uncommitted changes..." -ForegroundColor Yellow
-    git stash push -m "sync-git-branch automatic stash"
-
-    # Switch to main and pull
-    Write-Host "Switching to main branch and pulling latest changes..." -ForegroundColor Yellow
-
-    $mainExists = git branch --list main
-    $branchToSync = if ($mainExists) { "main" } else { "master" }
-
-    if (git branch --list main) {
-        $branchToSync = "main"
-    } elseif (git branch --list master) {
-        $branchToSync = "master"
-    } else {
-        Write-Host "Error: Neither 'main' nor 'master' branches exist." -ForegroundColor Red
-        return
-    }
-
-
-    Write-Host "Using '$branchToSync' as the base branch." -ForegroundColor Cyan
-
-    git checkout $branchToSync
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "Error: Could not switch to $branchToSync branch" -ForegroundColor Red
-        return
-    }
-
-    git pull
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "Error: Could not pull latest changes from $branchToSync" -ForegroundColor Red
-        git checkout $currentBranch
-        return
-    }
-
-    # Switch back to original branch
-    Write-Host "Switching back to $currentBranch..." -ForegroundColor Yellow
-    git checkout $currentBranch
-
-    # Pop stashed changes if any
-    $stashList = git stash list | Select-String "sync-git-branch automatic stash"
-    if ($stashList) {
-        Write-Host "Reapplying stashed changes..." -ForegroundColor Yellow
-        git stash pop
-    }
-
-    # Push changes
-    Write-Host "Pushing changes to $currentBranch..." -ForegroundColor Yellow
-    git push
-
-    Write-Host "Branch synchronization complete!" -ForegroundColor Green
-}
-
-<#
-.SYNOPSIS
-Shows Git repository status.
-.DESCRIPTION
-Wrapper for 'git status' command.
-#>
-function gs {
-    git status
-}
-
-<#
-.SYNOPSIS
-Stages all changes in Git repository.
-.DESCRIPTION
-Wrapper for 'git add .' command.
-#>
-function ga {
-    git add .
-}
-
-<#
-.SYNOPSIS
-Creates a Git commit with the specified message.
-.PARAMETER m
-The commit message.
-.DESCRIPTION
-Wrapper for 'git commit -m' command.
-#>
-function gc {
-    param($m)
-    git commit -m "$m"
-}
-
-<#
-.SYNOPSIS
-Pushes changes to remote Git repository.
-.DESCRIPTION
-Wrapper for 'git push' command.
-#>
-function gp {
-    git push
-}
-
-<#
-.SYNOPSIS
-Clones a Git repository.
-.DESCRIPTION
-Wrapper for 'git clone' command.
-#>
-function gcl {
-    param($url)
-    git clone "$url"
-}
-
-<#
-.SYNOPSIS
-Stages all changes and creates a commit.
-.DESCRIPTION
-Combines 'git add .' and 'git commit -m' into a single command.
-.PARAMETER args
-The commit message.
-#>
-function gcom {
-    param($args)
-    git add .
-    git commit -m "$args"
-}
-
-<#
-.SYNOPSIS
-Performs an interactive add, commit, and push.
-.DESCRIPTION
-Interactively stages changes, creates a commit, and pushes to remote.
-.PARAMETER args
-The commit message.
-#>
-function lazyg {
-    param($args)
-    git add -p
-    git commit -m "$args"
-    git push
-}
-
-
-
-
 function rebase-f {
 <#
 .SYNOPSIS
@@ -839,45 +597,7 @@ function file-action {
 
 
 
-function Help-Command {
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$Name
-    )
 
-    $commandDocs = @{
-        "resolve-git-conflict" = @{
-            Description = "Guides you through resolving merge conflicts interactively."
-            Example = "fix-merge"
-        }
-        "sync-git-branch" = @{
-            Description = "Syncs your current branch with 'main' or 'master', including stashing and reapplying changes."
-            Example = "gsync"
-        }
-        "rebase-interactive" = @{
-            Description = "Starts an interactive rebase for the last N commits."
-            Example = "rebase 3"
-        }
-        "Show-Help" = @{
-            Description = "Displays a list of all available custom PowerShell functions."
-            Example = "Show-Help"
-        }
-        "rebase-f" = @{
-    Description = "Rebases a feature branch onto a target branch and force-pushes the result."
-    Example     = "rebase-f -t main -f my-feature-branch"
-}
-
-    }
-
-    if ($commandDocs.ContainsKey($Name)) {
-        $info = $commandDocs[$Name]
-        Write-Host "`n$($PSStyle.Foreground.Green)$Name`n$($PSStyle.Reset)------------------------"
-        Write-Host "$($PSStyle.Foreground.Yellow)Description:$($PSStyle.Reset) $($info.Description)"
-        Write-Host "$($PSStyle.Foreground.Yellow)Example:    $($PSStyle.Reset) $($info.Example)`n"
-    } else {
-        Write-Host "$($PSStyle.Foreground.Red)No help found for '$Name'.$($PSStyle.Reset)"
-    }
-}
 
 function sysinfo { Get-ComputerInfo }
 
@@ -885,47 +605,45 @@ function flushNetwork {
     Write-Host "Starting full network reset...`n"
 
     try {
-        # Flush DNS Cache
+
         ipconfig /flushdns
         Write-Host "ipconfig /flushdns completed."
 
-        # Release current IP configuration
         ipconfig /release
         Write-Host "ipconfig /release completed."
 
-        # Renew IP configuration
+
         ipconfig /renew
         Write-Host "ipconfig /renew completed."
 
-        # Reset IPv4 TCP/IP stack
+
         netsh int ip reset
         Write-Host "netsh int ip reset completed."
 
-        # Reset IPv6 TCP/IP stack (optional)
+
         netsh int ipv6 reset
         Write-Host "netsh int ipv6 reset completed."
 
-        # Reset Winsock (Windows Sockets)
+
         netsh winsock reset
         Write-Host "netsh winsock reset completed."
 
-        # Clear proxy settings (optional)
+
         netsh winhttp reset proxy
         Write-Host "netsh winhttp reset proxy completed."
 
-        # Restart all enabled network adapters
         Get-NetAdapter | Where-Object { $_.Status -eq "Up" } | Restart-NetAdapter -Confirm:$false
         Write-Host "Active network adapters restarted."
 
-        # Restart Network Location Awareness service
+
         Restart-Service nlasvc -Force
         Write-Host "Network Location Awareness (nlasvc) restarted."
 
-        # Flush DNS cache again using PowerShell native cmdlet
+
         Clear-DnsClientCache
         Write-Host "PowerShell DNS client cache cleared."
 
-        # Restart DNS Client service with Force
+
         Restart-Service dnscache -Force
         Write-Host "DNS Client (dnscache) service restarted."
 
@@ -946,16 +664,16 @@ $PSReadLineOptions = @{
     HistoryNoDuplicates = $true
     HistorySearchCursorMovesToEnd = $true
     Colors = @{
-        Command = '#87CEEB'  # SkyBlue (pastel)
-        Parameter = '#98FB98'  # PaleGreen (pastel)
-        Operator = '#FFB6C1'  # LightPink (pastel)
-        Variable = '#DDA0DD'  # Plum (pastel)
-        String = '#FFDAB9'  # PeachPuff (pastel)
-        Number = '#B0E0E6'  # PowderBlue (pastel)
-        Type = '#F0E68C'  # Khaki (pastel)
-        Comment = '#D3D3D3'  # LightGray (pastel)
-        Keyword = '#8367c7'  # Violet (pastel)
-        Error = '#FF6347'  # Tomato (keeping it close to red for visibility)
+        Command = '#87CEEB'
+        Parameter = '#98FB98'
+        Operator = '#FFB6C1'
+        Variable = '#DDA0DD'
+        String = '#FFDAB9'
+        Number = '#B0E0E6'
+        Type = '#F0E68C'
+        Comment = '#D3D3D3'
+        Keyword = '#8367c7'
+        Error = '#FF6347'
     }
     PredictionSource = 'History'
     PredictionViewStyle = 'ListView'
@@ -982,7 +700,7 @@ Set-PSReadLineOption -AddToHistoryHandler {
 }
 
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin
-# Set-PSReadLineOption -MaximumHistoryCount 10000
+Set-PSReadLineOption -MaximumHistoryCount 20000
 
 $scriptblock = {
     param($wordToComplete, $commandAst, $cursorPosition)
@@ -1037,80 +755,7 @@ if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     }
 }
 
-function Show-Help {
-    $helpText = @"
-$($PSStyle.Foreground.Cyan)PowerShell Profile Help$($PSStyle.Reset)
-$($PSStyle.Foreground.Yellow)=======================$($PSStyle.Reset)
 
-$($PSStyle.Foreground.Green)Profile Management:$($PSStyle.Reset)
-Update-Profile$($PSStyle.Reset) - Updates PowerShell profile from the remote repository
-Update-PowerShell$($PSStyle.Reset) - Updates PowerShell to the latest version
-Edit-Profile (ep)$($PSStyle.Reset) - Opens profile in default editor
-reload-profile$($PSStyle.Reset) - Reloads the current PowerShell profile
-
-$($PSStyle.Foreground.Green)File Operations:$($PSStyle.Reset)
-touch <file>$($PSStyle.Reset) - Creates an empty file
-ff$($PSStyle.Reset) - Fuzzy finds files and opens in VS Code
-folder <name>$($PSStyle.Reset) - Creates a new directory with specified name and changes to it
-nf <name>$($PSStyle.Reset) - Creates a new file with specified name
-unzip <file>$($PSStyle.Reset) - Extracts zip file to current directory
-hb <file>$($PSStyle.Reset) - Uploads file content to hastebin and returns URL
-mkcd <dir>$($PSStyle.Reset) - Creates and changes to a new directory
-trash <path>$($PSStyle.Reset) - Moves file/folder to recycle bin
-file-action <from> <to> <method>$($PSStyle.Reset) - Copies or moves a file based on the selected method
-
-$($PSStyle.Foreground.Green)Git Operations:$($PSStyle.Reset)
-sync-git-branch (gsync)$($PSStyle.Reset) - Syncs current branch with main/master
-resolve-git-conflict (fix-merge)$($PSStyle.Reset) - Interactive merge conflict resolver
-gs$($PSStyle.Reset) - Shows git status
-ga$($PSStyle.Reset) - Stages all changes (git add .)
-gc <message>$($PSStyle.Reset) - Commits with message
-gp$($PSStyle.Reset) - Pushes to remote
-g$($PSStyle.Reset) - Changes to GitHub directory
-gcl <url>$($PSStyle.Reset) - Clones a repository
-gcom <message>$($PSStyle.Reset) - Adds all changes and commits
-lazyg <message>$($PSStyle.Reset) - Adds, commits, and pushes changes
-
-$($PSStyle.Foreground.Green)System Operations:$($PSStyle.Reset)
-Clear-Cache$($PSStyle.Reset) - Clears various Windows caches
-Get-PubIP$($PSStyle.Reset) - Shows public IP address
-winutil$($PSStyle.Reset) - Launches Windows utility toolkit
-admin (su)$($PSStyle.Reset) - Runs command with admin privileges
-uptime$($PSStyle.Reset) - Shows system uptime
-sysinfo$($PSStyle.Reset) - Shows detailed system information
-flushNetwork$($PSStyle.Reset) - Clears DNS cache, and network reset
-
-$($PSStyle.Foreground.Green)Directory Navigation:$($PSStyle.Reset)
-docs$($PSStyle.Reset) - Changes to Documents folder
-dtop$($PSStyle.Reset) - Changes to Desktop folder
-la$($PSStyle.Reset) - Lists all files with details
-ll$($PSStyle.Reset) - Lists all files including hidden
-
-$($PSStyle.Foreground.Green)Process Management:$($PSStyle.Reset)
-k9 <name>$($PSStyle.Reset) - Stops process by name
-pkill <name>$($PSStyle.Reset) - Stops process by name
-pgrep <name>$($PSStyle.Reset) - Lists processes by name
-
-$($PSStyle.Foreground.Green)File Content Operations:$($PSStyle.Reset)
-grep <regex> [dir]$($PSStyle.Reset) - Searches for pattern in files
-sed <file> <find> <replace>$($PSStyle.Reset) - Replaces text in file
-head <path> [n]$($PSStyle.Reset) - Shows first n lines (default 10)
-tail <path> [n] [-f]$($PSStyle.Reset) - Shows last n lines (default 10)
-
-$($PSStyle.Foreground.Green)Clipboard Operations:$($PSStyle.Reset)
-cpy <text>$($PSStyle.Reset) - Copies text to clipboard
-pst$($PSStyle.Reset) - Pastes from clipboard
-
-$($PSStyle.Foreground.Green)System Information:$($PSStyle.Reset)
-which <name>$($PSStyle.Reset) - Shows command path
-df$($PSStyle.Reset) - Shows volume information
-export <name> <value>$($PSStyle.Reset) - Sets environment variable
-
-
-Use '$($PSStyle.Foreground.Magenta)Show-Help$($PSStyle.Reset)' to display this help message again.
-"@
-Write-Host $helpText
-}
 
 if (Test-Path "$PSScriptRoot\custom.ps1") {
     Invoke-Expression -Command "& `"$PSScriptRoot\custom.ps1`""
@@ -1120,23 +765,27 @@ Clear-Host
 
 Import-Module PSReadLine -ErrorAction SilentlyContinue
 
+
 Write-Host "$($PSStyle.Foreground.Yellow)Use 'Show-Help' to display help$($PSStyle.Reset)"
 
-Set-Alias -Name z -Value __zoxide_z -Option AllScope -Scope Global -Force
-Set-Alias -Name zi -Value __zoxide_zi -Option AllScope -Scope Global -Force
-Set-Alias -Name help -Value Help-Command
-Set-Alias -Name gsync -Value sync-git-branch
-Set-Alias -Name g -Value git -Option AllScope -Scope Global -Force
-function gsw { git switch @args }
-Set-Alias -Name rebase -Value rebase-interactive
-Set-Alias -Name su -Value admin
-Set-Alias -Name vim -Value $EDITOR
-Set-Alias -Name ep -Value Edit-Profile
-Set-Alias -Name fix-merge -Value resolve-git-conflict
-Set-Alias -Name rbfast -Value rebase-f
-Set-Alias -Name reload -Value reload-profile
-Set-Alias -Name help -Value Show-Help
-Set-Alias -Name details -Value fastfetch
+
+$profileD = Join-Path -Path $env:USERPROFILE -ChildPath "Documents\PowerShell\profile.d"
+if (-not (Test-Path $profileD)) {
+    New-Item -ItemType Directory -Path $profileD -Force | Out-Null
+}
+
+
+$coreOrder = @('git.ps1','help.ps1','aliases.ps1')
+foreach ($name in $coreOrder) {
+    $path = Join-Path $profileD $name
+    if (Test-Path $path) {
+        try { . $path } catch { Write-Warning ("Failed to load {0}: {1}" -f $path, $_.Exception.Message) }
+    }
+}
+
+Get-ChildItem -Path $profileD -Filter '*.ps1' | Where-Object { $coreOrder -notcontains $_.Name } | Sort-Object Name | ForEach-Object {
+    try { . $_.FullName } catch { Write-Warning (("Failed to load {0}: {1}" -f $_.FullName, $_.Exception.Message)) }
+}
 
 $env:FZF_DEFAULT_OPTS = " --height 100% --layout reverse --border"
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"

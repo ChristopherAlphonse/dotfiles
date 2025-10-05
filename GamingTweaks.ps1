@@ -1,29 +1,6 @@
 # EsportsTweakPack_Final.ps1
-# Author: ChrisOS
-# Purpose: Apply competitive-level system tweaks for Windows 11
-
-
-        CCCCCCCCCCCCCHHHHHHHHH     HHHHHHHHHRRRRRRRRRRRRRRRRR   IIIIIIIIII   SSSSSSSSSSSSSSS           OOOOOOOOO        SSSSSSSSSSSSSSS
-     CCC::::::::::::CH:::::::H     H:::::::HR::::::::::::::::R  I::::::::I SS:::::::::::::::S        OO:::::::::OO    SS:::::::::::::::S
-   CC:::::::::::::::CH:::::::H     H:::::::HR::::::RRRRRR:::::R I::::::::IS:::::SSSSSS::::::S      OO:::::::::::::OO S:::::SSSSSS::::::S
-  C:::::CCCCCCCC::::CHH::::::H     H::::::HHRR:::::R     R:::::RII::::::IIS:::::S     SSSSSSS     O:::::::OOO:::::::OS:::::S     SSSSSSS
- C:::::C       CCCCCC  H:::::H     H:::::H    R::::R     R:::::R  I::::I  S:::::S                 O::::::O   O::::::OS:::::S
-C:::::C                H:::::H     H:::::H    R::::R     R:::::R  I::::I  S:::::S                 O:::::O     O:::::OS:::::S
-C:::::C                H::::::HHHHH::::::H    R::::RRRRRR:::::R   I::::I   S::::SSSS              O:::::O     O:::::O S::::SSSS
-C:::::C                H:::::::::::::::::H    R:::::::::::::RR    I::::I    SS::::::SSSSS         O:::::O     O:::::O  SS::::::SSSSS
-C:::::C                H:::::::::::::::::H    R::::RRRRRR:::::R   I::::I      SSS::::::::SS       O:::::O     O:::::O    SSS::::::::SS
-C:::::C                H::::::HHHHH::::::H    R::::R     R:::::R  I::::I         SSSSSS::::S      O:::::O     O:::::O       SSSSSS::::S
-C:::::C                H:::::H     H:::::H    R::::R     R:::::R  I::::I              S:::::S     O:::::O     O:::::O            S:::::S
- C:::::C       CCCCCC  H:::::H     H:::::H    R::::R     R:::::R  I::::I              S:::::S     O::::::O   O::::::O            S:::::S
-  C:::::CCCCCCCC::::CHH::::::H     H::::::HHRR:::::R     R:::::RII::::::IISSSSSSS     S:::::S     O:::::::OOO:::::::OSSSSSSS     S:::::S
-   CC:::::::::::::::CH:::::::H     H:::::::HR::::::R     R:::::RI::::::::IS::::::SSSSSS:::::S      OO:::::::::::::OO S::::::SSSSSS:::::S
-     CCC::::::::::::CH:::::::H     H:::::::HR::::::R     R:::::RI::::::::IS:::::::::::::::SS         OO:::::::::OO   S:::::::::::::::SS
-        CCCCCCCCCCCCCHHHHHHHHH     HHHHHHHHHRRRRRRRR     RRRRRRRIIIIIIIIII SSSSSSSSSSSSSSS             OOOOOOOOO      SSSSSSSSSSSSSSS
-
-
-
-
-
+# Author: Christopher Alphonse
+# Purpose: Apply competitive-level system tweaks
 
 
 
