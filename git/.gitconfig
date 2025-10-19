@@ -1,6 +1,12 @@
 [diff "astextplain"]
     textconv = astextplain
 
+[color]
+	ui = true
+  	status = auto
+  	branch = auto
+  	interactive = auto
+
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
@@ -33,17 +39,16 @@
 
 [init]
     defaultBranch = main
-# Changed from master to main for consistency
+
 
 [user]
     name = Christopher Alphonse
-    email = christopheralphonse96@gmail.com
 
 [github]
     user = christopheralphonse
 
 [merge]
-    ff = only  # Fast forward only
+    ff = only
 
 [diff]
     mnemonicprefix = true
@@ -60,8 +65,7 @@
     circle = !gh pr checks
     open = !gh browse
     pr = !gh pr create --fill
-    rebase = rebase  # Fixed misspellings
-    rubocop = "!git status --porcelain | cut -c4- | grep '.rb' | xargs bundle exec rubocop"
+    lg = "log --all --oneline -5 --decorate --graph"
     s = status --short --branch
     spec = "!bundle exec rspec `git ls-files --modified --others spec | grep _spec`"
     unstage = reset
@@ -72,6 +76,11 @@
     pull = pull
     branch = branch
 	tree = ! git ls-tree --full-name --name-only -t -r HEAD | sed -e \"s/[^-][^\\/]*\\//   |/g\" -e \"s/|\\([^ ]\\)/|-- \\1/\"
+	gs = status
+	ga = add
+	gc = commit
+	gp = push
+	gl = pull origin
 [push]
     default = simple
     autoSetupRemote = true
