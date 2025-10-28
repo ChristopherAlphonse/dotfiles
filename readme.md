@@ -19,7 +19,8 @@ This setup provides a complete development environment that includes:
 - **System Info**: Fastfetch for beautiful system information display
 - **Gaming Optimizations**: Performance tweaks for competitive gaming
 
-<img width="1888" height="1365" alt="image" src="https://github.com/user-attachments/assets/291d4a10-9192-4eff-8cd4-2ad53212cb4a" />
+<img width="2180" height="1368" alt="image" src="https://github.com/user-attachments/assets/09235597-e318-453a-8a71-2787a8a454c0" />
+
 
 
 ## Quick Setup
@@ -351,4 +352,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Note**: These configurations are optimized for Windows with PowerShell Core and VS Code. While some components may work on other platforms, they are primarily designed for Windows development workflows.
+
 
