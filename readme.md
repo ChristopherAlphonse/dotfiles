@@ -28,6 +28,12 @@ This setup provides a complete development environment that includes:
 ###  Fluent search | Yasb | Surcrose wallpaper
 <img width="3440" height="1440" alt="image" src="https://github.com/user-attachments/assets/087c1f76-4187-4ee8-8f7b-472987025238" />
 
+### Terminal | PWSH 
+<img width="3440" height="1440" alt="image" src="https://github.com/user-attachments/assets/2e96c3a8-3e69-4f18-9eb6-3d4e02c27e2d" />
+
+### Terminal | WSL | ZSH
+<img width="1704" height="1368" alt="image" src="https://github.com/user-attachments/assets/92c49ccb-2005-47e2-9dd6-2ad8720e17b8" />
+
 
 
 
@@ -360,6 +366,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Note**: These configurations are optimized for Windows with PowerShell Core and VS Code. While some components may work on other platforms, they are primarily designed for Windows development workflows.
+
 
 
 
