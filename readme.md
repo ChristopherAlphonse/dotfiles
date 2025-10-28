@@ -22,7 +22,8 @@ This setup provides a complete development environment that includes:
 ### VS CODE
 <img width="2316" height="1504" alt="pretty_snap_2025_9_27_23_33" src="https://github.com/user-attachments/assets/5f213276-20dc-4d00-85a5-ff5e2fd89c4c" />
 
-### Tiling
+### Tiling | Komorebi
+
 <img width="3440" height="1440" alt="Screenshot 2025-10-27 233747" src="https://github.com/user-attachments/assets/b70bb871-0edc-47bf-acac-86bcffd1685a" />
 
 ###  Fluent search | Yasb | Surcrose wallpaper
@@ -366,6 +367,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Note**: These configurations are optimized for Windows with PowerShell Core and VS Code. While some components may work on other platforms, they are primarily designed for Windows development workflows.
+
 
 
 
