@@ -1,114 +1,245 @@
-/* VSCode Custom Theme CSS */
-
-.codicon-arrow-right,
-.codicon-arrow-left {
-    display: none !important;
+/* Root Variables */
+:root {
+  --vscode-editorLineNumber-foreground: #746f77;
+  --vscode-editorLineNumber-activeForeground: #c6c6c6;
+  --vscode-accent-color: #2BA59D;
 }
 
-.hover-row,
-.status-bar {
-    box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.3) !important;
-    padding: 0.625em !important;
-    background: rgba(40, 42, 54, 0.5) !important;
-    backdrop-filter: blur(0.375em) !important;
+/* Quick Input Widget */
+.quick-input-widget {
+  transform: translateY(-50%) !important;
+  top: 50% !important;
+  padding: 10px 10px 18px 10px !important;
+  background-color: #292c35 !important;
+  border-radius: 15px !important;
+  font-family: MesloLGM Nerd Font, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", FiraCode Nerd Font, FiraMono Nerd Font, MesloGLDZ Nerd Font, Monaco, 'Courier New', monospace Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+  color: #fff;
+  font-size: 13px !important;
+  font-size: inherit;
 }
 
- .line-numbers {
-    /* position: relative !important; */
-    width: .5em !important;
-    font-size: .9em ;
-    font-family: monospace !important;
-    opacity: 0.2;
-}
-
-.monaco-editor .scroll-decoration {
-    box-shadow: 0em 0em 1.25em rgba(0, 0, 0, 0.75) !important;
-    top: -0.375em !important;
-}
-
-.monaco-editor-hover,
-.monaco-hover {
-    box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.5) !important;
-    background: rgba(40, 42, 54, 0.5) !important;
-    backdrop-filter: blur(0.375em) !important;
-    border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;
-}
-
-.monaco-inputbox input::placeholder {
-    color: rgba(255, 255, 255, 0.5) !important;
+/* Monaco List Rows */
+.monaco-list-rows {
+  background: transparent !important;
 }
 
 .monaco-list-row:hover {
-    background: rgba(0, 0, 0, 0.2) !important;
-}
-
-.monaco-list-rows {
-    background: transparent !important;
-    font-size: .9em !important;
-}
-
-.monaco-list.list_id_1 .monaco-list-row.selected {
-    background-color: #4f5971 !important;
-    opacity: 1 !important;
-    border-top: 0.0625em #727b90 solid;
-    border-bottom: 0.0625em #727b90 solid;
-}
-
-.monaco-list.list_id_1 .monaco-list-row.selected .label-name {
-    color: #fff !important;
-    opacity: 1 !important;
+  background: #21252b !important;
 }
 
 .notifications-toasts .monaco-list-row:hover {
-    background: none !important;
+  background: none !important;
 }
 
-.part.sidebar {
-    box-shadow: 0em 0em 3.125em rgba(0, 0, 0, 0.25);
+.monaco-list-row.focused {
+  background-color: #21252b60 !important;
 }
 
+/* Synthetic Focus */
+.synthetic-focus {
+  outline-color: rgba(50, 50, 50, 1) !important;
+}
+
+/* Quick Input Label */
+.quick-input-widget .monaco-label {
+  font-size: 14px !important;
+}
+
+/* Quick Input Filter */
 .quick-input-filter .monaco-inputbox {
-    border-radius: 0.5em !important;
-    padding: 0.5em !important;
-    border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;
-    background: rgba(40, 42, 54, 0.5) !important;
-    backdrop-filter: blur(0.375em) !important;
-    margin-bottom: 1em !important;
+  border-radius: 12px !important;
+  padding: 8px !important;
+  border: none !important;
+  background-color: #21252b !important;
+  font-size: 14px !important;
+  margin-bottom: 16px !important;
 }
 
-.quick-input-widget {
-    transform: translateY(-50%) !important;
-    top: 50% !important;
-    box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.5) !important;
-    padding: 0.75em 0.75em 1.25em 0.75em !important;
-    background: rgba(40, 42, 54, 0.5) !important;
-    backdrop-filter: blur(0.375em) !important;
-    border-radius: 0.5em !important;
-    border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;
+/* Command Blur */
+#command-blur {
+  position: absolute !important;
+  width: 100% !important;
+  height: calc(100% - 22px) !important;
+  background: #21252b60 !important;
+  top: 0 !important;
+  left: 0 !important;
+  backdrop-filter: blur(1.75px) !important;
 }
 
+/* Placeholder Styling */
+.monaco-inputbox input::placeholder {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Command Center */
+.command-center-center {
+  width: auto !important;
+  width: 250px !important;
+  display: auto;
+}
+
+/* Title Label */
+.title-label h2 {
+  font-size: 0.9em !important;
+  font-weight: 600 !important;
+}
+
+.title-label h2::before {
+  content: "$";
+}
+
+/* Codicon Arrows */
+.codicon-arrow-right,
+.codicon-arrow-left {
+  display: none !important;
+}
+
+/* Notifications Toasts */
+.monaco-workbench > .notifications-toasts {
+  bottom: 30px !important;
+  right: 8px !important;
+}
+
+.monaco-workbench .notifications-list-container .notification-list-item {
+  background-color: #292c35 !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+  height: 100% !important;
+  padding: 17.5px 12px 7.5px 12px !important;
+}
+
+.monaco-workbench .notifications-list-container .notification-list-item:hover {
+  color: #cccccc !important;
+}
+
+.monaco-workbench .notifications-list-container .notification-list-item .notification-list-item-buttons-container .monaco-text-button {
+  background-color: #21252b !important;
+  min-width: 100px !important;
+  min-height: 35px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  display: flex;
+}
+
+.monaco-workbench .notifications-list-container .notification-list-item .notification-list-item-buttons-container .monaco-text-button:hover {
+  background-color: #1e2429 !important;
+}
+
+.monaco-workbench .notifications-list-container .notification-list-item .notification-list-item-source {
+  font-weight: bold !important;
+}
+
+.notification-toast-container .monaco-list-rows {
+  height: 138px !important;
+  display: auto;
+}
+
+.notification-toast-container .monaco-list-row {
+  height: 138px !important;
+  display: auto;
+}
+
+.monaco-workbench .notifications-list-container .notification-list-item .notification-list-item-message {
+  margin-left: 10px !important;
+  margin-right: 9px !important;
+}
+
+/* Line Numbers */
+.line-numbers {
+  font-size: 1.2em;
+  opacity: 0.5;
+  font-family: "JetBrains Mono", monospace !important;
+  margin-top: 2em !important;
+}
+
+/* Sidebar */
 .sidebar > .composite {
-    height: 2.6em !important;
+  height: 2.6em !important;
 }
 
-.slider {
-    position: absolute !important;
-    right: 0.0625em !important;
-    width: 1em !important;
-    background: #2BA59D !important;
-    left: auto !important;
-}
-
-.title-actions,
+/* Title Bar */
 .title-label,
 .titlebar-center,
-.titlebar-right {
-    display: none !important;
+.titlebar-left,
+.title-actions {
+  color: var(--vscode-accent-color);
 }
 
+.titlebar-right {
+  display: none !important;
+}
+
+/* Status Bar */
 .status-bar {
-    background: rgba(40, 42, 54, 0.6) !important;
-    backdrop-filter: blur(0.375em) !important;
-    opacity: 0.4 !important;
-    box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.3) !important;
+  background: rgba(40, 42, 54, 0.6) !important;
+  backdrop-filter: blur(0.375em) !important;
+  opacity: 0.4 !important;
+  box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.3) !important;
+}
+
+/* General Font */
+* {
+  font-family: 'Zed Sans';
+}
+
+/* Action Items */
+.action-item.menu-entry {
+  display: none !important;
+}
+
+.action-item.command-center-center {
+  background-color: transparent !important;
+  border: none !important;
+  width: fit-content !important;
+}
+
+/* Quick Input Header */
+.quick-input-header {
+  padding: 0 !important;
+}
+
+.quick-input-header > .quick-input-and-message .monaco-inputbox {
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.quick-input-header > .quick-input-and-message > .quick-input-filter > .quick-input-box input {
+  padding: 6px 8px !important;
+}
+
+/* Quick Input List */
+.quick-input-list > .monaco-list > .monaco-scrollable-element {
+  padding: 4px 6px !important;
+}
+
+/* Status Bar Height */
+div:has(> .statusbar) {
+  height: 25px !important;
+  top: auto !important;
+  bottom: 0 !important;
+}
+
+.statusbar {
+  height: 25px !important;
+}
+
+/* Search Icon */
+.codicon.codicon-search.search-icon {
+  display: none !important;
+}
+
+/* Chat Sparkle */
+.codicon-chat-sparkle:before {
+  content: '𝑂 \00a0 Ω \00a0 Θ';
+  font-size: 1.5em;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  letter-spacing: 3px;
+}
+
+/* Pane Composite Part */
+.monaco-workbench .pane-composite-part > .title > .composite-bar-container,
+.monaco-workbench .pane-composite-part > .header-or-footer > .composite-bar-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
