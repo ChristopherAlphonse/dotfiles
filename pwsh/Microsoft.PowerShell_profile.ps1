@@ -19,7 +19,7 @@ $debug = $false
 $timeFilePath = "$env:USERPROFILE\Documents\PowerShell\LastExecutionTime.txt"
 
 # Define the update interval in days, set to -1 to always check
-$updateInterval = [math]::truncate(365 /  2)
+$updateInterval = [math]::truncate(365 / 2)
 
 if ($debug) {
     Write-Host "#######################################" -ForegroundColor Red
@@ -110,12 +110,15 @@ function Update-Profile {
         if ($newhash.Hash -ne $oldhash.Hash) {
             Copy-Item -Path "$env:temp/Microsoft.PowerShell_profile.ps1" -Destination $PROFILE -Force
             Write-Host "Profile has been updated. Please restart your shell to reflect changes" -ForegroundColor Magenta
-        } else {
+        }
+        else {
             Write-Host "Profile is up to date." -ForegroundColor Green
         }
-    } catch {
+    }
+    catch {
         Write-Error "Unable to check for `$profile updates: $_"
-    } finally {
+    }
+    finally {
         Remove-Item "$env:temp/Microsoft.PowerShell_profile.ps1" -ErrorAction SilentlyContinue
     }
 }
@@ -123,16 +126,18 @@ function Update-Profile {
 # Check if not in debug mode AND (updateInterval is -1 OR file doesn't exist OR time difference is greater than the update interval)
 if (-not $debug -and `
     ($updateInterval -eq -1 -or `
-      -not (Test-Path $timeFilePath) -or `
-      ((Get-Date) - [datetime]::ParseExact((Get-Content -Path $timeFilePath), 'yyyy-MM-dd', $null)).TotalDays -gt $updateInterval)) {
+            -not (Test-Path $timeFilePath) -or `
+        ((Get-Date) - [datetime]::ParseExact((Get-Content -Path $timeFilePath), 'yyyy-MM-dd', $null)).TotalDays -gt $updateInterval)) {
 
     Update-Profile
     $currentTime = Get-Date -Format 'yyyy-MM-dd'
     $currentTime | Out-File -FilePath $timeFilePath
 
-} elseif (-not $debug) {
+}
+elseif (-not $debug) {
     Write-Warning "Profile update skipped. Last update check was within the last $updateInterval day(s)."
-} else {
+}
+else {
     Write-Warning "Skipping profile update check in debug mode"
 }
 
@@ -160,10 +165,12 @@ function Update-PowerShell {
             Write-Host "Updating PowerShell..." -ForegroundColor Yellow
             Start-Process powershell.exe -ArgumentList "-NoProfile -Command winget upgrade Microsoft.PowerShell --accept-source-agreements --accept-package-agreements" -Wait -NoNewWindow
             Write-Host "PowerShell has been updated. Please restart your shell to reflect changes" -ForegroundColor Magenta
-        } else {
+        }
+        else {
             Write-Host "Your PowerShell is up to date." -ForegroundColor Green
         }
-    } catch {
+    }
+    catch {
         Write-Error "Failed to update PowerShell. Error: $_"
     }
 }
@@ -238,9 +245,10 @@ function Test-CommandExists {
 
 # Editor Configuration
 $EDITOR = if (Test-CommandExists nvim) { 'nvim' }
-          elseif (Test-CommandExists code) { 'code' }
-          else { 'notepad' }
-          # Quick Access to Editing the Profile
+elseif (Test-CommandExists code) { 'code' }
+else { 'notepad' }
+Set-Variable -Name 'EDITOR' -Value $EDITOR -Option ReadOnly -Scope Global
+# Quick Access to Editing the Profile
 <#
 .SYNOPSIS
 Creates an empty file.
@@ -278,7 +286,7 @@ function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip).Content }
 
 # Open WinUtil full-release
 function winutil {
-    irm https://christitus.com/win | iex
+    Invoke-RestMethod https://christitus.com/win | Invoke-Expression
 }
 
 # System Utilities
@@ -286,7 +294,8 @@ function admin {
     if ($args.Count -gt 0) {
         $argList = $args -join ' '
         Start-Process wt -Verb runAs -ArgumentList "pwsh.exe -NoExit -Command $argList"
-    } else {
+    }
+    else {
         Start-Process wt -Verb runAs
     }
 }
@@ -297,25 +306,31 @@ function uptime {
         if ($PSVersionTable.PSVersion.Major -eq 5) {
             $lastBoot = (Get-WmiObject win32_operatingsystem).LastBootUpTime
             $bootTime = [System.Management.ManagementDateTimeConverter]::ToDateTime($lastBoot)
-        } else {
+        }
+        else {
             $lastBootStr = net statistics workstation | Select-String "since" | ForEach-Object { $_.ToString().Replace('Statistics since ', '') }
             # check date format
             if ($lastBootStr -match '^\d{2}/\d{2}/\d{4}') {
                 $dateFormat = 'dd/MM/yyyy'
-            } elseif ($lastBootStr -match '^\d{2}-\d{2}-\d{4}') {
+            }
+            elseif ($lastBootStr -match '^\d{2}-\d{2}-\d{4}') {
                 $dateFormat = 'dd-MM-yyyy'
-            } elseif ($lastBootStr -match '^\d{4}/\d{2}/\d{2}') {
+            }
+            elseif ($lastBootStr -match '^\d{4}/\d{2}/\d{2}') {
                 $dateFormat = 'yyyy/MM/dd'
-            } elseif ($lastBootStr -match '^\d{4}-\d{2}-\d{2}') {
+            }
+            elseif ($lastBootStr -match '^\d{4}-\d{2}-\d{2}') {
                 $dateFormat = 'yyyy-MM-dd'
-            } elseif ($lastBootStr -match '^\d{2}\.\d{2}\.\d{4}') {
+            }
+            elseif ($lastBootStr -match '^\d{2}\.\d{2}\.\d{4}') {
                 $dateFormat = 'dd.MM.yyyy'
             }
 
             # check time format
             if ($lastBootStr -match '\bAM\b' -or $lastBootStr -match '\bPM\b') {
                 $timeFormat = 'h:mm:ss tt'
-            } else {
+            }
+            else {
                 $timeFormat = 'HH:mm:ss'
             }
 
@@ -340,12 +355,13 @@ function uptime {
         Write-Host ("Uptime: {0} days, {1} hours, {2} minutes, {3} seconds" -f $days, $hours, $minutes, $seconds) -ForegroundColor Blue
 
 
-    } catch {
+    }
+    catch {
         Write-Error "An error occurred while retrieving system uptime."
     }
 }
 
-function reload-profile {
+function Invoke-ProfileReload {
     & $profile
 }
 
@@ -402,7 +418,7 @@ function nf { param($name) New-Item -ItemType "file" -Path . -Name $name }
 function mkcd { param($dir) mkdir $dir -Force; Set-Location $dir }
 
 
-function folder {param($name) mkdir  $name -Force; Set-Location $name }
+function folder { param($name) mkdir  $name -Force; Set-Location $name }
 
 function trash($path) {
     $fullPath = (Resolve-Path -Path $path).Path
@@ -413,7 +429,8 @@ function trash($path) {
         if ($item.PSIsContainer) {
             # Handle directory
             $parentPath = $item.Parent.FullName
-        } else {
+        }
+        else {
             # Handle file
             $parentPath = $item.DirectoryName
         }
@@ -424,10 +441,12 @@ function trash($path) {
         if ($item) {
             $shellItem.InvokeVerb('delete')
             Write-Host "Item '$fullPath' has been moved to the Recycle Bin."
-        } else {
+        }
+        else {
             Write-Host "Error: Could not find the item '$fullPath' to trash."
         }
-    } else {
+    }
+    else {
         Write-Host "Error: Item '$fullPath' does not exist."
     }
 }
@@ -440,8 +459,8 @@ gs, ga, gc, gp, gcl, gcom, lazyg, rebase-f, etc.) have been moved to:
 
 Remove this comment and edit profile.d/git.ps1 to update the git helpers.
 #>
-function rebase-f {
-<#
+function Invoke-GitRebaseForce {
+    <#
 .SYNOPSIS
     Rebases one Git branch onto another with automatic switching and force-push.
 
@@ -505,7 +524,8 @@ function rebase-f {
         if ($LASTEXITCODE -ne 0) { throw "Force push failed." }
 
         Write-Host "`nBranch '$f' successfully rebased onto '$t' and force-pushed." -ForegroundColor Green
-    } catch {
+    }
+    catch {
         Write-Error "`nError: $($_.Exception.Message)"
     }
 }
@@ -514,12 +534,12 @@ function rebase-f {
 
 
 function docs {
-    $docs = if(([Environment]::GetFolderPath("MyDocuments"))) {([Environment]::GetFolderPath("MyDocuments"))} else {$HOME + "\Documents"}
+    $docs = if (([Environment]::GetFolderPath("MyDocuments"))) { ([Environment]::GetFolderPath("MyDocuments")) } else { $HOME + "\Documents" }
     Set-Location -Path $docs
 }
 
 function dtop {
-    $dtop = if ([Environment]::GetFolderPath("Desktop")) {[Environment]::GetFolderPath("Desktop")} else {$HOME + "\Documents"}
+    $dtop = if ([Environment]::GetFolderPath("Desktop")) { [Environment]::GetFolderPath("Desktop") } else { $HOME + "\Documents" }
     Set-Location -Path $dtop
 }
 
@@ -530,8 +550,8 @@ function ll { Get-ChildItem -Path . -Force -Hidden | Format-Table -AutoSize }
 
 function g { __zoxide_z github }
 
-function file-action {
-<#
+function Invoke-FileAction {
+    <#
 .SYNOPSIS
     Copies or moves a file based on the selected method.
 
@@ -589,7 +609,8 @@ function file-action {
                 Write-Host "`nFile successfully moved to: $($PWD.Path)\$To" -ForegroundColor Green
             }
         }
-    } catch {
+    }
+    catch {
         Write-Error "`nError: $($_.Exception.Message)"
     }
 }
@@ -660,26 +681,37 @@ function cpy { Set-Clipboard $args[0] }
 function pst { Get-Clipboard }
 
 $PSReadLineOptions = @{
-    EditMode = 'Windows'
-    HistoryNoDuplicates = $true
+    EditMode                      = 'Windows'
+    HistoryNoDuplicates           = $true
     HistorySearchCursorMovesToEnd = $true
-    Colors = @{
-        Command = '#87CEEB'
+    Colors                        = @{
+        Command   = '#87CEEB'
         Parameter = '#98FB98'
-        Operator = '#FFB6C1'
-        Variable = '#DDA0DD'
-        String = '#FFDAB9'
-        Number = '#B0E0E6'
-        Type = '#F0E68C'
-        Comment = '#D3D3D3'
-        Keyword = '#8367c7'
-        Error = '#FF6347'
+        Operator  = '#FFB6C1'
+        Variable  = '#DDA0DD'
+        String    = '#FFDAB9'
+        Number    = '#B0E0E6'
+        Type      = '#F0E68C'
+        Comment   = '#D3D3D3'
+        Keyword   = '#8367c7'
+        Error     = '#FF6347'
     }
-    PredictionSource = 'History'
-    PredictionViewStyle = 'ListView'
-    BellStyle = 'None'
+    BellStyle                     = 'None'
 }
-Set-PSReadLineOption @PSReadLineOptions
+
+# Only enable predictions if terminal supports it
+try {
+    if ($Host.UI.SupportsVirtualTerminal) {
+        $PSReadLineOptions.PredictionSource = 'History'
+        $PSReadLineOptions.PredictionViewStyle = 'ListView'
+    }
+    Set-PSReadLineOption @PSReadLineOptions
+} catch {
+    # Fallback for terminals that don't support all features
+    $PSReadLineOptions.Remove('PredictionSource')
+    $PSReadLineOptions.Remove('PredictionViewStyle')
+    Set-PSReadLineOption @PSReadLineOptions
+}
 
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
@@ -699,14 +731,22 @@ Set-PSReadLineOption -AddToHistoryHandler {
     return ($null -eq $hasSensitive)
 }
 
-Set-PSReadLineOption -PredictionSource HistoryAndPlugin
-Set-PSReadLineOption -MaximumHistoryCount 20000
+# Additional PSReadLine options with error handling
+try {
+    if ($Host.UI.SupportsVirtualTerminal) {
+        Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+    }
+    Set-PSReadLineOption -MaximumHistoryCount 20000
+} catch {
+    # Silently continue if features aren't supported
+    Set-PSReadLineOption -MaximumHistoryCount 20000
+}
 
 $scriptblock = {
     param($wordToComplete, $commandAst, $cursorPosition)
     $customCompletions = @{
-        'git' = @('status', 'add', 'commit', 'push', 'pull', 'clone', 'checkout')
-        'npm' = @('install', 'start', 'run', 'test', 'build')
+        'git'  = @('status', 'add', 'commit', 'push', 'pull', 'clone', 'checkout')
+        'npm'  = @('install', 'start', 'run', 'test', 'build')
         'deno' = @('run', 'compile', 'bundle', 'test', 'lint', 'fmt', 'cache', 'info', 'doc', 'upgrade')
     }
 
@@ -729,28 +769,71 @@ $scriptblock = {
 Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock $scriptblock
 
 function Get-Theme {
-    if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
-        $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
-        if ($null -ne $existingTheme) {
-            Invoke-Expression $existingTheme
+    try {
+        # Check if oh-my-posh is available
+        if (-not (Get-Command oh-my-posh -ErrorAction SilentlyContinue)) {
             return
         }
-        oh-my-posh init pwsh --config https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/huvix.omp.json | Invoke-Expression
-    } else {
-        oh-my-posh init pwsh --config https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/huvix.omp.json | Invoke-Expression
+
+        # Try different theme loading approaches
+        $themeLoaded = $false
+
+        # 1. Try existing theme from profile
+        if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
+            $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
+            if ($null -ne $existingTheme) {
+                try {
+                    Invoke-Expression $existingTheme
+                    $themeLoaded = $true
+                } catch { }
+            }
+        }
+
+        # 2. Try built-in theme
+        if (-not $themeLoaded -and $env:POSH_THEMES_PATH) {
+            try {
+                $localTheme = Join-Path $env:POSH_THEMES_PATH "huvix.omp.json"
+                if (Test-Path $localTheme) {
+                    oh-my-posh init pwsh --config $localTheme | Invoke-Expression
+                    $themeLoaded = $true
+                }
+            } catch { }
+        }
+
+        # 3. Try a simple built-in theme
+        if (-not $themeLoaded) {
+            try {
+                oh-my-posh init pwsh | Invoke-Expression
+                $themeLoaded = $true
+            } catch { }
+        }
+
+        # 4. Last resort - remote theme
+        if (-not $themeLoaded) {
+            try {
+                $themeUrl = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/huvix.omp.json"
+                oh-my-posh init pwsh --config $themeUrl | Invoke-Expression
+            } catch { }
+        }
+    }
+    catch {
+        # Silently fail - use default prompt
     }
 }
 
+# Load theme with error handling
 Get-Theme
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     Invoke-Expression (& { (zoxide init --cmd cd powershell | Out-String) })
-} else {
+}
+else {
     Write-Host "zoxide command not found. Attempting to install via winget..."
     try {
         winget install -e --id ajeetdsouza.zoxide
         Write-Host "zoxide installed successfully. Initializing..."
         Invoke-Expression (& { (zoxide init powershell | Out-String) })
-    } catch {
+    }
+    catch {
         Write-Error "Failed to install zoxide. Error: $_"
     }
 }
@@ -775,7 +858,7 @@ if (-not (Test-Path $profileD)) {
 }
 
 
-$coreOrder = @('git.ps1','help.ps1','aliases.ps1')
+$coreOrder = @('git.ps1', 'help.ps1', 'aliases.ps1')
 foreach ($name in $coreOrder) {
     $path = Join-Path $profileD $name
     if (Test-Path $path) {
@@ -791,5 +874,32 @@ $env:FZF_DEFAULT_OPTS = " --height 100% --layout reverse --border"
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
-  Import-Module "$ChocolateyProfile"
+    Import-Module "$ChocolateyProfile"
+}
+
+
+function nuke {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Target
+    )
+
+    $path = Join-Path -Path (Get-Location) -ChildPath $Target
+
+    # Strip hidden/system/read-only attributes
+    attrib -s -h -r "$path" /s /d 2>$null
+
+    # Force delete
+    Remove-Item "$path" -Recurse -Force -ErrorAction SilentlyContinue
+}
+
+Set-Alias nd nuke
+
+# Aliases for backward compatibility
+Set-Alias reload-profile Invoke-ProfileReload
+Set-Alias rebase-f Invoke-GitRebaseForce
+Set-Alias file-action Invoke-FileAction
+
+function sshchris {
+    ssh chris@192.x.x.x
 }
