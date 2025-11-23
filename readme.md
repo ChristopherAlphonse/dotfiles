@@ -170,7 +170,10 @@ The PowerShell profile provides a rich development experience with:
 - **Git shortcuts** - Enhanced git workflow with aliases
 - **File management** - `trash`, `mkcd`, `nf` commands
 
-![Terminal Experience](./image/TERMINAL.png)
+![Windows Native Terminal](https://github.com/user-attachments/assets/ef41a035-e563-4ccb-b0a6-71c7b8fdca22) 
+
+
+
 
 ### Carapace Completion
 
@@ -367,6 +370,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Note**: These configurations are optimized for Windows with PowerShell Core and VS Code. While some components may work on other platforms, they are primarily designed for Windows development workflows.
+
 
 
 
