@@ -326,13 +326,9 @@ Enhanced Git workflow with:
 
 ##  Latest Updates
 
-### April 2025
+### November 2025
 
-- **Komorebi Integration** - Tiling window manager for Windows
-- **YASB Status Bar** - Customizable system monitoring
-- **WHKD Hotkeys** - Global keyboard shortcuts
-- **Fastfetch** - Beautiful system information display
-- **Enhanced Gaming Tweaks** - Competitive-level optimizations
+- **Git private script** - bach update all repos to private to clean up 
 
 ##  Gaming Mode
 
@@ -373,6 +369,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Note**: These configurations are optimized for Windows with PowerShell Core and VS Code. While some components may work on other platforms, they are primarily designed for Windows development workflows.
+
 
 
 
