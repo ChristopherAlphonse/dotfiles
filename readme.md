@@ -345,7 +345,8 @@ For competitive gaming, the setup includes:
 
 ![Work Mode](./image/work_mode.png)
 
-
+![Private all repos](<img width="953" height="1075" alt="image" src="https://github.com/user-attachments/assets/534c0006-544f-437a-b888-cc89a73744e4" />
+)
 
 
 # Signing off
@@ -370,6 +371,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Note**: These configurations are optimized for Windows with PowerShell Core and VS Code. While some components may work on other platforms, they are primarily designed for Windows development workflows.
+
 
 
 
