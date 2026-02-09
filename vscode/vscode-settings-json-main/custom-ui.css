@@ -1,0 +1,86 @@
+.monaco-editor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.monaco-editor .overflow-guard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Line Number Theming */
+/* :root {
+  --vscode-editorLineNumber-foreground: #746f77;
+  --vscode-editorLineNumber-activeForeground: #c6c6c6;
+} */
+
+/* Scroll Decoration */
+.monaco-editor .scroll-decoration {
+  box-shadow: 0em 0em 1.25em rgba(0, 0, 0, 0.75) !important;
+  top: -0.375em !important;
+}
+
+/* Margin Line Numbers */
+.monaco-editor .margin-view-overlays .line-numbers {
+  bottom: 0;
+  font-variant-numeric: tabular-nums;
+  position: absolute;
+  text-align: right;
+  display: inline-block;
+  vertical-align: middle;
+  box-sizing: border-box;
+  cursor: default;
+}
+
+/* Input Placeholder */
+.monaco-inputbox input::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* List Rows */
+.monaco-list-row:hover {
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+
+.monaco-list.list_id_1 .monaco-list-row.selected {
+  background-color: #4f5971 !important;
+  opacity: 1 !important;
+  border-top: 0.0625em #727b90 solid;
+  border-bottom: 0.0625em #727b90 solid;
+}
+
+.monaco-list.list_id_1 .monaco-list-row.selected .label-name {
+  color: #fff !important;
+  opacity: 1 !important;
+}
+
+.quick-input-widget {
+  transform: translateY(-50%) !important;
+  top: 50% !important;
+  box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.5) !important;
+  padding: 0.75em 0.75em 1.25em 0.75em !important;
+  background: rgba(40, 42, 54, 0.5) !important;
+  backdrop-filter: blur(0.375em) !important;
+  border-radius: 0.5em !important;
+  border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Scrollbar Slider */
+.slider {
+  position: absolute !important;
+  right: 0.0625em !important;
+  width: 5px !important;
+  background: #2ba59d !important;
+  left: auto !important;
+  border-radius: 10px !important;
+}
+
+/* Title Bar */
+.title-label,
+.titlebar-center,
+.titlebar-left,
+.title-actions {
+  color: #2ba59d;
+}
