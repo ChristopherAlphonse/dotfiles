@@ -1,29 +1,9 @@
-.monaco-editor {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.monaco-editor .overflow-guard {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Line Number Theming */
-/* :root {
-  --vscode-editorLineNumber-foreground: #746f77;
-  --vscode-editorLineNumber-activeForeground: #c6c6c6;
-} */
-
-/* Scroll Decoration */
 .monaco-editor .scroll-decoration {
-  box-shadow: 0em 0em 1.25em rgba(0, 0, 0, 0.75) !important;
+  box-shadow: 0em 0em 1.25em rgba(0, 0, 0, 0.5) !important;
   top: -0.375em !important;
 }
 
-/* Margin Line Numbers */
-.monaco-editor .margin-view-overlays .line-numbers {
+.monaco-editor .margin-view-overlays {
   bottom: 0;
   font-variant-numeric: tabular-nums;
   position: absolute;
@@ -34,12 +14,10 @@
   cursor: default;
 }
 
-/* Input Placeholder */
 .monaco-inputbox input::placeholder {
   color: rgba(255, 255, 255, 0.5) !important;
 }
 
-/* List Rows */
 .monaco-list-row:hover {
   background: rgba(0, 0, 0, 0.2) !important;
 }
@@ -67,7 +45,6 @@
   border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;
 }
 
-/* Scrollbar Slider */
 .slider {
   position: absolute !important;
   right: 0.0625em !important;
@@ -77,7 +54,6 @@
   border-radius: 10px !important;
 }
 
-/* Title Bar */
 .title-label,
 .titlebar-center,
 .titlebar-left,
