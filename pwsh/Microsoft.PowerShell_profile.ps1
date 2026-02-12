@@ -1,18 +1,4 @@
 
-$komorebicProcess = Get-Process -Name "komorebi" -ErrorAction SilentlyContinue
-if (-not $komorebicProcess) {
-    try {
-        Write-Host "Starting komorebi..." -ForegroundColor Green
-        komorebic start
-    }
-    catch {
-        Write-Warning "Failed to start komorebi: $($_.Exception.Message)"
-    }
-}
-else {
-    Write-Host "Komorebi is already running" -ForegroundColor Yellow
-}
-
 $debug = $false
 
 # Define the path to the file that stores the last execution time

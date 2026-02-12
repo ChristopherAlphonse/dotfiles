@@ -17,13 +17,9 @@
   },
   "editor.matchBrackets": "always",
   "workbench.sideBar.location": "right",
-
   "material-icon-theme.folders.theme": "specific",
   "material-icon-theme.hidesExplorerArrows": true,
-  "vscode_custom_css.imports": [
-    "file:////Users/christopheralphonse/transparency.css",
-    "file:///Users/christopheralphonse/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
-  ],
+
   "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
   "editor.wordWrap": "on",
   "editor.tabSize": 4,
@@ -71,7 +67,6 @@
   "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "terminal.integrated.enableMultiLinePasteWarning": "never",
-
   "terminal.integrated.fontFamily": "BlexMono Nerd Font Mono",
   "terminal.integrated.gpuAcceleration": "off",
   "terminal.integrated.lineHeight": 1.4,
@@ -108,23 +103,17 @@
   "editor.autoClosingQuotes": "always",
   "editor.autoIndentOnPaste": true,
   "zenMode.hideActivityBar": false,
-
   "workbench.editor.enablePreview": true,
   "workbench.activityBar.location": "top",
-
   "explorer.compactFolders": false,
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
-
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-
   "window.commandCenter": false,
-
   "window.menuBarVisibility": "toggle",
-
   "workbench.panel.defaultLocation": "bottom",
-
   "githubPullRequests.pullBranch": "always",
-  "extensions.ignoreRecommendations": true
+  "extensions.ignoreRecommendations": true,
+  "vscode_custom_css.imports": [""]
 }

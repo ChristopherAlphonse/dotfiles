@@ -1,82 +1,82 @@
 [
-    {
-        "command": "copilot-labs.use-brush-picker",
-        "key": "shift+alt+a",
-        "when": "editorTextFocus"
+  {
+    "command": "copilot-labs.use-brush-picker",
+    "key": "shift+alt+a",
+    "when": "editorTextFocus"
+  },
+  {
+    "command": "workbench.action.navigateLeft",
+    "key": "ctrl+["
+  },
+  {
+    "command": "workbench.action.navigateRight",
+    "key": "ctrl+]"
+  },
+  {
+    "command": "workbench.action.terminal.split",
+    "key": "ctrl+\\",
+    "when": "terminalFocus && terminalProcessSupported || terminalFocus && terminalWebExtensionContributedProfile"
+  },
+  {
+    "command": "-workbench.action.terminal.split",
+    "key": "ctrl+shift+5",
+    "when": "terminalFocus && terminalProcessSupported || terminalFocus && terminalWebExtensionContributedProfile"
+  },
+  {
+    "command": "workbench.action.terminal.splitActiveTab",
+    "key": "ctrl+\\",
+    "when": "terminalProcessSupported && terminalTabsFocus"
+  },
+  {
+    "command": "-workbench.action.terminal.splitActiveTab",
+    "key": "ctrl+shift+5",
+    "when": "terminalProcessSupported && terminalTabsFocus"
+  },
+  {
+    "command": "editor.action.addSelectionToNextFindMatch",
+    "key": "ctrl+d"
+  },
+  {
+    "command": "deleteLeft",
+    "key": "ctrl+d",
+    "when": "editorHasSelection"
+  },
+  {
+    "args": {
+      "by": "line",
+      "to": "up",
+      "value": 10
     },
-    {
-        "command": "workbench.action.navigateLeft",
-        "key": "ctrl+["
+    "command": "cursorMove",
+    "key": "ctrl+up",
+    "when": "editorTextFocus"
+  },
+  {
+    "args": {
+      "by": "line",
+      "to": "down",
+      "value": 5
     },
-    {
-        "command": "workbench.action.navigateRight",
-        "key": "ctrl+]"
-    },
-    {
-        "command": "workbench.action.terminal.split",
-        "key": "ctrl+\\",
-        "when": "terminalFocus && terminalProcessSupported || terminalFocus && terminalWebExtensionContributedProfile"
-    },
-    {
-        "command": "-workbench.action.terminal.split",
-        "key": "ctrl+shift+5",
-        "when": "terminalFocus && terminalProcessSupported || terminalFocus && terminalWebExtensionContributedProfile"
-    },
-    {
-        "command": "workbench.action.terminal.splitActiveTab",
-        "key": "ctrl+\\",
-        "when": "terminalProcessSupported && terminalTabsFocus"
-    },
-    {
-        "command": "-workbench.action.terminal.splitActiveTab",
-        "key": "ctrl+shift+5",
-        "when": "terminalProcessSupported && terminalTabsFocus"
-    },
-    {
-        "command": "editor.action.addSelectionToNextFindMatch",
-        "key": "ctrl+d"
-    },
-    {
-        "command": "deleteLeft",
-        "key": "ctrl+d",
-        "when": "editorHasSelection"
-    },
-    {
-        "args": {
-            "by": "line",
-            "to": "up",
-            "value": 10
-        },
-        "command": "cursorMove",
-        "key": "ctrl+up",
-        "when": "editorTextFocus"
-    },
-    {
-        "args": {
-            "by": "line",
-            "to": "down",
-            "value": 5
-        },
-        "command": "cursorMove",
-        "key": "ctrl+down",
-        "when": "editorTextFocus"
-    },
-    {
-        "command": "explorer.newFile",
-        "key": "ctrl+n",
-        "when": "explorerViewletFocus && !inputFocus"
-    },
-    {
-        "command": "explorer.newFolder",
-        "key": "ctrl+f",
-        "when": "explorerViewletFocus && !inputFocus"
-    },
-    {
-        "command": "workbench.action.terminal.runActiveFile",
-        "key": "ctrl+shift+f5"
-    },
-    {
-        "command": "python.execInTerminal-icon",
-        "key": "ctrl+shift+f5"
-    }
+    "command": "cursorMove",
+    "key": "ctrl+down",
+    "when": "editorTextFocus"
+  },
+  {
+    "command": "explorer.newFile",
+    "key": "ctrl+n",
+    "when": "explorerViewletFocus && !inputFocus"
+  },
+  {
+    "command": "explorer.newFolder",
+    "key": "ctrl+f",
+    "when": "explorerViewletFocus && !inputFocus"
+  },
+  {
+    "command": "workbench.action.terminal.runActiveFile",
+    "key": "ctrl+shift+f5"
+  },
+  {
+    "command": "python.execInTerminal-icon",
+    "key": "ctrl+shift+f5"
+  }
 ]
