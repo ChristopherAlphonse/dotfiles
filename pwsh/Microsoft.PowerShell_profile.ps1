@@ -887,6 +887,7 @@ Set-Alias rebase-f Invoke-GitRebaseForce
 Set-Alias file-action Invoke-FileAction
 
 
+
 function Get-DefenderStatus {
     [CmdletBinding()]
     param()
@@ -998,4 +999,105 @@ function Test-DefenderHealth {
     Get-ActiveConnections
 
     Write-Host "=== DEFENDER HEALTH CHECK COMPLETE ===" -ForegroundColor Green
+}
+
+
+function rm-Threats{
+
+Write-Host "Stopping any active Defender scans..."
+Stop-Process -Name MsMpEng -ErrorAction SilentlyContinue
+Start-Sleep -Seconds 5
+
+
+Write-Host "Updating Defender signatures..."
+Update-MpSignature
+
+Write-Host "Starting full system scan (this may take a while)..."
+Start-MpScan -ScanType FullScan
+
+
+do {
+    $status = Get-MpComputerStatus
+    Start-Sleep -Seconds 10
+} while ($status.FullScanInProgress)
+
+Write-Host "Full scan complete."
+
+
+Write-Host "Listing detected threats..."
+$threats = Get-MpThreat | Select ThreatID, ThreatName, ActionSuccess, RemediationStatus, Resources
+$threats | Format-Table -AutoSize
+
+
+if ($threats.Count -gt 0) {
+    $threatIDs = $threats.ThreatID
+    Write-Host "Removing threats..."
+    Remove-MpThreat -ThreatID $threatIDs
+    Write-Host "Threats removed."
+} else {
+    Write-Host "No remaining threats found."
+}
+
+Write-Host "Verifying system status..."
+$finalStatus = Get-MpThreat | Select ThreatID, ThreatName, RemediationStatus, Resources
+if ($finalStatus.Count -eq 0) {
+    Write-Host "System appears clean. No active threats detected."
+} else {
+    Write-Host "Some threats remain:"
+    $finalStatus | Format-Table -AutoSize
+}
+
+
+
+}
+
+function Delete-NodeModules {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true, Position = 0)]
+        [string]$Target
+    )
+
+
+    if (-Not (Test-Path $Target)) {
+        Write-Error "The specified path '$Target' does not exist."
+        return
+    }
+
+    Write-Host "Searching for node_modules folders in '$Target'..."
+
+
+    $folders = Get-ChildItem -Path $Target -Directory -Recurse -Force -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -eq "node_modules" }
+
+    if ($folders.Count -eq 0) {
+        Write-Host "No node_modules folders found in '$Target'."
+        return
+    }
+
+
+    $totalSizeBytes = 0
+    foreach ($folder in $folders) {
+        $size = (Get-ChildItem $folder.FullName -Recurse -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum).Sum
+        $totalSizeBytes += $size
+    }
+
+    $totalSizeGB = [math]::Round($totalSizeBytes / 1GB, 2)
+
+    Write-Host "Found $($folders.Count) node_modules folder(s), totaling $totalSizeGB GB."
+
+
+    $confirm = Read-Host "Do you want to delete these folders? (Y/N)"
+    if ($confirm -ne 'Y' -and $confirm -ne 'y') {
+        Write-Host "Deletion cancelled."
+        return
+    }
+
+
+    foreach ($folder in $folders) {
+        Write-Host "Deleting:" $folder.FullName
+        Remove-Item $folder.FullName -Recurse -Force -ErrorAction SilentlyContinue
+    }
+
+    Write-Host "Deleted $($folders.Count) node_modules folder(s), freeing $totalSizeGB GB."
 }
