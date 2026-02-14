@@ -886,6 +886,116 @@ Set-Alias reload-profile Invoke-ProfileReload
 Set-Alias rebase-f Invoke-GitRebaseForce
 Set-Alias file-action Invoke-FileAction
 
-function sshchris {
-    ssh chris@192.x.x.x
+
+function Get-DefenderStatus {
+    [CmdletBinding()]
+    param()
+
+    $status = Get-MpComputerStatus | Select AMServiceEnabled, AntispywareEnabled, AntivirusEnabled, RealTimeProtectionEnabled
+    $status | Format-Table
+
+    foreach ($prop in $status.PSObject.Properties) {
+        if (-not $prop.Value) {
+            Write-Warning "$($prop.Name) is NOT enabled!"
+        }
+    }
+
+    return $status
+}
+
+
+function Update-DefenderSignatures {
+    [CmdletBinding()]
+    param()
+
+    Write-Host "Updating Defender signatures..." -ForegroundColor Cyan
+    Update-MpSignature | Out-Null
+    Write-Host "Signatures updated." -ForegroundColor Green
+}
+
+
+function Start-DefenderQuickScan {
+    [CmdletBinding()]
+    param()
+
+    Write-Host "Starting quick scan..." -ForegroundColor Cyan
+    Start-MpScan -ScanType QuickScan
+    Write-Host "Quick scan finished." -ForegroundColor Green
+
+    $threats = Get-MpThreatDetection
+    if ($threats) {
+        Write-Warning "Threats detected:"
+        $threats | Format-Table
+    } else {
+        Write-Host "No active threats found."
+    }
+}
+
+
+function Start-DefenderFullScan {
+    [CmdletBinding()]
+    param()
+
+    Write-Host "Starting full system scan..." -ForegroundColor Cyan
+    Start-MpScan -ScanType FullScan
+    Write-Host "Full scan started. Monitor progress with:" -ForegroundColor Yellow
+    Write-Host "Get-MpComputerStatus | Select QuickScanInProgress, FullScanInProgress"
+}
+
+
+function Get-RecentSecurityEvents {
+    [CmdletBinding()]
+    param()
+
+    Write-Host "Fetching recent security events..." -ForegroundColor Cyan
+    Get-WinEvent -LogName "Microsoft-Windows-Windows Defender/Operational" -MaxEvents 20 |
+        Select TimeCreated, Id, LevelDisplayName, Message |
+        Format-Table -AutoSize
+}
+
+function Get-StartUpProcesses {
+    [CmdletBinding()]
+    param()
+
+    Write-Host "Listing startup processes..." -ForegroundColor Cyan
+    Get-CimInstance Win32_StartupCommand |
+        Select Name, Command, Location |
+        Format-Table -AutoSize
+}
+
+
+function Get-ActiveConnections {
+    [CmdletBinding()]
+    param()
+
+    Write-Host "Fetching active network connections..." -ForegroundColor Cyan
+    Get-NetTCPConnection -State Established |
+        ForEach-Object {
+            $proc = Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue
+            [PSCustomObject]@{
+                RemoteAddress = $_.RemoteAddress
+                RemotePort    = $_.RemotePort
+                LocalAddress  = $_.LocalAddress
+                LocalPort     = $_.LocalPort
+                Process       = if ($proc) { $proc.Name } else { "Unknown" }
+            }
+        } | Format-Table -AutoSize
+}
+
+
+function Test-DefenderHealth {
+    [CmdletBinding()]
+    param()
+
+    Write-Host "=== STARTING FULL DEFENDER HEALTH CHECK ===" -ForegroundColor Magenta
+
+    Get-DefenderStatus
+    Update-DefenderSignatures
+    Start-DefenderQuickScan
+    Start-DefenderFullScan
+    Get-RecentSecurityEvents
+    Get-StartUpProcesses
+    Get-ActiveConnections
+
+    Write-Host "=== DEFENDER HEALTH CHECK COMPLETE ===" -ForegroundColor Green
 }
