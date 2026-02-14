@@ -838,7 +838,11 @@ Import-Module PSReadLine -ErrorAction SilentlyContinue
 Write-Host "$($PSStyle.Foreground.Yellow)Use 'Show-Help' to display help$($PSStyle.Reset)"
 
 
-$profileD = Join-Path -Path $env:USERPROFILE -ChildPath "Documents\PowerShell\profile.d"
+$profileDir = if ($PSScriptRoot) { Join-Path $PSScriptRoot "profile.d" } else { $null }
+if (-not $profileDir -or -not (Test-Path $profileDir)) {
+    $profileDir = Join-Path -Path $env:USERPROFILE -ChildPath "Documents\PowerShell\profile.d"
+}
+$profileD = $profileDir
 if (-not (Test-Path $profileD)) {
     New-Item -ItemType Directory -Path $profileD -Force | Out-Null
 }

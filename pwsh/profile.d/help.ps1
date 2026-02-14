@@ -27,6 +27,46 @@ function Help-Command {
             Description = "Rebases a feature branch onto a target branch and force-pushes the result."
             Example     = "rebase-f -t main -f my-feature-branch"
         }
+        "Get-DefenderStatus" = @{
+            Description = "Shows Defender status (AM service, antispyware, antivirus, real-time) and warns if any are disabled."
+            Example     = "Get-DefenderStatus"
+        }
+        "Update-DefenderSignatures" = @{
+            Description = "Updates Windows Defender virus and spyware definitions."
+            Example     = "Update-DefenderSignatures"
+        }
+        "Start-DefenderQuickScan" = @{
+            Description = "Runs a quick scan and then lists any detected threats."
+            Example     = "Start-DefenderQuickScan"
+        }
+        "Start-DefenderFullScan" = @{
+            Description = "Starts a full system scan (runs in background; use Get-MpComputerStatus for progress)."
+            Example     = "Start-DefenderFullScan"
+        }
+        "Get-RecentSecurityEvents" = @{
+            Description = "Shows the last 20 Windows Defender operational events (time, id, level, message)."
+            Example     = "Get-RecentSecurityEvents"
+        }
+        "Get-StartUpProcesses" = @{
+            Description = "Lists startup programs (name, command, location) from Win32_StartupCommand."
+            Example     = "Get-StartUpProcesses"
+        }
+        "Get-ActiveConnections" = @{
+            Description = "Lists established TCP connections with remote/local address, port, and process name."
+            Example     = "Get-ActiveConnections"
+        }
+        "Test-DefenderHealth" = @{
+            Description = "Runs a full Defender health check: status, signature update, quick scan, full scan, recent events, startup list, active connections."
+            Example     = "Test-DefenderHealth"
+        }
+        "rm-Threats" = @{
+            Description = "Stops active scans, updates signatures, runs full scan, then lists and removes detected threats."
+            Example     = "rm-Threats"
+        }
+        "Delete-NodeModules" = @{
+            Description = "Finds all node_modules under a path, reports count and total size (GB), prompts for confirmation, then deletes them."
+            Example     = "Delete-NodeModules -Target C:\Projects"
+        }
 
     }
 
@@ -94,6 +134,17 @@ k9 <name>$($PSStyle.Reset) - Stops process by name
 pkill <name>$($PSStyle.Reset) - Stops process by name
 pgrep <name>$($PSStyle.Reset) - Lists processes by name
 
+$($PSStyle.Foreground.Green)Security and Defender:$($PSStyle.Reset)
+Get-DefenderStatus$($PSStyle.Reset) - Shows Defender protection status
+Update-DefenderSignatures$($PSStyle.Reset) - Updates Defender virus definitions
+Start-DefenderQuickScan$($PSStyle.Reset) - Runs Defender quick scan
+Start-DefenderFullScan$($PSStyle.Reset) - Starts Defender full system scan
+Get-RecentSecurityEvents$($PSStyle.Reset) - Recent Defender operational events
+Get-StartUpProcesses$($PSStyle.Reset) - Lists startup programs
+Get-ActiveConnections$($PSStyle.Reset) - Active TCP connections with process names
+Test-DefenderHealth$($PSStyle.Reset) - Full Defender health check (status, update, scans, events, startup, connections)
+rm-Threats$($PSStyle.Reset) - Full scan and remove detected threats
+
 $($PSStyle.Foreground.Green)File Content Operations:$($PSStyle.Reset)
 grep <regex> [dir]$($PSStyle.Reset) - Searches for pattern in files
 sed <file> <find> <replace>$($PSStyle.Reset) - Replaces text in file
@@ -109,8 +160,8 @@ which <name>$($PSStyle.Reset) - Shows command path
 df$($PSStyle.Reset) - Shows volume information
 export <name> <value>$($PSStyle.Reset) - Sets environment variable
 
-
-
+$($PSStyle.Foreground.Green)Development:$($PSStyle.Reset)
+Delete-NodeModules$($PSStyle.Reset) - Recursively find and delete node_modules under a path (with size and confirmation)
 
 Use '$($PSStyle.Foreground.Magenta)Show-Help$($PSStyle.Reset)' to display this help message again.
 "@
