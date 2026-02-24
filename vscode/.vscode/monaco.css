@@ -12,6 +12,7 @@
   vertical-align: middle;
   box-sizing: border-box;
   cursor: default;
+  background-color: transparent !important;
 }
 
 .monaco-inputbox input::placeholder {
@@ -39,10 +40,28 @@
   top: 50% !important;
   box-shadow: 0em 0.5em 1.5em rgba(0, 0, 0, 0.5) !important;
   padding: 0.75em 0.75em 1.25em 0.75em !important;
-  background: rgba(40, 42, 54, 0.5) !important;
-  backdrop-filter: blur(0.375em) !important;
   border-radius: 0.5em !important;
   border: 0.0625em solid rgba(255, 255, 255, 0.15) !important;
+  background: rgba(37, 37, 38, 0.45) !important;
+  backdrop-filter: blur(16px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+}
+
+/* Remove inner solid backgrounds */
+.quick-input-list,
+.monaco-list,
+.monaco-list-rows,
+.quick-input-header,
+.quick-input-filter,
+.monaco-inputbox,
+.monaco-inputbox .ibwrapper,
+.monaco-inputbox input {
+  background: transparent !important;
+}
+
+/* Remove row fill so blur shows through */
+.monaco-list-row {
+  background: transparent !important;
 }
 
 .slider {
