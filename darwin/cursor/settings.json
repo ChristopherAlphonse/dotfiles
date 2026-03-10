@@ -1,0 +1,227 @@
+{
+  "breadcrumbs.enabled": false,
+  "chat.viewSessions.orientation": "stacked",
+  "diffEditor.renderSideBySide": true,
+  "editor.accessibilitySupport": "off",
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingComments": "always",
+  "editor.autoClosingDelete": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.autoIndentOnPaste": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.fontFamily": "BlexMono Nerd Font Mono",
+  "editor.fontSize": 16,
+  "editor.guides.bracketPairs": true,
+  "editor.guides.indentation": true,
+  "editor.inlayHints.fontSize": 10,
+  "editor.inlayHints.padding": true,
+  "editor.largeFileOptimizations": true,
+  "editor.matchBrackets": "always",
+  "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "none",
+  "editor.tabSize": 4,
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "keyword.other.dotenv",
+        "settings": {
+          "foreground": "#FF000000"
+        }
+      }
+    ]
+  },
+  "editor.unicodeHighlight.invisibleCharacters": true,
+  "editor.wordWrap": "on",
+  "eslint.enable": true,
+  "eslint.format.enable": true,
+  "explorer.compactFolders": false,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "extensions.ignoreRecommendations": true,
+  "files.associations": {
+    ".env*": "dotenv"
+  },
+  "files.autoSave": "onFocusChange",
+  "files.defaultLanguage": "${activeEditorLanguage}",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "githubPullRequests.pullBranch": "always",
+  "html.autoClosingTags": true,
+  "js/ts.inlayHints.functionLikeReturnTypes.enabled": true,
+  "js/ts.inlayHints.parameterNames.enabled": "literals",
+  "js/ts.inlayHints.parameterTypes.enabled": true,
+  "js/ts.inlayHints.propertyDeclarationTypes.enabled": true,
+  "js/ts.inlayHints.variableTypes.enabled": true,
+  "markdown.preview.doubleClickToSwitchToEditor": false,
+  "markdown.preview.markEditorSelection": false,
+  "markdown.preview.openMarkdownLinks": "inPreview",
+  "markdown.preview.scrollEditorWithPreview": true,
+  "markdown.preview.scrollPreviewWithEditor": true,
+  "material-icon-theme.folders.theme": "specific",
+  "material-icon-theme.hidesExplorerArrows": true,
+  "redhat.telemetry.enabled": true,
+  "security.workspace.trust.banner": "always",
+  "security.workspace.trust.enabled": false,
+  "security.workspace.trust.untrustedFiles": "open",
+  "sonarlint.disableTelemetry": true,
+  "sonarlint.rules": {
+    "typescript:S1854": {
+      "level": "off"
+    },
+    "typescript:S4165": {
+      "level": "off"
+    },
+    "typescript:S6481": {
+      "level": "off"
+    },
+    "typescript:S7758": {
+      "level": "off"
+    },
+    "typescript:S7762": {
+      "level": "off"
+    }
+  },
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.cursorWidth": 0,
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+  "terminal.integrated.fontFamily": "BlexMono Nerd Font Mono",
+  "terminal.integrated.gpuAcceleration": "off",
+  "terminal.integrated.lineHeight": 1.4,
+  "terminal.integrated.profiles.windows": {
+    "Command Prompt": {
+      "args": [],
+      "icon": "terminal-cmd",
+      "path": [
+        "${env:windir}\\Sysnative\\cmd. exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ]
+    },
+    "Git Bash": {
+      "source": "Git Bash"
+    },
+    "PowerShell": {
+      "icon": "terminal-powershell",
+      "source": "PowerShell"
+    },
+    "JavaSE-17 LTS": {
+      "overrideName": true,
+      "env": {
+        "PATH": "C:\\Users\\chris-desktop\\AppData\\Roaming\\Cursor\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\java\\17\\bin;${env:PATH}",
+        "JAVA_HOME": "C:\\Users\\chris-desktop\\AppData\\Roaming\\Cursor\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\java\\17"
+      },
+      "path": "cmd"
+    },
+    "JavaSE-21 LTS": {
+      "overrideName": true,
+      "env": {
+        "PATH": "C:\\Users\\chris-desktop\\.gemini\\antigravity\\scratch\\jdk-21.0.9+10\\bin;${env:PATH}",
+        "JAVA_TOOL_OPTIONS": "-Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8",
+        "JAVA_HOME": "C:\\Users\\chris-desktop\\.gemini\\antigravity\\scratch\\jdk-21.0.9+10"
+      },
+      "path": "cmd",
+      "args": [
+        "/k",
+        "chcp",
+        "65001"
+      ]
+    },
+    "JavaSE-25 LTS": {
+      "overrideName": true,
+      "env": {
+        "PATH": "C:\\Users\\chris-desktop\\AppData\\Roaming\\Cursor\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\java\\latest\\bin;${env:PATH}",
+        "JAVA_TOOL_OPTIONS": "-Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8",
+        "JAVA_HOME": "C:\\Users\\chris-desktop\\AppData\\Roaming\\Cursor\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\java\\latest"
+      },
+      "path": "cmd",
+      "args": [
+        "/k",
+        "chcp",
+        "65001"
+      ]
+    }
+  },
+  "terminal.integrated.scrollback": 20,
+  "terminal.integrated.smoothScrolling": true,
+  "terminal.integrated.splitCwd": "workspaceRoot",
+  "js/ts.updateImportsOnFileMove.enabled": "always",
+  "vscode_custom_css.imports": [
+    "file:///Users/christopheralphonse/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js",
+    "file:///Users/christopheralphonse/.vscode/monico.css",
+    "file:///C:/Users/chris-desktop/.vscode/monico.css"
+  ],
+  "window.commandCenter": false,
+  "window.menuBarVisibility": "toggle",
+  "workbench.activityBar.location": "top",
+  "workbench.colorTheme": "Andromeda Bordered",
+  "workbench.editor.empty.hint": "hidden",
+  "workbench.editor.enablePreview": true,
+  "workbench.editor.showIcons": true,
+  "workbench.editor.showTabs": "multiple",
+  "workbench.editorAssociations": {
+    "*.md": "vscode.markdown.preview.editor"
+  },
+  "sortJSON.contextMenu": {
+    "sortJSON": false,
+    "sortJSONAlphaNum": false,
+    "sortJSONAlphaNumReverse": false,
+    "sortJSONKeyLength": false,
+    "sortJSONKeyLengthReverse": false,
+    "sortJSONReverse": false,
+    "sortJSONType": false,
+    "sortJSONTypeReverse": false,
+    "sortJSONValues": false,
+    "sortJSONValuesReverse": false
+  },
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.panel.defaultLocation": "bottom",
+  "workbench.sideBar.location": "right",
+  "workbench.statusBar.visible": true,
+  "workbench.tree.indent": 16,
+  "zenMode.hideActivityBar": false,
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-17",
+      "path": "C:\\Users\\chris-desktop\\AppData\\Roaming\\Cursor\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\java\\17"
+    },
+    {
+      "name": "JavaSE-21",
+      "path": "C:\\Users\\chris-desktop\\.gemini\\antigravity\\scratch\\jdk-21.0.9+10"
+    },
+    {
+      "name": "JavaSE-25",
+      "path": "C:\\Users\\chris-desktop\\AppData\\Roaming\\Cursor\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\java\\latest",
+      "default": true
+    }
+  ],
+  "terminal.integrated.automationProfile.windows": {
+    "path": "cmd"
+  },
+  "java.test.config": {
+    "vmArgs": ["-Dstdout.encoding=UTF-8", "-Dstderr.encoding=UTF-8"]
+  },
+  "terminal.integrated.env.windows": {
+    "JAVA_HOME": "C:\\Users\\chris-desktop\\.gemini\\antigravity\\scratch\\jdk-21.0.9+10",
+    "PATH": "C:\\Users\\chris-desktop\\.gemini\\antigravity\\scratch\\jdk-21.0.9+10\\bin;${env:PATH}"
+  },
+  "maven.terminal.customEnv": [
+    {
+      "environmentVariable": "JAVA_HOME",
+      "value": "C:\\Users\\chris-desktop\\.gemini\\antigravity\\scratch\\jdk-21.0.9+10"
+    }
+  ],
+  "java.import.gradle.java.home": "C:\\Users\\chris-desktop\\.gemini\\antigravity\\scratch\\jdk-21.0.9+10",
+  "maven.executable.path": "C:\\Users\\chris-desktop\\AppData\\Roaming\\Cursor\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\maven\\latest\\bin\\mvn",
+  "java.import.gradle.home": "C:\\Users\\chris-desktop\\AppData\\Roaming\\Cursor\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\gradle\\latest"
+}
