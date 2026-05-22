@@ -38,9 +38,7 @@
     defaultBranch = main
 # Changed from master to main for consistency
 
-[user]
-	name = calphonse
-	email = calphonse@cargurus.com
+
 
 [github]
     user = christopheralphonse
@@ -77,5 +75,3 @@
     default = simple
     autoSetupRemote = true
 
-[credential "https://code.cargurus.com"]
-	provider = github
