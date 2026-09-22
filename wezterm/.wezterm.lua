@@ -14,28 +14,37 @@ config.default_cursor_style = "BlinkingBar"
 config.window_decorations = "RESIZE"
 config.window_background_opacity = 0.8
 config.macos_window_background_blur = 10
-config.default_prog = { "pwsh" }
+-- config.default_prog = { "pwsh" }
 
 
-config.keys={{
-    key = "q",
-    mods = "ALT",
+
+config.keys = {
+  {
+    key = "w",
+    mods = "CMD",
     action = wezterm.action.CloseCurrentPane { confirm = false },
-},
-{
+  },
+  {
     key = "\\",
-    mods = "CTRL",
-    action = wezterm.action.SplitHorizontal { domain = "CurrentPaneDomain" },},
- {
+    mods = "CMD",
+    action = wezterm.action.SplitHorizontal { domain = "CurrentPaneDomain" },
+  }, {
+    key = "\\",
+    mods = "CMD | SHIFT",
+    action = wezterm.action.SplitVertical { domain = "CurrentPaneDomain" },
+  },
+  {
     key = "[",
-    mods = "CTRL",
+    mods = "CMD",
     action = wezterm.action.ActivatePaneDirection "Left",
-  },  {
+  },
+  {
     key = "]",
-    mods = "CTRL",
+    mods = "CMD",
     action = wezterm.action.ActivatePaneDirection "Right",
   },
 }
+
 
 
 return config
