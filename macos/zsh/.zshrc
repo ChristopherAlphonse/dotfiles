@@ -141,6 +141,7 @@ alias p='ps aux | grep'
 alias f='find . | grep'
 
 # Utilities
+alias format='yarn fix:prettier && yarn fix:js'
 alias tree='tree -CAhF --dirsfirst'
 alias diskspace='du -S | sort -n -r | more'
 alias mountedinfo='df -hT'
@@ -181,43 +182,6 @@ lazyg() {
   git push
 }
 
-# --------------------------------------------------
-# EzCater / EzTilt Dev Workflow
-# --------------------------------------------------
-
-export EZCATER_REPOSITORY_PATH="$HOME/code/ezcater"
-export DOCKER_DEFAULT_PLATFORM=linux/amd64
-export DOCKER_API_VERSION=1.44
-
-alias eztilt="$EZCATER_REPOSITORY_PATH/eztilt/eztilt"
-alias run="$EZCATER_REPOSITORY_PATH/eztilt/run"
-
-EZTILT_TOOL_VERSIONS="$EZCATER_REPOSITORY_PATH/eztilt/.tool-versions"
-
-_dev-backend-ensure-oidc() {
-  local line
-  line=$(grep 'kubectl-oidc_login' ~/.tool-versions 2>/dev/null)
-  if [[ -n "$line" ]] && ! grep -q 'kubectl-oidc_login' "$EZTILT_TOOL_VERSIONS" 2>/dev/null; then
-    echo "$line" >> "$EZTILT_TOOL_VERSIONS"
-  fi
-}
-
-dev-backend() {
-  _dev-backend-ensure-oidc
-  eztilt down || true
-  eztilt use store-complete
-  EZ_RAILS_DEV_DATA=partial EZ_RAILS_VECTOR_DEV_DATA=partial eztilt up backend
-}
-
-dev-down() {
-  eztilt down
-  [[ -f "$EZTILT_TOOL_VERSIONS" ]] && sed -i '' '/kubectl-oidc_login/d' "$EZTILT_TOOL_VERSIONS"
-}
-
-dev-frontend() {
-  cd ~/code/ezcater/store-next || return
-  yarn start
-}
 
 update-all-repos() {
   find . -type d -name ".git" | while read gitdir; do
@@ -238,7 +202,7 @@ source $ZSH/oh-my-zsh.sh
 # --------------------------------------------------
 # asdf version manager
 # --------------------------------------------------
-. "$(brew --prefix asdf)/libexec/asdf.sh"
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 # --------------------------------------------------
 # curl timing breakdown
@@ -258,3 +222,10 @@ starttransfer:  %{time_starttransfer}s\n\
 -------------------------\n\
         total:  %{time_total}s\n" "$@"
 }
+
+# bun completions
+[ -s "/Users/christopheralphonse/.oh-my-zsh/completions/_bun" ] && source "/Users/christopheralphonse/.oh-my-zsh/completions/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

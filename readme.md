@@ -291,11 +291,17 @@ YASB provides a customizable status bar with:
 
 ### Setup Scripts
 
-- **`setup-v1.ps1`** - Main development environment setup
-- **`bootstrap.ps1`** - One-command installer
-- **`GamingTweaks.ps1`** - Gaming performance optimizations
-- **`dev/nerdFont.ps1`** - Nerd Font installation
-- **`dev/npm.ps1`** - Node.js and NPM setup
+- **`windows/setup-v1.ps1`** - Main development environment setup
+- **`windows/bootstrap.ps1`** - One-command installer
+- **`windows/GamingTweaks.ps1`** - Gaming performance optimizations
+- **`windows/dev/nerdFont.ps1`** - Nerd Font installation
+- **`windows/dev/npm.ps1`** - Node.js and NPM setup
+
+## Repo Layout
+
+- **`windows/`** - Windows-only: PowerShell setup scripts, Komorebi/YASB desktop config, pwsh profile
+- **`macos/`** - macOS-only: zsh config
+- **`shared/`** - Cross-platform: git, VS Code, Cursor, WezTerm, bash
 
 ### Git Configuration
 

@@ -1,5 +1,14 @@
+[user]
+	name = Christopher Alphonse
+
 [diff "astextplain"]
     textconv = astextplain
+
+[color]
+	ui = true
+  	status = auto
+  	branch = auto
+  	interactive = auto
 
 [filter "lfs"]
     clean = git-lfs clean -- %f
@@ -9,9 +18,6 @@
 
 [http]
     sslBackend = openssl
-	sslverify = true
-	sslcainfo = /etc/ssl/cert.pem
-# Windows
 
 [core]
     autocrlf = true
@@ -20,31 +26,26 @@
     fsmonitor = true
     editor = code -w
     whitespace = trailing-space,cr-at-eol
-    excludesfile = ~/.gitignore
+	excludesfile = ~/.gitignore
     autocrlf = false
 
 [pull]
     rebase = false
 
 [credential]
-	helper = cache
-	helper = 
-	helper = /usr/local/share/gcm-core/git-credential-manager
-
-[credential "https://dev.azure.com"]
-    useHttpPath = true
+	helper = store
 
 [init]
     defaultBranch = main
-# Changed from master to main for consistency
 
-
+[user]
+    name = Christopher Alphonse
 
 [github]
     user = christopheralphonse
 
 [merge]
-    ff = only  # Fast forward only
+    ff = only
 
 [diff]
     mnemonicprefix = true
@@ -61,8 +62,9 @@
     circle = !gh pr checks
     open = !gh browse
     pr = !gh pr create --fill
-    rebase = rebase  # Fixed misspellings
+    lg = "log --all --oneline -5 --decorate --graph"
     s = status --short --branch
+    spec = "!bundle exec rspec `git ls-files --modified --others spec | grep _spec`"
     unstage = reset
     wip = !git add . && git commit -m '[ci skip] WIP'
 
@@ -71,7 +73,20 @@
     pull = pull
     branch = branch
 	tree = ! git ls-tree --full-name --name-only -t -r HEAD | sed -e \"s/[^-][^\\/]*\\//   |/g\" -e \"s/|\\([^ ]\\)/|-- \\1/\"
+	gs = status
+	ga = add
+	gc = commit
+	gp = push
+	gl = pull origin
+	dev1 = !git commit --allow-empty -m \"[deploy dev1]\" && git push
 [push]
     default = simple
     autoSetupRemote = true
-
+[safe]
+	directory = /Users/christopheralphonse/
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
