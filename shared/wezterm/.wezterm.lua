@@ -9,6 +9,10 @@ config.colors={
   cursor_bg="#7aa2f7",
   cursor_border="#7aa2f7",
 }
+config.inactive_pane_hsb = {
+  saturation = 0.9,
+  brightness = 0.6,
+}
 config.default_cursor_style = "BlinkingBar"
 config.window_decorations = "RESIZE"
 config.window_background_opacity = 0.8
