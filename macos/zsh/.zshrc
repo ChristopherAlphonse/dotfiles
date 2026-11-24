@@ -191,7 +191,10 @@ update-all-repos() {
   done
 }
 
-
+alias kiro='kiro-cli --v3'
+alias krio='kiro-cli --v3'
+alias source-shell='source ~/.zshrc'
+alias ss='source ~/.zshrc && cls'
 
 # --------------------------------------------------
 # Load Oh My Zsh & Powerlevel10k config
