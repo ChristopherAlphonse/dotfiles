@@ -232,3 +232,6 @@ starttransfer:  %{time_starttransfer}s\n\
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# AWS: check CLI login (optional profile arg)
+alias awsCheck=~/Desktop/dotfiles/shared/aws/aws-check-login.sh
