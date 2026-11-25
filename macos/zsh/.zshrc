@@ -141,7 +141,6 @@ alias p='ps aux | grep'
 alias f='find . | grep'
 
 # Utilities
-alias format='yarn fix:prettier && yarn fix:js'
 alias tree='tree -CAhF --dirsfirst'
 alias diskspace='du -S | sort -n -r | more'
 alias mountedinfo='df -hT'
@@ -180,6 +179,131 @@ lazyg() {
   git add .
   git commit -m "$1"
   git push
+}
+
+# --------------------------------------------------
+# format: run whatever formatters apply to the current project
+# --------------------------------------------------
+# parallelism). Ceiling: silently no-ops for formatters not listed below.
+# Upgrade path: add a case/tool here, or swap to a single `pre-commit run
+# --all-files` once every repo adopts it.
+format() {
+  local ran=0
+
+  if [[ -f .pre-commit-config.yaml ]] && command -v pre-commit >/dev/null; then
+    echo "==> pre-commit"
+    pre-commit run --all-files
+    ran=1
+  fi
+
+  if command -v terraform >/dev/null && { [[ -n "$(find . -maxdepth 3 -name '*.tf' -print -quit 2>/dev/null)" ]]; }; then
+    echo "==> terraform fmt"
+    terraform fmt -recursive
+    ran=1
+  fi
+
+  if command -v dotnet >/dev/null; then
+    local sln csproj
+    sln="$(find . -maxdepth 3 -name '*.sln' -print -quit 2>/dev/null)"
+    if [[ -n "$sln" ]]; then
+      echo "==> dotnet format ($sln)"
+      dotnet format "$sln"
+      ran=1
+    else
+      for csproj in $(find . -maxdepth 3 -name '*.csproj' 2>/dev/null); do
+        echo "==> dotnet format ($csproj)"
+        dotnet format "$csproj"
+        ran=1
+      done
+    fi
+  fi
+
+  if [[ -f package.json ]] && command -v npx >/dev/null && npx --no-install prettier -v >/dev/null 2>&1; then
+    echo "==> prettier"
+    npx --no-install prettier --write .
+    ran=1
+  fi
+
+  if command -v ruff >/dev/null && { [[ -f pyproject.toml ]] || [[ -n "$(find . -maxdepth 3 -name '*.py' -print -quit 2>/dev/null)" ]]; }; then
+    echo "==> ruff format"
+    ruff format .
+    ran=1
+  elif command -v black >/dev/null && { [[ -f pyproject.toml ]] || [[ -n "$(find . -maxdepth 3 -name '*.py' -print -quit 2>/dev/null)" ]]; }; then
+    echo "==> black"
+    black .
+    ran=1
+  fi
+
+  if command -v gofmt >/dev/null && [[ -n "$(find . -maxdepth 3 -name '*.go' -print -quit 2>/dev/null)" ]]; then
+    echo "==> gofmt"
+    gofmt -w .
+    ran=1
+  fi
+
+  if (( ! ran )); then
+    echo "format: no known formatter applies to $(pwd)"
+  fi
+}
+
+# --------------------------------------------------
+# runtests: run whatever test runners apply to the current project
+# --------------------------------------------------
+# Named runtests, not test: a `test` function would shadow the zsh builtin.
+# runners not listed below. Upgrade path: add a tool here.
+runtests() {
+  local ran=0 failed=0
+
+  if command -v terraform >/dev/null && [[ -n "$(find . -maxdepth 3 -name '*.tftest.hcl' -print -quit 2>/dev/null)" ]]; then
+    echo "==> terraform test"
+    terraform test || failed=1
+    ran=1
+  fi
+
+  if command -v dotnet >/dev/null; then
+    local sln csproj
+    sln="$(find . -maxdepth 3 -name '*.sln' -print -quit 2>/dev/null)"
+    if [[ -n "$sln" ]]; then
+      echo "==> dotnet test ($sln)"
+      dotnet test "$sln" || failed=1
+      ran=1
+    else
+      for csproj in ${(f)"$(find . -maxdepth 3 -name '*.csproj' -exec grep -l 'Microsoft.NET.Test.Sdk' {} + 2>/dev/null)"}; do
+        echo "==> dotnet test ($csproj)"
+        dotnet test "$csproj" || failed=1
+        ran=1
+      done
+    fi
+  fi
+
+  if [[ -f package.json ]] && command -v npm >/dev/null && [[ "$(npm pkg get scripts.test 2>/dev/null)" != "{}" ]]; then
+    echo "==> npm test"
+    npm test || failed=1
+    ran=1
+  fi
+
+  # Only files pytest collects by default; a pyproject.toml alone may be just uv tooling.
+  if [[ -n "$(find . -maxdepth 3 \( -name node_modules -o -name .venv -o -name .worktrees \) -prune -o \( -name 'test_*.py' -o -name '*_test.py' \) -print -quit 2>/dev/null)" ]]; then
+    if [[ -f uv.lock ]] && command -v uv >/dev/null; then
+      echo "==> uv run pytest"
+      uv run pytest || failed=1
+      ran=1
+    elif command -v pytest >/dev/null; then
+      echo "==> pytest"
+      pytest || failed=1
+      ran=1
+    fi
+  fi
+
+  if command -v go >/dev/null && [[ -f go.mod ]]; then
+    echo "==> go test"
+    go test ./... || failed=1
+    ran=1
+  fi
+
+  if (( ! ran )); then
+    echo "runtests: no known test runner applies to $(pwd)"
+  fi
+  return $failed
 }
 
 
