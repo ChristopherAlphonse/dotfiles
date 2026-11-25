@@ -210,7 +210,7 @@ format() {
       dotnet format "$sln"
       ran=1
     else
-      for csproj in $(find . -maxdepth 3 -name '*.csproj' 2>/dev/null); do
+      for csproj in ${(f)"$(find . -maxdepth 3 -name '*.csproj' 2>/dev/null)"}; do
         echo "==> dotnet format ($csproj)"
         dotnet format "$csproj"
         ran=1
